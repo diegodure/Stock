@@ -1,0 +1,86 @@
+<div class="overlay">
+<div class="modal">
+	<div class="modal-header">
+			<button ng-click="cerrarModal()" type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			<h4 class="modal-title"><i class='glyphicon glyphicon-edit'></i> Agregar nuevo producto</h4>
+		  </div>
+		<div class="modal-body">
+			<small style="font-weight: bolder;color: #286090;">Campos Obligatorios(*)</small>
+			<br>
+			<div class="form-group">
+				<label for="nombre" class="col-sm-4 control-label">Nombre (*)</label>
+				<div class="col-sm-8">
+					<input type="text" class="form-control" ng-model="nombre" required>
+				</div>
+			</div>
+			<br>
+			<br>
+			<div class="form-group">
+				<label for="nombre" class="col-sm-4 control-label">Descripcion (*)</label>
+				<div class="col-sm-8">
+					<input type="text" class="form-control" ng-model="descripcion" required>
+				</div>
+			</div>
+			<br>
+			<br>
+			<div class="form-group">
+				<label for="nombre" class="col-sm-4 control-label">Cantidad Actual</label>
+				<div class="col-sm-8">
+					<input type="text" class="form-control" ng-model="cantidad" required>
+				</div>
+			</div>
+			<br>
+			<br>
+			<div class="form-group">
+				<label for="nombre" class="col-sm-4 control-label">Cantidad Mínima</label>
+				<div class="col-sm-8">
+					<input type="text" class="form-control" ng-model="cantidadMin">
+				</div>
+			</div>
+			<br>
+			<br>
+			<div class="form-group">
+				<label for="nombre" class="col-sm-4 control-label">Precio Unitario (*)</label>
+				<div class="col-sm-8">
+					<input type="text" class="form-control" ng-model="precioUnitario">
+				</div>
+			</div>
+			<br>
+			<br>
+			<div class="form-group">
+				<label for="nombre" class="col-sm-4 control-label">Precio Mayorista (*)</label>
+				<div class="col-sm-8">
+					<input type="text" class="form-control" ng-model="precioMayorista" required>
+				</div>
+			</div>
+			<br>
+			<br>
+			<div class="form-group">
+				<label for="nombre" class="col-sm-4 control-label">Precio Promocional</label>
+				<div class="col-sm-8">
+					<input type="text" class="form-control" ng-model="precioPromocional" required>
+				</div>
+			</div>
+			<br>
+			<br>
+			<div class="form-group">
+				<label for="nombre" class="col-sm-4 control-label">Proveedor</label>
+				<div class="col-sm-8">
+					<select name="selectProveedor" class="form-control" id="selectProveedor" ng-model="proveedor">
+						<option value="">---Seleccionar---</option> <!-- not selected / blank option -->
+	      				<option ng-repeat="proveedor in proveedores" value="{{proveedor.idProveedores}}">{{proveedor.Nombre}}</option> <!-- interpolation -->
+					</select>
+				</div>
+				
+			</div>
+			<br>
+			<br>
+		</div>
+	<div class="modal-footer">
+		<button class="btn btn-default" ng-click="cerrarModal()">Cerrar</button>
+		<button type="submit" class="btn btn-primary" ng-click="guardarProducto()">Guardar Datos</button>
+	</div>
+</div>
+</div>
+
+
