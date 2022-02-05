@@ -11,10 +11,10 @@ angular.module('reportesVentas',['720kb.datepicker'])
                 fecha1: date1,
                 fecha2: date2
               };
-
+              angular.element($("#spinerContainer")).css("display", "block");
               $http.post('../models/selectVenta.php', fechas).success(function (data) {
                   $scope.ventas = data;
-                  console.log($scope.ventas);
+                  angular.element($("#spinerContainer")).css("display", "none");
               });
             
         };
@@ -26,9 +26,10 @@ angular.module('reportesVentas',['720kb.datepicker'])
             idVenta: venta.idVentas,
             fecha: venta.Fecha
           };
+          angular.element($("#spinerContainer")).css("display", "block");
           $http.post('../models/selectVentaDetalle.php', venta).success(function (data) {
                   $scope.detVenta = data;
-                  console.log(data);
+                  angular.element($("#spinerContainer")).css("display", "none");
               });
        };
 

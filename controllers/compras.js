@@ -23,7 +23,7 @@ angular.module('compras',['angularModalService'])
   };
 })
 
-.controller('ComprasCtrl', function($scope, $http, ModalService){
+.controller('ComprasCtrl', function($scope, $http, ModalService, flash){
 
 	//Inicializamos las variables 
 	 $scope.productos = [];
@@ -97,7 +97,7 @@ angular.module('compras',['angularModalService'])
 		
 	};
 
-	$scope.facturar = function(productos, proveedor, $scope, flash){
+	$scope.facturar = function(productos, proveedor){
 			
 			var length = productos.length;
 		
@@ -123,10 +123,12 @@ angular.module('compras',['angularModalService'])
 
 			//alert($scope.total);
 			var pos = 0;
+			angular.element($("#spinerContainer")).css("display", "block");
 			$http.post("../models/insertCompras.php", factura)
 			.success(function(res){
 				$http.post("../models/detCompra.php", detFac)
 					.success(function (res) {
+						angular.element($("#spinerContainer")).css("display", "none");
 						if(res == "error"){
 							$scope.msgTitle = 'Error';
 					    	$scope.msgBody  = 'Ha ocurrido un error!';
@@ -158,7 +160,9 @@ angular.module('compras',['angularModalService'])
 	};
 
 	//La parte del select donde mostramos los datos en la tabla
+	angular.element($("#spinerContainer")).css("display", "block");
 	$http.get('../models/selectProveedores.php').success(function(data){
+		angular.element($("#spinerContainer")).css("display", "none");
 		if(data == "error"){
 				$scope.proveedores = [];
 		}else{
@@ -207,7 +211,9 @@ angular.module('compras',['angularModalService'])
 	};
 
 	//La parte del select donde mostramos los datos en la tabla
+	angular.element($("#spinerContainer")).css("display", "block");
 	$http.get('../models/selectProductos.php').success(function(data){
+		angular.element($("#spinerContainer")).css("display", "none");
 		if(data == "error"){
 				$scope.productos = [];
 		}else{
@@ -264,9 +270,10 @@ angular.module('compras',['angularModalService'])
 })
 
 	//El controller del modal nuevo totalmente independiente de la pagina principal (productos)
-.controller('modalCtrl', function($scope, close, $http){
-
+.controller('modalCtrl', function($scope, close, $http,flash){
+	angular.element($("#spinerContainer")).css("display", "block");
 	$http.get('../models/selectProveedores.php').success(function(data){
+		angular.element($("#spinerContainer")).css("display", "none");
 		var modalHeader = angular.element($(".modal-header")).innerHeight();
 	 	var navbar = angular.element($(".navbar-fixed-bottom")).innerHeight();
 	 	var modalFooter = angular.element($(".modal-footer")).innerHeight();
@@ -288,17 +295,31 @@ angular.module('compras',['angularModalService'])
 			proveedor: $scope.proveedor
 		};
 
-		 
-		console.log(model);
+		angular.element($("#spinerContainer")).css("display", "block");
 		$http.post("../models/insertProductos.php", model)
 		.success(function(res){
-			alert(res);
-			$scope.nombre = null;
-			$scope.descripcion = null;
-			$scope.precio = null;
-			$scope.cantidad = null;
-			$scope.proveedor = null;
 			close();
+			angular.element($("#spinerContainer")).css("display", "none");
+			if(res == "error"){
+					$scope.msgTitle = 'Error';
+		    		$scope.msgBody  = 'Ha ocurrido un error!';
+		    		$scope.msgType  = 'error';
+		 			flash.pop({title: $scope.msgTitle, body: $scope.msgBody, type: $scope.msgType});
+				}else{
+					$scope.msgTitle = 'Exitoso';
+		    	$scope.msgBody  = res;
+		    	$scope.msgType  = 'success';
+		 			flash.pop({title: $scope.msgTitle, body: $scope.msgBody, type: $scope.msgType});
+					$scope.nombre = null;
+					$scope.descripcion = null;
+					$scope.precio = null;
+					$scope.cantidad = null;
+					$scope.cantidadMin = null;
+					$scope.precioUnitario = null;
+					$scope.precioMayorista = null;
+					$scope.precioPromocional = null;
+					$scope.proveedor = null;
+				}
 		});
 	}
 })

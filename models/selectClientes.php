@@ -2,7 +2,7 @@
 
 	include("../conect.php");
 
-	$sql = "select * from Clientes";
+	$sql = "select * from Clientes where active='0'";
 
 
 	$results = $con->query($sql);

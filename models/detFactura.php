@@ -29,13 +29,13 @@
 	    //print ($iva);
 	    $con->query($sql2);
 
-        $sql3 = "select Cantidad from Productos where idProductos='$idP'";
+        $sql3 = "select CantidadActual from Productos where idProductos='$idP'";
         $result2 = $con->query($sql3);
         while ($row = mysqli_fetch_array($result2)) {
             $rawdata[$i] = $row;
             
-            $resta = $row["Cantidad"] - $cantidad;
-            $sql4 = "update Productos set Cantidad='$resta' where idProductos='$idP'";
+            $resta = $row["CantidadActual"] - $cantidad;
+            $sql4 = "update Productos set CantidadActual='$resta' where idProductos='$idP'";
             $result3 = $con->query($sql4);
             $i++;
         }

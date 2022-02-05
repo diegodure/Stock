@@ -3,7 +3,7 @@
 	include("../conect.php");
 
 	$sql = "select Productos.idProductos, Productos.Nombre, Productos.Descripcion, Productos.PrecioUnitario,
-	Productos.PrecioMayorista, Productos.PrecioPromocional,Productos.CantidadActual,Productos.CantidadMinima, Proveedores.Nombre as provN, Proveedores.idProveedores as provId, Proveedores.idProveedores from Productos inner join Proveedores on Productos.Proveedores_idProveedores=Proveedores.idProveedores";
+	Productos.PrecioMayorista, Productos.PrecioPromocional,Productos.CantidadActual,Productos.CantidadMinima, Proveedores.Nombre as provN, Proveedores.idProveedores as provId, Proveedores.idProveedores from Productos inner join Proveedores on Productos.Proveedores_idProveedores=Proveedores.idProveedores where Productos.active='0'";
 
 
 	$results = $con->query($sql);

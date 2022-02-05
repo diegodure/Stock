@@ -23,7 +23,7 @@ angular.module('ventas',['angularModalService'])
   };
 })
 
-.controller('VentasCtrl', function($scope, $http, ModalService){
+.controller('VentasCtrl', function($scope, $http, ModalService, flash){
 	angular.element(document).ready(function () {
 
     	$scope.price = {
@@ -107,12 +107,11 @@ angular.module('ventas',['angularModalService'])
 		$scope.total = total;
 		//alert(total);
 		var pos = $scope.productos.indexOf(producto);
-		console.log(pos);
 		$scope.productos.splice(pos, 1); //pasamos el indice a ser eliminado (pos) y luego la cantidad de elementos a ser eliminados
 		
 	};
 
-	$scope.facturar = function(productos, cliente, $scope, flash){
+	$scope.facturar = function(productos, cliente){
 			
 			var length = productos.length;
 		
@@ -138,10 +137,12 @@ angular.module('ventas',['angularModalService'])
 
 			//alert($scope.total);
 			var pos = 0;
+			angular.element($("#spinerContainer")).css("display", "block");
 			$http.post("../models/insertFacturas.php", factura)
 			.success(function(res){
 				$http.post("../models/detFactura.php", detFac)
 					.success(function (res) {
+						angular.element($("#spinerContainer")).css("display", "none");
 						if(res == "error"){
 							$scope.msgTitle = 'Error';
 					    	$scope.msgBody  = 'Ha ocurrido un error!';
@@ -174,7 +175,9 @@ angular.module('ventas',['angularModalService'])
 	};
 
 	//La parte del select donde mostramos los datos en la tabla
+	angular.element($("#spinerContainer")).css("display", "block");
 	$http.get('../models/selectClientes.php').success(function(data){
+		angular.element($("#spinerContainer")).css("display", "none");
 		$scope.clientes = data;
 	});
 
@@ -201,9 +204,10 @@ angular.module('ventas',['angularModalService'])
 	};
 
 	//La parte del select donde mostramos los datos en la tabla
+	angular.element($("#spinerContainer")).css("display", "block");
 	$http.get('../models/selectProductos.php').success(function(data){
+		angular.element($("#spinerContainer")).css("display", "none");
 		$scope.productos = data;
-		
 	});
 
 	//La parte donde elegimos el producto

@@ -52,4 +52,7 @@
       </ul>
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
+  <div id="spinerContainer">
+    <i class='glyphicon glyphicon-refresh' id="spiner"></i>
+  </div>
 </nav>

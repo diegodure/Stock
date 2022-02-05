@@ -4,7 +4,7 @@
 	
 	include("../conect.php");
 
-	$sql = "delete from Productos where idProducto='$id'";
+	$sql = "update Productos set active='1' where idProductos='$id'";
 	$results = $con->query($sql);
 
 	if(!$results){ 

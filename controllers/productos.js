@@ -1,5 +1,28 @@
 angular.module('productos',['angularModalService'])
 
+.factory("flash", function($rootScope) {
+
+  return {
+
+    pop: function(message) {
+      switch(message.type) {
+        case 'success':
+          toastr.success(message.body, message.title);
+          break;
+        case 'info':
+          toastr.info(message.body, message.title);
+          break;
+        case 'warning':
+          toastr.warning(message.body, message.title);
+          break;
+        case 'error':
+          toastr.error(message.body, message.title);
+          break;
+      }
+    }
+  };
+})
+
 
 .controller('ProductosCtrl', function($scope, $http, ModalService){
 	angular.element(document).ready(function () {
@@ -45,8 +68,9 @@ angular.module('productos',['angularModalService'])
 	
 	//La parte del select donde mostramos los datos en la tabla
 	$scope.selectProducts = function(){
+		angular.element($("#spinerContainer")).css("display", "block");
 		$http.get('../models/selectProductos.php').success(function(data){
-			
+			angular.element($("#spinerContainer")).css("display", "none");
 			if(data == "error"){
 				$scope.productos = [];
 			}else{
@@ -114,7 +138,7 @@ angular.module('productos',['angularModalService'])
 			templateUrl: "eliminarProducto.html",
 			controller: "eliminarCtrl",
 			inputs: {
-				id: producto.idProducto,
+				id: producto.idProductos,
 				nombre: producto.Nombre
 			}
 		}).then(function(modal){
@@ -129,7 +153,7 @@ angular.module('productos',['angularModalService'])
 
 
 //El controller del modal eliminar totalmente independiente de la pagina principal (productos)
-.controller('eliminarCtrl', function($scope, close, $http, id, nombre){
+.controller('eliminarCtrl', function($scope, close, $http, id, nombre, flash){
 
 
 	$scope.cerrarModal = function(){
@@ -141,9 +165,11 @@ angular.module('productos',['angularModalService'])
 			id: id,
 			nombre: nombre
 		};
-
+		angular.element($("#spinerContainer")).css("display", "block");
 		$http.post("../models/eliminarProductos.php", model)
 		.success(function(res){
+			close();
+			angular.element($("#spinerContainer")).css("display", "none");
 			if(res == "error"){
 					$scope.msgTitle = 'Error';
 		    		$scope.msgBody  = 'Ha ocurrido un error!';
@@ -154,7 +180,6 @@ angular.module('productos',['angularModalService'])
 		    	$scope.msgBody  = res;
 		    	$scope.msgType  = 'success';
 		 			flash.pop({title: $scope.msgTitle, body: $scope.msgBody, type: $scope.msgType});
-					close();
 			}
 		});
 	};
@@ -164,7 +189,9 @@ angular.module('productos',['angularModalService'])
 .controller('modificarCtrl', function($scope, close, $http, idP, nombre, descripcion, PrecioUnitario, 
 	PrecioMayorista, PrecioPromocional, CantidadActual, CantidadMinima, proveedorId, proveedor, flash){
 	var miProveedor;
+	angular.element($("#spinerContainer")).css("display", "block");
 	$http.get('../models/selectProveedores.php').success(function(data){
+		angular.element($("#spinerContainer")).css("display", "none");
 		var modalHeader = angular.element($(".modal-header")).innerHeight();
 	 	var navbar = angular.element($(".navbar-fixed-bottom")).innerHeight();
 	 	var modalFooter = angular.element($(".modal-footer")).innerHeight();
@@ -203,9 +230,11 @@ angular.module('productos',['angularModalService'])
 			precioMayorista: $scope.precioMayorista,
 			proveedor: $scope.miProv.idProveedores
 		};
-
+		angular.element($("#spinerContainer")).css("display", "block");
 		$http.post("../models/modificarProductos.php", model)
 		.success(function(res){
+			close();
+			angular.element($("#spinerContainer")).css("display", "none");
 			if(res == "error"){
 					$scope.msgTitle = 'Error';
 		    		$scope.msgBody  = 'Ha ocurrido un error!';
@@ -225,7 +254,6 @@ angular.module('productos',['angularModalService'])
 					$scope.precioMayorista = null;
 					$scope.precioPromocional = null;
 					$scope.proveedor = null;
-					close();
 			}
 		});
 	};
@@ -234,8 +262,9 @@ angular.module('productos',['angularModalService'])
 
 	//El controller del modal nuevo totalmente independiente de la pagina principal (productos)
 .controller('modalCtrl', function($scope, close, $http, flash){
-
+	angular.element($("#spinerContainer")).css("display", "block");
 	$http.get('../models/selectProveedores.php').success(function(data){
+		angular.element($("#spinerContainer")).css("display", "none");
 		var modalHeader = angular.element($(".modal-header")).innerHeight();
 	 	var navbar = angular.element($(".navbar-fixed-bottom")).innerHeight();
 	 	var modalFooter = angular.element($(".modal-footer")).innerHeight();
@@ -266,8 +295,11 @@ angular.module('productos',['angularModalService'])
 		  $scope.msgType  = 'warning';
 		 	flash.pop({title: $scope.msgTitle, body: $scope.msgBody, type: $scope.msgType});
 		}else{
+			angular.element($("#spinerContainer")).css("display", "block");
 			$http.post("../models/insertProductos.php", model)
 			.success(function(res){
+				close();
+				angular.element($("#spinerContainer")).css("display", "none");
 				if(res == "error"){
 					$scope.msgTitle = 'Error';
 		    		$scope.msgBody  = 'Ha ocurrido un error!';
@@ -287,7 +319,6 @@ angular.module('productos',['angularModalService'])
 					$scope.precioMayorista = null;
 					$scope.precioPromocional = null;
 					$scope.proveedor = null;
-					close();
 				}
 			});
 		}
@@ -295,25 +326,4 @@ angular.module('productos',['angularModalService'])
 	}
 })
 
-.factory("flash", function($rootScope) {
 
-  return {
-
-    pop: function(message) {
-      switch(message.type) {
-        case 'success':
-          toastr.success(message.body, message.title);
-          break;
-        case 'info':
-          toastr.info(message.body, message.title);
-          break;
-        case 'warning':
-          toastr.warning(message.body, message.title);
-          break;
-        case 'error':
-          toastr.error(message.body, message.title);
-          break;
-      }
-    }
-  };
-})

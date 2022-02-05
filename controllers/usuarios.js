@@ -1,4 +1,4 @@
-angular.module('proveedores',['angularModalService'])
+angular.module('usuarios',['angularModalService'])
 
 .factory("flash", function($rootScope) {
 
@@ -23,38 +23,39 @@ angular.module('proveedores',['angularModalService'])
   };
 })
 
-.controller('ProveedoresCtrl', function($scope, $http, ModalService){
+
+.controller('ClientesCtrl', function($scope, $http, ModalService){
 
 	angular.element(document).ready(function () {
 
-    	$scope.selectProviders();
+    	$scope.selectClientes();
 
 	});
 
 	$scope.mostrarModal = function(){
 		// Debes proveer un controlador y una plantilla.
 		ModalService.showModal({
-			templateUrl: "nuevoProveedor.html",
+			templateUrl: "nuevoCliente.html",
       		controller: "modalCtrl"
 		}).then(function(modal){
 			modal.close.then(function(result){
 				// Una vez que el modal sea cerrado, la libreria invoca esta función
         		// y en result tienes el resultado.
+        		
         		$scope.resultadoModal = result;
-        		$scope.selectProviders();
+        		$scope.selectClientes();
 			})
 		})
 	};
 
 	//La parte del select donde mostramos los datos en la tabla
-	$scope.selectProviders = function(){
+	$scope.selectClientes = function(){
 		angular.element($("#spinerContainer")).css("display", "block");
-		$http.get('../models/selectProveedores.php').success(function(data){
-			angular.element($("#spinerContainer")).css("display", "none");
+		$http.get('../models/selectClientes.php').success(function(data){
 			if(data == "error"){
-				$scope.proveedores = [];
+				$scope.clientes = [];
 			}else{
-				$scope.proveedores = data;
+				$scope.clientes = data;
 				if(data.length > 0){
 					var topbar = angular.element($(".navbar-default")).innerHeight();
 		 			var navbar = angular.element($(".navbar-fixed-bottom")).innerHeight();
@@ -72,51 +73,52 @@ angular.module('proveedores',['angularModalService'])
 					//table.addClass('customClass');
 				}
 			}
-			
+			angular.element($("#spinerContainer")).css("display", "none");
 		});
 	};
 	
+
 	//Ordenamos de forma ascendente o descendente los datos
 	$scope.ordenarPor = function(orden){
 		$scope.ordenSeleccionado = orden;
 	};
 
 	//Abrimos el modal para modificar y recibimos los datos a ser modificados
-	$scope.modificar = function(proveedor){
-		var proveedor = proveedor;
-		//alert(producto);
+	$scope.modificar = function(cliente){
+		var cliente = cliente;
+		//alert(cliente);
 		ModalService.showModal({
-			templateUrl: "modificarProveedor.html",
+			templateUrl: "modificarCliente.html",
 			controller: "modificarCtrl",
 			 inputs: {
-    			nombre: proveedor.Nombre,
-    			apellido: proveedor.Apellido,
-    			info: proveedor.Informacion,
-    			empresa: proveedor.Empresa,
-    			id: proveedor.idProveedores
+				id: cliente.idCliente,
+    			nombre: cliente.Nombre,
+    			apellido: cliente.Apellido,
+    			info: cliente.Info
   			}
 		}).then(function(modal){
 			modal.close.then(function(result){
 				// $scope.resultadoModal = result;
-				$scope.selectProviders();
+				$scope.selectClientes();
 			})
 		})
 		
 	};
 
 	//Funcion que se encarga de eliminar un registro
-	$scope.eliminar = function(proveedor){
-		var proveedor = proveedor;
+	$scope.eliminar = function(cliente){
+		var cliente = cliente;
+		//alert(cliente);
 		ModalService.showModal({
-			templateUrl: "eliminarProveedor.html",
+			templateUrl: "eliminarCliente.html",
 			controller: "eliminarCtrl",
 			inputs: {
-				id: proveedor.idProveedores,
-				nombre: proveedor.Nombre
+				id: cliente.idCliente,
+				info: cliente.Info
 			}
 		}).then(function(modal){
 			modal.close.then(function(result){
-				$scope.selectProviders();
+				$scope.selectClientes();
 			})
 		})
 	};
@@ -124,122 +126,116 @@ angular.module('proveedores',['angularModalService'])
 	
 })
 
-
-//El controller del modal eliminar totalmente independiente de la pagina principal (productos)
-.controller('eliminarCtrl', function($scope, close, $http, id, nombre, flash){
-
+.controller('eliminarCtrl', function($scope, close, $http, id, info, flash){
 
 	$scope.cerrarModal = function(){
 		close();
 	};
-	$scope.eliminarProveedor = function(){
+	$scope.eliminarCliente = function(){
 
 		var model = {
-			id: id,
-			nombre: nombre
+			idCliente: id,
+			info: info
 		};
 		angular.element($("#spinerContainer")).css("display", "block");
-		$http.post("../models/eliminarProveedores.php", model)
+		$http.post("../models/eliminarClientes.php", model)
 		.success(function(res){
 			close();
 			angular.element($("#spinerContainer")).css("display", "none");
 			if(res == "error"){
-					$scope.msgTitle = 'Error';
+				$scope.msgTitle = 'Error';
 		    	$scope.msgBody  = 'Ha ocurrido un error!';
 		    	$scope.msgType  = 'error';
-		 			flash.pop({title: $scope.msgTitle, body: $scope.msgBody, type: $scope.msgType});
+		 		flash.pop({title: $scope.msgTitle, body: $scope.msgBody, type: $scope.msgType});
 			}else{
-					$scope.msgTitle = 'Exitoso';
+				$scope.msgTitle = 'Exitoso';
 		    	$scope.msgBody  = res;
 		    	$scope.msgType  = 'success';
-		 			flash.pop({title: $scope.msgTitle, body: $scope.msgBody, type: $scope.msgType});
-			}
+		 		flash.pop({title: $scope.msgTitle, body: $scope.msgBody, type: $scope.msgType});				
+			}			
 		});
 	};
 })
 
-	//El controller del modal modificar totalmente independiente de la pagina principal (productos)
-.controller('modificarCtrl', function($scope, close, $http, nombre, apellido, info, empresa, id, flash){
+	//El controller del modal modificar totalmente independiente de la pagina principal (clientes)
+.controller('modificarCtrl', function($scope, close, $http, id, nombre, apellido, info, flash){
 	$scope.nombre = nombre;
 	$scope.apellido = apellido;
 	$scope.info = info;
-	$scope.empresa = empresa;
 	$scope.cerrarModal = function(){
 		close();
 	};
-	$scope.modificarProveedor = function(){
+	$scope.modificarCliente = function(){
 		var model = {
 			nombre: $scope.nombre,
 			apellido: $scope.apellido,
 			info: $scope.info,
-			empresa: $scope.empresa,
 			id: id
 		};
 
 		 
-		console.log(model);
-		$http.post("../models/modificarProveedores.php", model)
+		angular.element($("#spinerContainer")).css("display", "block");
+		$http.post("../models/modificarClientes.php", model)
 		.success(function(res){
+			close();
+			angular.element($("#spinerContainer")).css("display", "none");
 			if(res == "error"){
-					$scope.msgTitle = 'Error';
+				$scope.msgTitle = 'Error';
 		    	$scope.msgBody  = 'Ha ocurrido un error!';
 		    	$scope.msgType  = 'error';
-		 			flash.pop({title: $scope.msgTitle, body: $scope.msgBody, type: $scope.msgType});
-				}else{
-					$scope.msgTitle = 'Exitoso';
+		 		flash.pop({title: $scope.msgTitle, body: $scope.msgBody, type: $scope.msgType});
+			}else{
+				$scope.msgTitle = 'Exitoso';
 		    	$scope.msgBody  = res;
 		    	$scope.msgType  = 'success';
-		 			flash.pop({title: $scope.msgTitle, body: $scope.msgBody, type: $scope.msgType});
-		 			$scope.nombre = null;
-					$scope.apellido = null;
-					$scope.info = null;
-					$scope.empresa = null;
-					close();
-				}
+		 		flash.pop({title: $scope.msgTitle, body: $scope.msgBody, type: $scope.msgType});
+		 		$scope.nombre = null;
+				$scope.apellido = null;
+				$scope.info = null;
+			}
+			
 		});
 	};
 })
 
 
-	//El controller del modal nuevo totalmente independiente de la pagina principal (productos)
+	//El controller del modal nuevo totalmente independiente de la pagina principal (clientes)
 .controller('modalCtrl', function($scope, close, $http, flash){
 	$scope.cerrarModal = function(){
 		close();
 	};
-	$scope.guardarProveedor = function(){
+	$scope.guardarCliente = function(){
 		var model = {
 			nombre: $scope.nombre,
 			apellido: $scope.apellido,
-			info: $scope.info,
-			empresa: $scope.empresa
+			info: $scope.info
 		};
-
-		if (model.nombre == undefined || model.apellido == undefined || 
-			model.info == undefined || model.empresa == undefined) {
+		if(model.nombre == undefined || model.apellido == undefined || model.info == undefined){
 			$scope.msgTitle = 'Atención';
-		  $scope.msgBody  = 'Debe completar los campos requeridos!';
-		  $scope.msgType  = 'warning';
+		  	$scope.msgBody  = 'Debe completar los campos requeridos!';
+		  	$scope.msgType  = 'warning';
 		 	flash.pop({title: $scope.msgTitle, body: $scope.msgBody, type: $scope.msgType});
 		}else{
-			$http.post("../models/insertProveedores.php", model)
-		.success(function(res){	
-			if(res == "error"){
+			angular.element($("#spinerContainer")).css("display", "block");
+			$http.post("../models/insertClientes.php", model)
+			.success(function(res){
+				close();
+				angular.element($("#spinerContainer")).css("display", "none");
+				if(res == "error"){
 					$scope.msgTitle = 'Error';
-		    	$scope.msgBody  = 'Ha ocurrido un error!';
-		    	$scope.msgType  = 'error';
+		    		$scope.msgBody  = 'Ha ocurrido un error!';
+		    		$scope.msgType  = 'error';
 		 			flash.pop({title: $scope.msgTitle, body: $scope.msgBody, type: $scope.msgType});
 				}else{
 					$scope.msgTitle = 'Exitoso';
-		    	$scope.msgBody  = res;
-		    	$scope.msgType  = 'success';
+		    		$scope.msgBody  = res;
+		    		$scope.msgType  = 'success';
 		 			flash.pop({title: $scope.msgTitle, body: $scope.msgBody, type: $scope.msgType});
-					$scope.nombre = null;
+		 			$scope.nombre = null;
 					$scope.apellido = null;
-					$scope.info = null;
-					$scope.empresa = null;
-					close();
-				}		
-		});
+					$scope.ruc = null;
+				}
+			});
 		}
 		
 	}

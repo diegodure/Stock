@@ -1,5 +1,5 @@
 <?php
-
+	
 	include("../conect.php");
 
 	$sql = "select * from Usuarios";

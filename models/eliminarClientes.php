@@ -1,10 +1,10 @@
 <?php
 	$data = json_decode(file_get_contents("php://input"));
-	$id = $data->{"id"};
+	$id = $data->{"idCliente"};
 	
 	include("../conect.php");
 
-	$sql = "delete from Clientes where idCliente='$id'";
+	$sql = "update Clientes set active='1' where idCliente='$id'";
 	$results = $con->query($sql);
 
 	if(!$results){ 

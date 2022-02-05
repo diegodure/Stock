@@ -4,7 +4,7 @@
 	
 	include("../conect.php");
 
-	$sql = "delete from Proveedores where idProveedores='$id'";
+	$sql = "update Proveedores set active='1' where idProveedores='$id'";
 	$results =$con->query($sql);
 
 	if(!$results){ 

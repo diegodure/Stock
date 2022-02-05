@@ -50,6 +50,7 @@ angular.module('clientes',['angularModalService'])
 
 	//La parte del select donde mostramos los datos en la tabla
 	$scope.selectClientes = function(){
+		angular.element($("#spinerContainer")).css("display", "block");
 		$http.get('../models/selectClientes.php').success(function(data){
 			if(data == "error"){
 				$scope.clientes = [];
@@ -72,6 +73,7 @@ angular.module('clientes',['angularModalService'])
 					//table.addClass('customClass');
 				}
 			}
+			angular.element($("#spinerContainer")).css("display", "none");
 		});
 	};
 	
@@ -132,12 +134,14 @@ angular.module('clientes',['angularModalService'])
 	$scope.eliminarCliente = function(){
 
 		var model = {
-			id: id,
+			idCliente: id,
 			info: info
 		};
-
+		angular.element($("#spinerContainer")).css("display", "block");
 		$http.post("../models/eliminarClientes.php", model)
 		.success(function(res){
+			close();
+			angular.element($("#spinerContainer")).css("display", "none");
 			if(res == "error"){
 				$scope.msgTitle = 'Error';
 		    	$scope.msgBody  = 'Ha ocurrido un error!';
@@ -147,9 +151,8 @@ angular.module('clientes',['angularModalService'])
 				$scope.msgTitle = 'Exitoso';
 		    	$scope.msgBody  = res;
 		    	$scope.msgType  = 'success';
-		 		flash.pop({title: $scope.msgTitle, body: $scope.msgBody, type: $scope.msgType});
-				close();
-			}
+		 		flash.pop({title: $scope.msgTitle, body: $scope.msgBody, type: $scope.msgType});				
+			}			
 		});
 	};
 })
@@ -171,9 +174,11 @@ angular.module('clientes',['angularModalService'])
 		};
 
 		 
-		console.log(model);
+		angular.element($("#spinerContainer")).css("display", "block");
 		$http.post("../models/modificarClientes.php", model)
 		.success(function(res){
+			close();
+			angular.element($("#spinerContainer")).css("display", "none");
 			if(res == "error"){
 				$scope.msgTitle = 'Error';
 		    	$scope.msgBody  = 'Ha ocurrido un error!';
@@ -187,7 +192,6 @@ angular.module('clientes',['angularModalService'])
 		 		$scope.nombre = null;
 				$scope.apellido = null;
 				$scope.info = null;
-				close();
 			}
 			
 		});
@@ -212,8 +216,11 @@ angular.module('clientes',['angularModalService'])
 		  	$scope.msgType  = 'warning';
 		 	flash.pop({title: $scope.msgTitle, body: $scope.msgBody, type: $scope.msgType});
 		}else{
+			angular.element($("#spinerContainer")).css("display", "block");
 			$http.post("../models/insertClientes.php", model)
 			.success(function(res){
+				close();
+				angular.element($("#spinerContainer")).css("display", "none");
 				if(res == "error"){
 					$scope.msgTitle = 'Error';
 		    		$scope.msgBody  = 'Ha ocurrido un error!';
@@ -227,7 +234,6 @@ angular.module('clientes',['angularModalService'])
 		 			$scope.nombre = null;
 					$scope.apellido = null;
 					$scope.ruc = null;
-					close();
 				}
 			});
 		}

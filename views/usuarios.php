@@ -3,7 +3,7 @@
     include("../conect.php");
     
     if(isset($_SESSION['user'])){
-    	$title = "Clientes | Impulse"
+    	$title = "Usuarios | Impulse"
   ?>
   <!DOCTYPE html>
 <html>
@@ -12,7 +12,7 @@
 	include("head.php");
 ?>
 
-<body ng-app="clientes" >
+<body ng-app="usuarios" >
 <?php
 	include("navbar.php");
 ?>

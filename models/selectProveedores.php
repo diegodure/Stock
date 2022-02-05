@@ -2,7 +2,7 @@
 
 	include("../conect.php");
 
-	$sql = "select * from Proveedores";
+	$sql = "select * from Proveedores where active='0'";
 
 
 	$results = $con->query($sql);
