@@ -24,18 +24,18 @@ angular.module('usuarios',['angularModalService'])
 })
 
 
-.controller('ClientesCtrl', function($scope, $http, ModalService){
+.controller('UsuariosCtrl', function($scope, $http, ModalService){
 
 	angular.element(document).ready(function () {
 
-    	$scope.selectClientes();
+    	$scope.selectUsuarios();
 
 	});
 
-	$scope.mostrarModal = function(){
+	$scope.newUser = function(){
 		// Debes proveer un controlador y una plantilla.
 		ModalService.showModal({
-			templateUrl: "nuevoCliente.html",
+			templateUrl: "nuevoUsuario.html",
       		controller: "modalCtrl"
 		}).then(function(modal){
 			modal.close.then(function(result){
@@ -43,19 +43,19 @@ angular.module('usuarios',['angularModalService'])
         		// y en result tienes el resultado.
         		
         		$scope.resultadoModal = result;
-        		$scope.selectClientes();
+        		$scope.selectUsuarios();
 			})
 		})
 	};
 
 	//La parte del select donde mostramos los datos en la tabla
-	$scope.selectClientes = function(){
+	$scope.selectUsuarios = function(){
 		angular.element($("#spinerContainer")).css("display", "block");
-		$http.get('../models/selectClientes.php').success(function(data){
+		$http.get('../models/selectUsuarios.php').success(function(data){
 			if(data == "error"){
-				$scope.clientes = [];
+				$scope.usuarios = [];
 			}else{
-				$scope.clientes = data;
+				$scope.usuarios = data;
 				if(data.length > 0){
 					var topbar = angular.element($(".navbar-default")).innerHeight();
 		 			var navbar = angular.element($(".navbar-fixed-bottom")).innerHeight();
@@ -84,41 +84,46 @@ angular.module('usuarios',['angularModalService'])
 	};
 
 	//Abrimos el modal para modificar y recibimos los datos a ser modificados
-	$scope.modificar = function(cliente){
-		var cliente = cliente;
-		//alert(cliente);
+	$scope.modificar = function(usuario){
+		var usuario = usuario;
+		
 		ModalService.showModal({
-			templateUrl: "modificarCliente.html",
+			templateUrl: "modificarUsuario.html",
 			controller: "modificarCtrl",
 			 inputs: {
-				id: cliente.idCliente,
-    			nombre: cliente.Nombre,
-    			apellido: cliente.Apellido,
-    			info: cliente.Info
+					id: usuario.idUser,
+    			nombre: usuario.nombre,
+    			apellido: usuario.apellido,
+    			user: usuario.User,
+    			pass: usuario.Pass,
+    			idRoles: usuario.rolId,
+    			rol: usuario.rolId,
+    			idSucursal: usuario.idSucursal,
+    			sucursal: usuario.Sucursal
   			}
 		}).then(function(modal){
 			modal.close.then(function(result){
 				// $scope.resultadoModal = result;
-				$scope.selectClientes();
+				$scope.selectUsuarios();
 			})
 		})
 		
 	};
 
 	//Funcion que se encarga de eliminar un registro
-	$scope.eliminar = function(cliente){
-		var cliente = cliente;
-		//alert(cliente);
+	$scope.eliminar = function(usuario){
+		var usuario = usuario;
+		
 		ModalService.showModal({
-			templateUrl: "eliminarCliente.html",
+			templateUrl: "eliminarUsuario.html",
 			controller: "eliminarCtrl",
 			inputs: {
-				id: cliente.idCliente,
-				info: cliente.Info
+				id: usuario.idUser,
+				nombre: usuario.nombre
 			}
 		}).then(function(modal){
 			modal.close.then(function(result){
-				$scope.selectClientes();
+				$scope.selectUsuarios();
 			})
 		})
 	};
@@ -126,19 +131,19 @@ angular.module('usuarios',['angularModalService'])
 	
 })
 
-.controller('eliminarCtrl', function($scope, close, $http, id, info, flash){
+.controller('eliminarCtrl', function($scope, close, $http, id, nombre, flash){
 
 	$scope.cerrarModal = function(){
 		close();
 	};
-	$scope.eliminarCliente = function(){
+	$scope.eliminarUsuario = function(){
 
 		var model = {
-			idCliente: id,
-			info: info
+			idUsuario: id,
+			nombre: nombre
 		};
 		angular.element($("#spinerContainer")).css("display", "block");
-		$http.post("../models/eliminarClientes.php", model)
+		$http.post("../models/eliminarUsuarios.php", model)
 		.success(function(res){
 			close();
 			angular.element($("#spinerContainer")).css("display", "none");
@@ -158,24 +163,50 @@ angular.module('usuarios',['angularModalService'])
 })
 
 	//El controller del modal modificar totalmente independiente de la pagina principal (clientes)
-.controller('modificarCtrl', function($scope, close, $http, id, nombre, apellido, info, flash){
+.controller('modificarCtrl', function($scope, close, $http, id, nombre, apellido, user,
+pass, idRoles, rol, idSucursal, sucursal, flash){
+	var myRol;
+	angular.element($("#spinerContainer")).css("display", "block");
+	$http.get('../models/selectRoles.php').success(function(data){
+		$scope.roles = data;
+		myRol = {"idRoles":idRoles, "Nombre":rol};
+		$scope.myRol = myRol; 
+	});
+	var mySucursal;
+	angular.element($("#spinerContainer")).css("display", "block");
+	$http.get('../models/selectSucursales.php').success(function(data){
+		angular.element($("#spinerContainer")).css("display", "none");
+		var modalHeader = angular.element($(".modal-header")).innerHeight();
+	 	var navbar = angular.element($(".navbar-fixed-bottom")).innerHeight();
+	 	var modalFooter = angular.element($(".modal-footer")).innerHeight();
+	  var modalBody = angular.element($(".modal-body"));
+		var contentHeight = window.outerHeight - modalHeader - modalFooter  - navbar - 250;
+		modalBody.css("maxHeight", contentHeight);
+		$scope.sucursales = data;
+		mySucursal = {"idSucursal":idSucursal, "Nombre":sucursal};
+		$scope.mySucursal = mySucursal; 
+	});
+	$scope.idUsuario = id;
 	$scope.nombre = nombre;
 	$scope.apellido = apellido;
-	$scope.info = info;
+	$scope.user = user;
+	$scope.pass = pass;
 	$scope.cerrarModal = function(){
 		close();
 	};
-	$scope.modificarCliente = function(){
+	$scope.modificarUsuario = function(){
 		var model = {
 			nombre: $scope.nombre,
 			apellido: $scope.apellido,
-			info: $scope.info,
-			id: id
-		};
+			user: $scope.user,
+			pass: $scope.pass,
+			rol: $scope.myRol.idRoles,
+			sucursal: $scope.mySucursal.idSucursal,
+			idUsuario: $scope.idUsuario
+	};
 
-		 
 		angular.element($("#spinerContainer")).css("display", "block");
-		$http.post("../models/modificarClientes.php", model)
+		$http.post("../models/modificarUsuarios.php", model)
 		.success(function(res){
 			close();
 			angular.element($("#spinerContainer")).css("display", "none");
@@ -201,23 +232,41 @@ angular.module('usuarios',['angularModalService'])
 
 	//El controller del modal nuevo totalmente independiente de la pagina principal (clientes)
 .controller('modalCtrl', function($scope, close, $http, flash){
+	angular.element($("#spinerContainer")).css("display", "block");
+	$http.get('../models/selectRoles.php').success(function(data){
+		$scope.roles = data;
+	});
+	$http.get('../models/selectSucursales.php').success(function(data){
+		angular.element($("#spinerContainer")).css("display", "none");
+		var modalHeader = angular.element($(".modal-header")).innerHeight();
+	 	var navbar = angular.element($(".navbar-fixed-bottom")).innerHeight();
+	 	var modalFooter = angular.element($(".modal-footer")).innerHeight();
+	    var modalBody = angular.element($(".modal-body"));
+		var contentHeight = window.outerHeight - modalHeader - modalFooter  - navbar - 250;
+		modalBody.css("maxHeight", contentHeight);
+		$scope.sucursales = data;
+	});
 	$scope.cerrarModal = function(){
 		close();
 	};
-	$scope.guardarCliente = function(){
+	$scope.guardarUsuario = function(){
 		var model = {
 			nombre: $scope.nombre,
 			apellido: $scope.apellido,
-			info: $scope.info
+			user: $scope.user,
+			pass: $scope.pass,
+			sucursal: $scope.sucursal,
+			rol: $scope.rol
 		};
-		if(model.nombre == undefined || model.apellido == undefined || model.info == undefined){
+		if(model.nombre == undefined || model.apellido == undefined || model.user == undefined 
+			|| model.pass == undefined || model.sucursal == undefined || model.rol == undefined){
 			$scope.msgTitle = 'Atención';
 		  	$scope.msgBody  = 'Debe completar los campos requeridos!';
 		  	$scope.msgType  = 'warning';
 		 	flash.pop({title: $scope.msgTitle, body: $scope.msgBody, type: $scope.msgType});
 		}else{
 			angular.element($("#spinerContainer")).css("display", "block");
-			$http.post("../models/insertClientes.php", model)
+			$http.post("../models/insertUsuario.php", model)
 			.success(function(res){
 				close();
 				angular.element($("#spinerContainer")).css("display", "none");
@@ -233,7 +282,8 @@ angular.module('usuarios',['angularModalService'])
 		 			flash.pop({title: $scope.msgTitle, body: $scope.msgBody, type: $scope.msgType});
 		 			$scope.nombre = null;
 					$scope.apellido = null;
-					$scope.ruc = null;
+					$scope.user = null;
+					$scope.pass = null;
 				}
 			});
 		}

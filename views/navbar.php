@@ -13,7 +13,7 @@
   font-weight:bold;
   font-size:2em;
   font-color:#ffffff;
-  font-family:'Helvetica','Verdana','Monaco',sans-serif;">Stock</a>
+  font-family:'Helvetica','Verdana','Monaco',sans-serif;">Impulse</a>
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
@@ -40,7 +40,7 @@
           <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class='glyphicon glyphicon-asterisk'></i> Preferencias
           <span class="caret"></span></a>
           <ul class="dropdown-menu">
-            <li><a href="">Usuarios</a></li>
+            <li><a href="usuarios.php">Usuarios</a></li>
             <li><a href="">Configuración</a></li>
           </ul>
         </li>

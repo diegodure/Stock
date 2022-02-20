@@ -202,7 +202,6 @@ angular.module('productos',['angularModalService'])
 		miProveedor = {"idProveedores":proveedorId, "Nombre":proveedor};
 		$scope.miProv = miProveedor; 
 		
-		//alert(idP);
 	});
 	
 	$scope.idP = idP;
