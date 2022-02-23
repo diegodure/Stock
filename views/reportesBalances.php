@@ -15,6 +15,14 @@
 <body ng-app="reportesBalances" style="overflow-x: hidden;overflow-y: auto;">
 <?php
 	include("navbar.php");
+	if($_SESSION['user'] != "Administrador"){
+		echo '<script>
+		document.getElementById("liCompras").style.display = "none";
+		document.getElementById("liProveedores").style.display = "none";
+		document.getElementById("liReportes").style.display = "none";
+		document.getElementById("liConfig").style.display = "none";
+		</script>';
+	}
 ?>
 
 <div class="container">
@@ -71,13 +79,16 @@
 				</form>
 
 				<div class="container">
-					<canvas id="mylineGraph" width="400" height="350"></canvas>
-				  <div class="row" style="display: flex;">
-				    <div class="col" style="display:inline-block;width: 45%" >
+					
+				  <div class="row">
+				  	<div class="col col-md-12 col-lg-12 col-xl-12" style="width: 94%;">
+				  		<canvas id="mylineGraph"></canvas>
+				  	</div>
+				    <div class="col col-md-12 col-lg-12 col-xl-12" style="width: 94%;">
 				    	
 				    	<canvas class="chart chart-bar" chart-data="datos" chart-labels="etiquetas" chart-series="series"></canvas>
 				    </div>
-				    <div class="col" style="display:inline-block;width: 48%">
+				    <div class="col col-md-12 col-lg-12 col-xl-12" style="width: 94%;">
 				     <canvas id="pie" class="chart chart-pie" chart-data="data" chart-labels="labels"></canvas>
 				      
 				    </div>

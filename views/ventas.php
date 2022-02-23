@@ -15,6 +15,14 @@
 <body ng-app="ventas" style="overflow-x: hidden;overflow-y: auto;">
 <?php
 	include("navbar.php");
+	if($_SESSION['user'] != "Administrador"){
+		echo '<script>
+		document.getElementById("liCompras").style.display = "none";
+		document.getElementById("liProveedores").style.display = "none";
+		document.getElementById("liReportes").style.display = "none";
+		document.getElementById("liConfig").style.display = "none";
+		</script>';
+	}
 ?>
 
 <div class="container">

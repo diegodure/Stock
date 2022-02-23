@@ -160,7 +160,8 @@ angular.module('reportesBalances',['720kb.datepicker','chart.js'])
                   options: {
                     title: {
                       display: true,
-                      text: "Gráficos de compras y ventas"
+                      text: "Gráficos de compras y ventas",
+                      fontSize: 26,
                     },
                     plugins: {
                      datalabels: {

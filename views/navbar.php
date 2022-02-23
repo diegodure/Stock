@@ -20,13 +20,13 @@
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
 
-        <li class=""><a href="clientes.php"><i class='glyphicon glyphicon-user'></i> Clientes</a></li>
-        <li class=""><a href="proveedores.php"><i class='glyphicon glyphicon-user'></i> Proveedores</a></li>
-        <li class=""><a href="productos.php"><i class='glyphicon glyphicon-shopping-cart'></i> Productos</a></li>
-        <li class=""><a href="compras.php"><i class='glyphicon glyphicon-barcode'></i> Compras</a></li>
-        <li class=""><a href="ventas.php"><i class='glyphicon glyphicon-barcode'></i> Ventas</a></li>
+        <li class="" id="liClient"><a href="clientes.php"><i class='glyphicon glyphicon-user'></i> Clientes</a></li>
+        <li class="" id="liProveedores"><a href="proveedores.php"><i class='glyphicon glyphicon-user'></i> Proveedores</a></li>
+        <li class="" id="liProductos"><a href="productos.php"><i class='glyphicon glyphicon-shopping-cart'></i> Productos</a></li>
+        <li class="" id="liCompras"><a href="compras.php"><i class='glyphicon glyphicon-barcode'></i> Compras</a></li>
+        <li class="" id="liVentas"><a href="ventas.php"><i class='glyphicon glyphicon-barcode'></i> Ventas</a></li>
 		
-	       <li class="dropdown">
+	       <li class="dropdown" id="liReportes">
 	        <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class='glyphicon glyphicon-signal'></i> Reportes
 	        <span class="caret"></span></a>
 	        <ul class="dropdown-menu">
@@ -36,7 +36,7 @@
 	        </ul>
 	      </li>
 
-        <li class="dropdown">
+        <li class="dropdown" id="liConfig">
           <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class='glyphicon glyphicon-asterisk'></i> Preferencias
           <span class="caret"></span></a>
           <ul class="dropdown-menu">

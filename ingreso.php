@@ -16,11 +16,11 @@
 
 			$usuario = $_POST['user'];
 			$pass = $_POST['pass'];
-			$sql = "select * from usuarios where User='$usuario' and Pass='$pass'";
+			$sql = "select usuarios.User, usuarios.Pass, roles.Nombre as rol from usuarios inner join roles on usuarios.Roles_idRoles=roles.idRoles where User='$usuario' and Pass='$pass'";
 			$result = $con->query($sql);
 			if($result = $con->query($sql)){
 				$row = $result->fetch_array();
-				$_SESSION["user"] = $row['User'];
+				$_SESSION["user"] = $row['rol'];
 				echo 'Iniciando sesion para '.$_SESSION['user'].' ';
 				echo '<script> window.location="views/clientes.php"; </script>';
 			}else{
