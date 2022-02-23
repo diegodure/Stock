@@ -25,7 +25,7 @@
 
 	include("../conect.php");
 
-	$sql = "insert into Productos (idProductos, Nombre, Descripcion, CantidadActual, CantidadMinima, PrecioUnitario, PrecioMayorista, PrecioPromocional, Proveedores_idProveedores) values (null, '$nombre', '$descripcion',$cantidad, $cantidadMin, '$precioUnitario', $precioMayorista, $precioPromocional, '$proveedor')";
+	$sql = "insert into productos (idProductos, Nombre, Descripcion, CantidadActual, CantidadMinima, PrecioUnitario, PrecioMayorista, PrecioPromocional, Proveedores_idProveedores, active) values (null, '$nombre', '$descripcion',$cantidad, $cantidadMin, '$precioUnitario', $precioMayorista, $precioPromocional, '$proveedor', 0)";
 	$results = $con->query($sql);
 
 	if(!$results){ 

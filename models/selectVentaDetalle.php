@@ -5,7 +5,7 @@
     $fecha = $data->{"fecha"};
     include("../conect.php");
 
-    $sql ="select Det_Ventas.Ventas_idVentas, Productos.Nombre, Det_Ventas.Precio, Det_Ventas.Cantidad from Det_Ventas inner join Productos on Det_Ventas.Productos_idProductos=Productos.idProductos where Ventas_idVentas = '$idVenta'";
+    $sql ="select det_ventas.Ventas_idVentas, productos.Nombre, det_ventas.Precio, det_ventas.Cantidad from det_ventas inner join productos on det_ventas.Productos_idProductos=productos.idProductos where ventas_idVentas = '$idVenta'";
 
     $results = $con->query($sql);
 

@@ -2,7 +2,7 @@
 
 	include("../conect.php");
 
-	$sql = "select Sucursal.idSucursal, Sucursal.Nombre from Sucursal inner join Empresas on Sucursal.Empresas_idEmpresas=Empresas.idEmpresas where Sucursal.active='0'";
+	$sql = "select sucursal.idSucursal, sucursal.Nombre from sucursal inner join empresas on sucursal.Empresas_idEmpresas=empresas.idEmpresas where sucursal.active='0'";
 
 
 	$results = $con->query($sql);

@@ -2,7 +2,7 @@
 
 	include("../conect.php");
 
-	$sql = "select * from Roles";
+	$sql = "select * from roles";
 
 
 	$results = $con->query($sql);

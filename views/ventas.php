@@ -12,7 +12,7 @@
 	include("head.php");
 ?>
 
-<body ng-app="ventas" style="overflow-x: hidden;">
+<body ng-app="ventas" style="overflow-x: hidden;overflow-y: auto;">
 <?php
 	include("navbar.php");
 ?>

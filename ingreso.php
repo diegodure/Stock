@@ -16,9 +16,8 @@
 
 			$usuario = $_POST['user'];
 			$pass = $_POST['pass'];
-			$sql = "select * from Usuarios where User='$usuario' and Pass='$pass'";
+			$sql = "select * from usuarios where User='$usuario' and Pass='$pass'";
 			$result = $con->query($sql);
-			
 			if($result = $con->query($sql)){
 				$row = $result->fetch_array();
 				$_SESSION["user"] = $row['User'];

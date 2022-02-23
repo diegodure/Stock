@@ -17,7 +17,7 @@
 	}
 	include("../conect.php");
 
-	$sql = "insert into Sucursal (idSucursal, Empresas_idEmpresas, Nombre, Descripcion, Ciudad, Barrio, Direccion, Telefono, Paises_IdPais) values (null, '$idEmpresas', '$name', '$description', '$city', '$neighborhood', '$address', '$phone', '$country')";
+	$sql = "insert into sucursal (idSucursal, Empresas_idEmpresas, Nombre, Descripcion, Ciudad, Barrio, Direccion, Telefono, Paises_IdPais) values (null, '$idEmpresas', '$name', '$description', '$city', '$neighborhood', '$address', '$phone', '$country')";
 	$con->query($sql);
 
 	if($con -> connect_errno){

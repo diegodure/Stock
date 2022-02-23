@@ -16,7 +16,7 @@
 	}
 	include("../conect.php");
 
-	$sql = "insert into Empresas (idEmpresas, Nombre, Descripcion, Ciudad, Barrio, Dirreccion, Telefono, Paises_IdPais) values (null, '$name', '$description', '$city', '$neighborhood', '$address', '$phone', '$country')";
+	$sql = "insert into empresas (idEmpresas, Nombre, Descripcion, Ciudad, Barrio, Dirreccion, Telefono, Paises_IdPais) values (null, '$name', '$description', '$city', '$neighborhood', '$address', '$phone', '$country')";
 	$con->query($sql);
 
 	if($con -> connect_errno){

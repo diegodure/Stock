@@ -12,7 +12,7 @@
 	include("head.php");
 ?>
 
-<body ng-app="reportesBalances" >
+<body ng-app="reportesBalances" style="overflow-x: hidden;overflow-y: auto;">
 <?php
 	include("navbar.php");
 ?>
@@ -71,6 +71,7 @@
 				</form>
 
 				<div class="container">
+					<canvas id="mylineGraph" width="400" height="350"></canvas>
 				  <div class="row" style="display: flex;">
 				    <div class="col" style="display:inline-block;width: 45%" >
 				    	

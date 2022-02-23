@@ -4,7 +4,7 @@
 	
 	include("../conect.php");
 
-	$sql = "update Clientes set active='1' where idCliente='$id'";
+	$sql = "update clientes set active='1' where idCliente='$id'";
 	$results = $con->query($sql);
 
 	if(!$results){ 

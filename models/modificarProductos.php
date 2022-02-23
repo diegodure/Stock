@@ -24,7 +24,7 @@
 	
 	include("../conect.php");
 
-	$sql = "update Productos set Nombre='$nombre', Descripcion='$descripcion', CantidadActual='$cantidad', 
+	$sql = "update productos set Nombre='$nombre', Descripcion='$descripcion', CantidadActual='$cantidad', 
 	CantidadMinima='$cantidadMin',PrecioUnitario='$precioUnitario',PrecioMayorista='$precioMayorista',PrecioPromocional='$precioPromocional', Proveedores_idProveedores='$proveedor' where idProductos='$idP'";
 	$results = $con->query($sql);
 

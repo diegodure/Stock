@@ -8,7 +8,7 @@
 	
 	include("../conect.php");
 
-	$sql = "update Proveedores set Nombre='$nombre', Apellido='$apellido',Informacion='$info',Empresa='$empresa' where idProveedores='$id'";
+	$sql = "update proveedores set Nombre='$nombre', Apellido='$apellido',Informacion='$info',Empresa='$empresa' where idProveedores='$id'";
 	$results = $con->query($sql);
 
 	if(!$results){ 

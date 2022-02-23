@@ -6,7 +6,7 @@
 
     include("../conect.php");
 
-    $sql ="select * from Ventas where Fecha >= '$fecha1' and Fecha <= '$fecha2'";
+    $sql ="select * from ventas where Fecha >= '$fecha1' and Fecha <= '$fecha2'";
 
     $results = $con->query($sql);
 

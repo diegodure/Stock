@@ -10,7 +10,7 @@
 	
 	include("../conect.php");
 
-	$sql = "update Usuarios set User='$user', Pass='$pass', nombre='$nombre', 
+	$sql = "update usuarios set User='$user', Pass='$pass', nombre='$nombre', 
 	apellido='$apellido',Roles_idRoles='$rol', Sucursal_idSucursal='$sucursal' where idUser='$idUsuario'";
 	$results = $con->query($sql);
 

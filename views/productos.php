@@ -3,7 +3,7 @@
     include("../conect.php");
     
     if(isset($_SESSION['user'])){
-    	$title = "Productos | Simple Invoice"
+    	$title = "Impulse"
   ?>
   <!DOCTYPE html>
 <html>

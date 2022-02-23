@@ -11,7 +11,7 @@
 
 	include("../conect.php");
 
-	$sql = "insert into Usuarios (idUser, User, Pass, nombre, apellido, Roles_idRoles, Sucursal_idSucursal) values (null, '$nombre', '$apellido','$user', '$pass', '$rol', '$sucursal')";
+	$sql = "insert into usuarios (idUser, User, Pass, nombre, apellido, Roles_idRoles, Sucursal_idSucursal) values (null, '$nombre', '$apellido','$user', '$pass', '$rol', '$sucursal')";
 	$results = $con->query($sql);
 
 	if(!$results){ 

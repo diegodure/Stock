@@ -7,7 +7,7 @@
 
 	include("../conect.php");
 
-	$sql = "insert into Clientes (idCliente, Nombre, Apellido, Info) values (null, '$nombre', '$apellido', '$info')";
+	$sql = "insert into clientes (idCliente, Nombre, Apellido, Info, active) values (null, '$nombre', '$apellido', '$info', 0)";
 	$results = $con->query($sql);
 
 	if(!$results){ 

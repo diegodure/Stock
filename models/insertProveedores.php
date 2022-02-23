@@ -8,7 +8,7 @@
 
 	include("../conect.php");
 
-	$sql = "insert into Proveedores (idProveedores, Nombre, Apellido, Informacion, Empresa) values (null, '$nombre', '$apellido', '$info', '$empresa')";
+	$sql = "insert into proveedores (idProveedores, Nombre, Apellido, Informacion, Empresa, active) values (null, '$nombre', '$apellido', '$info', '$empresa', 0)";
 	$results = $con->query($sql);
 
 	if(!$results){ 

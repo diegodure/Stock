@@ -2,7 +2,7 @@
 
 	include("../conect.php");
 
-	$sql = "select * from Empresas";
+	$sql = "select * from empresas";
 
 
 	$results = $con->query($sql);

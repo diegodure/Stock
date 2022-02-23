@@ -7,7 +7,7 @@
 
     //Realizamos una consulta para saber el ultimo id de la venta
 
-	$sql = "select max(idCompras) as idC from Compras";
+	$sql = "select max(idCompras) as idC from compras";
         $result = $con->query($sql);
 
         //echo ($result->insert_id);
@@ -24,18 +24,18 @@
         $precio = $obj['precio'];
         $cantidad = $obj['cantidad'];
         $subT = $obj['subT'];
-        $sql2 = "insert into Det_Compras (Compras_idCompras, Productos_idProductos, Cantidad, Precio, subTotal)
+        $sql2 = "insert into det_compras (Compras_idCompras, Productos_idProductos, Cantidad, Precio, subTotal)
         values ('$idC', '$idP', '$cantidad', '$precio', '$subT')";
 	    //print ($iva);
 	    $con->query($sql2);
 
-        $sql3 = "select CantidadActual from Productos where idProductos='$idP'";
+        $sql3 = "select CantidadActual from productos where idProductos='$idP'";
         $result2 = $con->query($sql3);
         while ($row = mysqli_fetch_array($result2)) {
             $rawdata[$i] = $row;
             
             $suma = $row["CantidadActual"] + $cantidad;
-            $sql4 = "update Productos set CantidadActual='$suma' where idProductos='$idP'";
+            $sql4 = "update productos set CantidadActual='$suma' where idProductos='$idP'";
             $result3 = $con->query($sql4);
             $i++;
         }

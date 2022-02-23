@@ -2,7 +2,7 @@
 	
 	include("../conect.php");
 
-	$sql = "select Usuarios.idUser, Usuarios.nombre, Usuarios.apellido, Usuarios.User, Usuarios.Pass, Roles.Nombre as Rol, Roles.idRoles as rolId, Sucursal.Nombre as Sucursal, Sucursal.idSucursal as idSucursal from Usuarios inner join Roles on Usuarios.Roles_idRoles=Roles.idRoles inner join Sucursal on Usuarios.Sucursal_idSucursal=Sucursal.idSucursal where Usuarios.active='0'";
+	$sql = "select usuarios.idUser, usuarios.nombre, usuarios.apellido, usuarios.User, usuarios.Pass, roles.Nombre as Rol, roles.idRoles as rolId, sucursal.Nombre as Sucursal, sucursal.idSucursal as idSucursal from usuarios inner join roles on usuarios.Roles_idRoles=roles.idRoles inner join sucursal on usuarios.Sucursal_idSucursal=sucursal.idSucursal where usuarios.active='0'";
 
 
 	$results = $con->query($sql);
