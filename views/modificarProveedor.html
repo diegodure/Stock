@@ -33,7 +33,10 @@
 			<div class="form-group">
 				<label for="nombre" class="col-sm-4 control-label">Empresa</label>
 				<div class="col-sm-8">
-					<input type="text" class="form-control" ng-model="empresa" required>
+					<select class="form-control"
+      				ng-options="sucursal.Nombre for sucursal in sucursales track by sucursal.idSucursal"
+      				ng-model="miSucursal">	
+					</select>
 				</div>
 			</div>
 			<br>

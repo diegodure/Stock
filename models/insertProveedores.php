@@ -4,11 +4,11 @@
 	$nombre = $data->{"nombre"};
 	$apellido = $data->{"apellido"};
 	$info = $data->{"info"};
-	$empresa = $data->{"empresa"};
+	$sucursal = $data->{"sucursal"};
 
 	include("../conect.php");
 
-	$sql = "insert into proveedores (idProveedores, Nombre, Apellido, Informacion, Empresa, active) values (null, '$nombre', '$apellido', '$info', '$empresa', 0)";
+	$sql = "insert into proveedores (idProveedores, Nombre, Apellido, Informacion, Sucursal_idSucursal, active) values (null, '$nombre', '$apellido', '$info', '$sucursal', 0)";
 	$results = $con->query($sql);
 
 	if(!$results){ 

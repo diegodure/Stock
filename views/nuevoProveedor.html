@@ -34,7 +34,10 @@
 			<div class="form-group">
 				<label for="nombre" class="col-sm-4 control-label">Empresa (*)</label>
 				<div class="col-sm-8">
-					<input type="text" class="form-control" ng-model="empresa" required>
+					<select name="selectEnterprise" class="form-control" id="selectEnterprise" ng-model="sucursal">
+						<option value="">---Seleccionar---</option> <!-- not selected / blank option -->
+	      				<option ng-repeat="sucursal in sucursales" value="{{sucursal.idSucursal}}">{{sucursal.Nombre}}</option> <!-- interpolation -->
+					</select>
 				</div>
 			</div>
 			<br>

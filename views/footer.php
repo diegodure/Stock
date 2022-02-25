@@ -1,6 +1,5 @@
-<script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
 
-<img src="https://www.codigos-qr.com/qr/php/qr_img.php?d=https%3A%2F%2Fwww.facebook.com%2FImpulse-Servicios-inform%25C3%25A1ticos-109973551292656&s=6&e=m" alt="QR Code generator"/>
+<!-- <img src="https://www.codigos-qr.com/qr/php/qr_img.php?d=https%3A%2F%2Fwww.facebook.com%2FImpulse-Servicios-inform%25C3%25A1ticos-109973551292656&s=6&e=m" alt="QR Code generator"/> -->
 
 <div class="navbar navbar-default navbar-fixed-bottom">
     <div class="container">
@@ -36,6 +35,8 @@
     <script type="text/javascript" src="../controllers/reportesCompras.js"></script>
     <script type="text/javascript" src="../controllers/reportesVentas.js"></script>
     <script type="text/javascript" src="../controllers/reportesBalances.js"></script>
+    <script type="text/javascript" src="../controllers/main.js"></script>
+    <script type="text/javascript" src="../controllers/configuracion.js"></script>
 
 
     <!-- Include all compiled plugins (below), or include individual files as needed -->

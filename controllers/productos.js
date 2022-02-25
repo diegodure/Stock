@@ -201,7 +201,6 @@ angular.module('productos',['angularModalService'])
 		$scope.proveedores = data;
 		miProveedor = {"idProveedores":proveedorId, "Nombre":proveedor};
 		$scope.miProv = miProveedor; 
-		
 	});
 	
 	$scope.idP = idP;

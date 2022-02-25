@@ -3,7 +3,7 @@
     include("../conect.php");
     
     if(isset($_SESSION['user'])){
-    	$title = "Usuarios | Impulse"
+    	$title = "Impulse";
   ?>
   <!DOCTYPE html>
 <html>
@@ -15,14 +15,6 @@
 <body ng-app="usuarios" >
 <?php
 	include("navbar.php");
-	if($_SESSION['user'] != "Administrador"){
-		echo '<script>
-		document.getElementById("liCompras").style.display = "none";
-		document.getElementById("liProveedores").style.display = "none";
-		document.getElementById("liReportes").style.display = "none";
-		document.getElementById("liConfig").style.display = "none";
-		</script>';
-	}
 ?>
 
 <div class="container">
@@ -106,6 +98,11 @@
 </body>
 </html>
 <?php
+		if($_SESSION['user'] != "Administrador"){
+			echo '<script>
+			isNotAdmin();
+			</script>';
+		}
 	 }else{
 	 	echo '<script> alert("User o password incorrectos");</script>';
         echo '<script> window.location="login.php";</script>';
