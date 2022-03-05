@@ -28,10 +28,22 @@ angular.module('ventas',['angularModalService'])
 
     	$scope.price = {
     		type : "minorista"
-    	}
+    	};
+    	$scope.selectConfiguraciones();
 	});
 
-
+	$scope.selectConfiguraciones = function(){
+    angular.element($("#spinerContainer")).css("display", "block");
+    $http.get('../models/selectConfiguraciones.php').success(function(data){
+      if(data == "error"){
+        $scope.configuraciones = [];
+      }else{
+        $scope.configuraciones = data;
+        
+      }
+      angular.element($("#spinerContainer")).css("display", "none");
+    });
+  };
 	//Inicializamos las variables 
 	 $scope.productos = [];
 	 var total = 0, iva = 0;
@@ -68,6 +80,7 @@ angular.module('ventas',['angularModalService'])
 
 	//Parte del codigo donde agregamos los productos a la tabla
 	$scope.agregarProducto = function(){
+		
 		var precio;
 		if($scope.price.type == "minorista"){
 			precio = $scope.prod.PrecioUnitario;
@@ -78,6 +91,16 @@ angular.module('ventas',['angularModalService'])
 		}else if($scope.price.type == "promocional"){
 			precio = $scope.prod.PrecioPromocional;
 			$scope.prod.PrecioPromocional = null;
+		}
+		for(var i = 0; i < $scope.configuraciones.length; i++){
+			if($scope.configuraciones[i]["Nombre"] == "Cantidad mínima" && $scope.configuraciones[i]["Estado"] == "0"){
+				if(($scope.prod.CantidadActual - $scope.cantidad) <= $scope.prod.CantidadMinima){
+					$scope.msgTitle = 'Atención';
+			    	$scope.msgBody  = "El producto "+$scope.prod.Nombre+" llego a la cantidad mínima";
+			    	$scope.msgType  = 'warning';
+			 		flash.pop({title: $scope.msgTitle, body: $scope.msgBody, type: $scope.msgType});
+				}
+			}
 		}
 		//Calculo del subtotal de cada producto
 		var subTotal = precio * $scope.cantidad;

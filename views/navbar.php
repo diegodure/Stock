@@ -53,6 +53,6 @@
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
   <div id="spinerContainer">
-    <i class='glyphicon glyphicon-refresh' id="spiner"></i>
+    <img src="../img/Impulse.png" id="spiner" class="giro">
   </div>
 </nav>

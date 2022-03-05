@@ -12,4 +12,4 @@
 	<link rel="stylesheet" type="text/css" href="../bower_components/angularjs-datepicker/dist/angular-datepicker.css">
 	<link rel="stylesheet" type="text/css" href="../bower_components/toastr/toastr.min.css">
 	<link rel="stylesheet" type="text/css" href="../css/general.css">
-	<link rel=icon href='../img/logo-icon.png' sizes="32x32" type="image/png">
+	<link rel=icon href='../img/Impulse.png' sizes="32x32" type="image/png">

@@ -204,26 +204,44 @@ body{
     position: fixed;
 }
 
-#spiner{
-    top: 50%;
-    left: 50%;
-    bottom: 50%;
-    right: 50%;    
-    transform: translate(-50%,-50%);
-    color: green;
-    font-size: 150px;
-    animation: spin 1s infinite linear;
-    -webkit-animation: spin2 1s infinite linear;
+
+#spiner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  bottom: 50%;
+  right: 50%;
+  animation: 1.5s giro infinite;
+  backface-visibility: visible; /* Porpiedad que determina si la partte de atras del elemento será o no visible al girarse pro completo */
 }
 
-@keyframes spin {
-    from { transform: scale(1) rotate(0deg);}
-    to { transform: scale(1) rotate(360deg);}
+@keyframes giro {
+  
+  /* Tener en cuenta que dependiendo de donde coloquemos el translateZ (si antes o despues del rotate) tendrá otro comportamiento diferente */
+  
+  40% {
+    
+    transform: perspective(300px) translateZ(120px) rotateY(170deg);
+    
+  }
+  
+  50% {
+    
+    transform: perspective(300px) translateZ(120px) rotateY(190deg);
+    
+  }
+  
+  80% {
+    
+    transform: perspective(300px) translateZ(0px) rotateY(360deg);
+    
+  }
+  
+  100% {
+    
+    transform: rotateY(360deg);
+    
+  }
+  
 }
-
-@-webkit-keyframes spin2 {
-    from { -webkit-transform: rotate(0deg);}
-    to { -webkit-transform: rotate(360deg);}
-}
-
 
