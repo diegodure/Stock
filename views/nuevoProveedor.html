@@ -33,13 +33,16 @@
 			<br>
 			<div class="form-group">
 				<label for="nombre" class="col-sm-4 control-label">Empresa (*)</label>
-				<div class="col-sm-8">
+				<div class="col-sm-7">
 					<select name="selectEnterprise" class="form-control" id="selectEnterprise" ng-model="sucursal">
 						<option value="">---Seleccionar---</option> <!-- not selected / blank option -->
 	      				<option ng-repeat="sucursal in sucursales" value="{{sucursal.idSucursal}}">{{sucursal.Nombre}}</option> <!-- interpolation -->
 					</select>
 				</div>
+				<i class='glyphicon glyphicon-plus' style="color:#70d830;cursor: pointer;" 
+				title="Agregar Empresa" ng-click="crearEmpresa()"></i>
 			</div>
+
 			<br>
 			<br>
 		</div>

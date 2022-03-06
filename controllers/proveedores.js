@@ -190,8 +190,6 @@ angular.module('proveedores',['angularModalService'])
 			id: id
 		};
 
-		 
-		console.log(model);
 		$http.post("../models/modificarProveedores.php", model)
 		.success(function(res){
 			if(res == "error"){
@@ -215,19 +213,23 @@ angular.module('proveedores',['angularModalService'])
 
 
 	//El controller del modal nuevo totalmente independiente de la pagina principal (productos)
-.controller('modalCtrl', function($scope, close, $http, flash){
-	angular.element($("#spinerContainer")).css("display", "block");
-	$http.get('../models/selectSucursales.php').success(function(data){
-		angular.element($("#spinerContainer")).css("display", "none");
-		var modalHeader = angular.element($(".modal-header")).innerHeight();
-	 	var navbar = angular.element($(".navbar-fixed-bottom")).innerHeight();
-	 	var modalFooter = angular.element($(".modal-footer")).innerHeight();
-	    var modalBody = angular.element($(".modal-body"));
-		var contentHeight = window.outerHeight - modalHeader - modalFooter  - navbar - 250;
-		modalBody.css("maxHeight", contentHeight);
-		$scope.sucursales = data;
+.controller('modalCtrl', function($scope, close, $http, flash, ModalService){
+	
+	$scope.getSucursales = function(){
+		angular.element($("#spinerContainer")).css("display", "block");
+		$http.get('../models/selectSucursales.php').success(function(data){
+			angular.element($("#spinerContainer")).css("display", "none");
+			var modalHeader = angular.element($(".modal-header")).innerHeight();
+		 	var navbar = angular.element($(".navbar-fixed-bottom")).innerHeight();
+		 	var modalFooter = angular.element($(".modal-footer")).innerHeight();
+		    var modalBody = angular.element($(".modal-body"));
+			var contentHeight = window.outerHeight - modalHeader - modalFooter  - navbar - 250;
+			modalBody.css("maxHeight", contentHeight);
+			$scope.sucursales = data;
 
-	});
+		});
+	}
+	
 	$scope.cerrarModal = function(){
 		close();
 	};
@@ -238,7 +240,7 @@ angular.module('proveedores',['angularModalService'])
 			info: $scope.info,
 			sucursal: $scope.sucursal
 		};
-console.log(model)
+
 		if (model.nombre == undefined || model.apellido == undefined || 
 			model.info == undefined || model.sucursal == undefined) {
 			$scope.msgTitle = 'Atención';
@@ -247,25 +249,97 @@ console.log(model)
 		 	flash.pop({title: $scope.msgTitle, body: $scope.msgBody, type: $scope.msgType});
 		}else{
 			$http.post("../models/insertProveedores.php", model)
-		.success(function(res){	
-			if(res == "error"){
-					$scope.msgTitle = 'Error';
-		    	$scope.msgBody  = 'Ha ocurrido un error!';
-		    	$scope.msgType  = 'error';
-		 			flash.pop({title: $scope.msgTitle, body: $scope.msgBody, type: $scope.msgType});
-				}else{
-					$scope.msgTitle = 'Exitoso';
-		    	$scope.msgBody  = res;
-		    	$scope.msgType  = 'success';
-		 			flash.pop({title: $scope.msgTitle, body: $scope.msgBody, type: $scope.msgType});
-					$scope.nombre = null;
-					$scope.apellido = null;
-					$scope.info = null;
-					$scope.empresa = null;
-					close();
-				}		
-		});
+			.success(function(res){	
+				if(res == "error"){
+						$scope.msgTitle = 'Error';
+			    	$scope.msgBody  = 'Ha ocurrido un error!';
+			    	$scope.msgType  = 'error';
+			 			flash.pop({title: $scope.msgTitle, body: $scope.msgBody, type: $scope.msgType});
+					}else{
+						$scope.msgTitle = 'Exitoso';
+			    	$scope.msgBody  = res;
+			    	$scope.msgType  = 'success';
+			 			flash.pop({title: $scope.msgTitle, body: $scope.msgBody, type: $scope.msgType});
+						$scope.nombre = null;
+						$scope.apellido = null;
+						$scope.info = null;
+						$scope.empresa = null;
+						close();
+					}		
+			});
 		}
 		
+	};
+	$scope.crearEmpresa = function(){
+		// Debes proveer un controlador y una plantilla.
+		ModalService.showModal({
+			templateUrl: "nuevaEmpresa.html",
+      		controller: "nuevaEmpresaCtrl"
+		}).then(function(modal){
+			modal.close.then(function(result){
+				$scope.getSucursales();
+			})
+		})
 	}
+
+	$scope.getSucursales();
+})
+
+.controller('nuevaEmpresaCtrl', function($scope, close, $http, flash){
+	angular.element($("#spinerContainer")).css("display", "block");
+		$http.get('../models/selectCountries.php').success(function(data){
+			angular.element($("#spinerContainer")).css("display", "none");
+			var modalHeader = angular.element($(".modal-header")).innerHeight();
+		 	var navbar = angular.element($(".navbar-fixed-bottom")).innerHeight();
+		 	var modalFooter = angular.element($(".modal-footer")).innerHeight();
+		    var modalBody = angular.element($(".modal-body"));
+			var contentHeight = window.outerHeight - modalHeader - modalFooter  - navbar - 200;
+			modalBody.css("maxHeight", contentHeight);
+			$scope.paises = data;
+
+		});
+
+	$scope.cerrarModal = function(){
+		close();
+	};
+	$scope.guardarEmpresa = function(){
+		var model = {
+			name: $scope.nombre,
+			description: $scope.descripcion,
+			city: $scope.pais,
+			ciudad: $scope.ciudad,
+			neighborhood: $scope.barrio,
+			address: $scope.direccion,
+			phone: $scope.telefono
+		};
+		if (model.name == undefined || model.city == undefined || 
+			 model.neighborhood == undefined || model.address == undefined) {
+			$scope.msgTitle = 'Atención';
+		  $scope.msgBody  = 'Debe completar los campos requeridos!';
+		  $scope.msgType  = 'warning';
+		 	flash.pop({title: $scope.msgTitle, body: $scope.msgBody, type: $scope.msgType});
+		}else{
+			angular.element($("#spinerContainer")).css("display", "block");
+			$http.post("../models/insertEmpresa.php", model)
+			.success(function(res){	
+				close();
+				angular.element($("#spinerContainer")).css("display", "none");
+				if(res == "error"){
+						$scope.msgTitle = 'Error';
+			    	$scope.msgBody  = 'Ha ocurrido un error!';
+			    	$scope.msgType  = 'error';
+			 			flash.pop({title: $scope.msgTitle, body: $scope.msgBody, type: $scope.msgType});
+					}else{
+						$scope.msgTitle = 'Exitoso';
+			    	$scope.msgBody  = res;
+			    	$scope.msgType  = 'success';
+			 			flash.pop({title: $scope.msgTitle, body: $scope.msgBody, type: $scope.msgType});
+						$scope.nombre = null;
+						$scope.apellido = null;
+						$scope.info = null;
+						$scope.empresa = null;
+					}		
+			});
+		}
+	};
 })
