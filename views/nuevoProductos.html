@@ -75,6 +75,29 @@
 			</div>
 			<br>
 			<br>
+			<div class="form-group">
+				<label for="nombre" class="col-sm-4 control-label">Fecha de vencimiento</label>
+				<div class="col-sm-8">
+					<datepicker date-format="yyyy-MM-dd" selector="form-control" button-prev-title="previous month" button-next-title="next month">
+                        <div class="input-group">
+                            <input class="form-control" placeholder="Fecha de la Venta" ng-model="fechaVencimiento" style="cursor: pointer"/>
+                            <span class="input-group-addon">
+                            <i class="fa fa-lg fa-calendar"></i>
+                            </span>
+                        </div>
+                    </datepicker>
+				</div>
+			</div>
+			<br>
+			<br>
+			<div class="form-group">
+				<label for="nombre" class="col-sm-4 control-label">Fecha de vencimiento</label>
+				<div class="col-sm-8">
+					<input  onchange="angular.element(this).scope().SelectFile(event)"  type="file" id="imageFile" name="file" accept="image/*" multiple ng-model="imageFile">
+				</div>
+			</div>
+			<br>
+			<br>
 		</div>
 	<div class="modal-footer">
 		<button class="btn btn-default" ng-click="cerrarModal()">Cerrar</button>

@@ -1,4 +1,4 @@
-angular.module('productos',['angularModalService'])
+angular.module('productos',['angularModalService','720kb.datepicker'])
 
 .factory("flash", function($rootScope) {
 
@@ -260,6 +260,27 @@ angular.module('productos',['angularModalService'])
 
 	//El controller del modal nuevo totalmente independiente de la pagina principal (productos)
 .controller('modalCtrl', function($scope, close, $http, flash){
+	var fd;
+	$scope.SelectFile = function (e) {
+		
+			 var imagen = e.target.files[0];
+          fd = new FormData();
+          fd.append('file', imagen);
+          fd.append('name', e.target.files.name);
+          
+          var detImg = {
+          		name : e.target.files[0].name,
+		 		type: e.target.files[0].type,
+		 		file: fd
+		 	};
+		 	 let configuracion = {
+                            headers: {
+                                "Content-Type": undefined,
+                            },
+                            transformRequest: angular.identity,
+                        };
+          console.log(detImg);
+	};
 	angular.element($("#spinerContainer")).css("display", "block");
 	$http.get('../models/selectProveedores.php').success(function(data){
 		angular.element($("#spinerContainer")).css("display", "none");
@@ -276,6 +297,7 @@ angular.module('productos',['angularModalService'])
 		close();
 	};
 	$scope.guardarProducto = function(){
+		var file = document.getElementById("imageFile").files;
 		var model = {
 			nombre: $scope.nombre,
 			descripcion: $scope.descripcion,
@@ -284,7 +306,9 @@ angular.module('productos',['angularModalService'])
 			precioUnitario: $scope.precioUnitario,
 			precioMayorista: $scope.precioMayorista,
 			precioPromocional: $scope.precioPromocional,
-			proveedor: $scope.proveedor
+			proveedor: $scope.proveedor,
+			fechaVencimiento: $scope.fechaVencimiento,
+			fd: fd
 		};
 		if(model.nombre == undefined || model.descripcion == undefined || model.precioUnitario == undefined
 			|| model.precioMayorista == undefined || model.proveedor == undefined){
@@ -293,6 +317,14 @@ angular.module('productos',['angularModalService'])
 		  $scope.msgType  = 'warning';
 		 	flash.pop({title: $scope.msgTitle, body: $scope.msgBody, type: $scope.msgType});
 		}else{
+			let configuracion = {
+          headers: {
+              "Content-Type": undefined,
+          },
+          transformRequest: angular.identity,
+      };
+      console.log(fd);
+      console.log(model)
 			angular.element($("#spinerContainer")).css("display", "block");
 			$http.post("../models/insertProductos.php", model)
 			.success(function(res){
