@@ -44,7 +44,6 @@ angular.module('reportesBalances',['720kb.datepicker','chart.js'])
               angular.element($("#spinerContainer")).css("display", "block");
               $http.post('../models/selectVenta.php', fechas).success(function (data) {
                   $scope.ventas = data;
-                  console.log($scope.ventas)
                   var num = 0;
                   var dateCompare = 0;
                   for (var i = $scope.ventas.length - 1; i >= 0; i--) {
@@ -125,8 +124,6 @@ angular.module('reportesBalances',['720kb.datepicker','chart.js'])
                     resBalance = sumTotalVenta - sumTotalCompra;
                     $scope.data.push(sumTotalCompra,sumTotalVenta,resBalance);
                     $scope.datos.push(compras,ventas);
-                    console.log(compras);
-                    console.log(ventas)
                     var a = $scope.etiquetas.reverse();
                     
               

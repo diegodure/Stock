@@ -12,7 +12,7 @@
 	include("head.php");
 ?>
 
-<body ng-app="productos" style="overflow:hidden">
+<body ng-app="configuracion" style="overflow:hidden">
 <?php
 	include("navbar.php");
 ?>
@@ -20,22 +20,20 @@
 <div class="container">
 
 
-<div ng-controller="ProductosCtrl" class="container">
+<div ng-controller="ConfiguracionCtrl" class="container">
 
 		<div class="panel panel-info">
 			<div class="panel-heading">
-				<div class="btn-group pull-right">
-					<button type='button' class="btn btn-info" ng-click="mostrarModalNuevoProducto()"><span class="glyphicon glyphicon-plus" ></span> Nuevo Producto</button>
-				</div>
-				<h4><i class='glyphicon glyphicon-search'></i> Buscar Producto</h4>
+				
+				<h4><i class='glyphicon glyphicon-search'></i> Buscar Configuración</h4>
 			</div>
 					<div class="panel-body">
 						<form class="form-horizontal" role="form" id="datos_cotizacion">
 				
 							<div class="form-group row">
-								<label for="q" class="col-md-2 control-label">Nombre del Producto</label>
+								<label for="q" class="col-md-2 control-label">Nombre de la configuración</label>
 								<div class="col-md-5">
-									<input type="text" class="form-control" id="q" placeholder="Nombre del producto" ng-model="buscar.Nombre">
+									<input type="text" class="form-control" id="q" placeholder="Nombre de la configuración" ng-model="buscar.Nombre">
 								</div>
 								<div class="col-md-3">
 									<button type="button" class="btn btn-default">
@@ -51,27 +49,30 @@
 								<tr class="info">
 									<th>Código</th>
 									<th><span class="caret" style="cursor: pointer;" ng-click="ordenarPor('Nombre')"></span>Nombre/s<span class="caret" style="cursor: pointer;" ng-click="ordenarPor('-Nombre')"></span></th>
-									<th>Descripcion</th>
-									<th>Cantidad</th>
-									<th>Precio</th>
-									<th>Proveedor</th>
+									<th>Descripción</th>
+									<th>Estado</th>
 									<th class='text-right'>Acciones</th>
 								</tr>
 								
-								<tr ng-repeat="producto in productos | orderBy:ordenSeleccionado | filter:buscar">
-									<td>{{producto.idProductos}}</td>
-									<td>{{producto.Nombre}}</td>
-									<td>{{producto.Descripcion}}</td>
+								<tr ng-repeat="configuracion in configuraciones | orderBy:ordenSeleccionado | filter:buscar">
+									<td>{{configuracion.idConfiguracion}}</td>
+									<td>{{configuracion.Nombre}}</td>
+									<td>{{configuracion.Descripcion}}</td>
 							
 									<!-- Filtro lowercase para letras en minusculas -->
-									<td>{{producto.CantidadActual}}</td>
-									<td>{{producto.PrecioUnitario | currency :'₲':0}}</td>
-									<td>{{producto.provN}}</td>
+									<td>
+										<span style="font-weight: bold;" ng-if="configuracion.Estado == 1">
+											Deshabilitado
+										</span>
+										<span style="font-weight: bold;" ng-if="configuracion.Estado == 0">
+											Habilitado
+										</span>
+										
+									</td>
 									
-
 									<td><span class="pull-right">
-									<a href="#" class='btn btn-default' title='Editar producto' ng-click="modificar(producto)" data-toggle="modal"><i class="glyphicon glyphicon-edit"></i></a> 
-									<a href="#" class='btn btn-default' title='Borrar producto' ng-click="eliminar(producto)"><i class="glyphicon glyphicon-trash"></i> </a></span></td>
+									<a href="#" class='btn btn-default' title='Editar producto' ng-click="modificarConfiguracion(configuracion)" data-toggle="modal"><i class="glyphicon glyphicon-edit"></i></a> 
+									</span></td>
 								</tr>
 								
 							</table>

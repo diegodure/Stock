@@ -41,7 +41,7 @@
           <span class="caret"></span></a>
           <ul class="dropdown-menu">
             <li><a href="usuarios.php">Usuarios</a></li>
-            <li><a href="">Configuración</a></li>
+            <li><a href="configuration.php">Configuración</a></li>
           </ul>
         </li>
 
@@ -53,6 +53,6 @@
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
   <div id="spinerContainer">
-    <i class='glyphicon glyphicon-refresh' id="spiner"></i>
+    <img src="../img/Impulse.png" id="spiner" class="giro">
   </div>
 </nav>
