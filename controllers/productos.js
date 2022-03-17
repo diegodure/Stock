@@ -323,6 +323,12 @@ angular.module('productos',['angularModalService','720kb.datepicker'])
           },
           transformRequest: angular.identity,
       };
+      // $http.post("../models/insertConsultas.php", detCon)
+		  		// .success(function (res) {
+		  		// 	$http.post("../models/insertImage.php", fd, configuracion).success(function (res) {
+		  		// 		alert(res);
+		  		// 	});
+		  		// });
       console.log(fd);
       console.log(model)
 			angular.element($("#spinerContainer")).css("display", "block");
