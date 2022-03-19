@@ -260,6 +260,7 @@ angular.module('productos',['angularModalService','720kb.datepicker'])
 
 	//El controller del modal nuevo totalmente independiente de la pagina principal (productos)
 .controller('modalCtrl', function($scope, close, $http, flash){
+
 	var fd;
 	$scope.SelectFile = function (e) {
 		
@@ -279,11 +280,9 @@ angular.module('productos',['angularModalService','720kb.datepicker'])
                             },
                             transformRequest: angular.identity,
                         };
-          console.log(detImg);
 	};
 	angular.element($("#spinerContainer")).css("display", "block");
 	$http.get('../models/selectProveedores.php').success(function(data){
-		angular.element($("#spinerContainer")).css("display", "none");
 		var modalHeader = angular.element($(".modal-header")).innerHeight();
 	 	var navbar = angular.element($(".navbar-fixed-bottom")).innerHeight();
 	 	var modalFooter = angular.element($(".modal-footer")).innerHeight();
@@ -291,7 +290,20 @@ angular.module('productos',['angularModalService','720kb.datepicker'])
 		var contentHeight = window.outerHeight - modalHeader - modalFooter  - navbar - 250;
 		modalBody.css("maxHeight", contentHeight);
 		$scope.proveedores = data;
-
+		if(angular.element($("#requieredPhoto")).val() == "" || angular.element($("#requieredPhoto")).val() == undefined){
+			$http.get('../models/selectConfiguraciones.php').success(function(data){
+				for(var i = 0; i < data.length; i++){
+					if(data[i]["Nombre"] == "Foto del producto" && data[i]["Estado"] == "0"){
+						$scope.requieredPhoto = data[i]["Estado"];
+						angular.element($("#requieredPhoto")).val(data[i]["Estado"]);
+					}
+				}	
+			
+			});
+		}else{
+			$scope.requieredPhoto = angular.element($("#requieredPhoto")).val();
+		}
+		angular.element($("#spinerContainer")).css("display", "none");
 	});
 	$scope.cerrarModal = function(){
 		close();
@@ -307,8 +319,7 @@ angular.module('productos',['angularModalService','720kb.datepicker'])
 			precioMayorista: $scope.precioMayorista,
 			precioPromocional: $scope.precioPromocional,
 			proveedor: $scope.proveedor,
-			fechaVencimiento: $scope.fechaVencimiento,
-			fd: fd
+			fechaVencimiento: $scope.fechaVencimiento
 		};
 		if(model.nombre == undefined || model.descripcion == undefined || model.precioUnitario == undefined
 			|| model.precioMayorista == undefined || model.proveedor == undefined){
@@ -318,33 +329,34 @@ angular.module('productos',['angularModalService','720kb.datepicker'])
 		 	flash.pop({title: $scope.msgTitle, body: $scope.msgBody, type: $scope.msgType});
 		}else{
 			let configuracion = {
-          headers: {
+          		headers: {
               "Content-Type": undefined,
-          },
-          transformRequest: angular.identity,
-      };
-      // $http.post("../models/insertConsultas.php", detCon)
-		  		// .success(function (res) {
-		  		// 	$http.post("../models/insertImage.php", fd, configuracion).success(function (res) {
-		  		// 		alert(res);
-		  		// 	});
-		  		// });
-      console.log(fd);
-      console.log(model)
+          		},
+          		transformRequest: angular.identity,
+      		};
+      
+      
 			angular.element($("#spinerContainer")).css("display", "block");
+			var response;
 			$http.post("../models/insertProductos.php", model)
 			.success(function(res){
+				if(res != "error" && $scope.requieredPhoto == 0 || $scope.requieredPhoto == "0"){
+		  			$http.post("../models/insertPhoto.php", fd, configuracion).success(function (res) {
+		  				response = res;
+		  			});
+				}
+				response = res;
 				close();
 				angular.element($("#spinerContainer")).css("display", "none");
-				if(res == "error"){
+				if(response == "error"){
 					$scope.msgTitle = 'Error';
 		    		$scope.msgBody  = 'Ha ocurrido un error!';
 		    		$scope.msgType  = 'error';
 		 			flash.pop({title: $scope.msgTitle, body: $scope.msgBody, type: $scope.msgType});
 				}else{
 					$scope.msgTitle = 'Exitoso';
-		    	$scope.msgBody  = res;
-		    	$scope.msgType  = 'success';
+		    		$scope.msgBody  = response;
+		    		$scope.msgType  = 'success';
 		 			flash.pop({title: $scope.msgTitle, body: $scope.msgBody, type: $scope.msgType});
 					$scope.nombre = null;
 					$scope.descripcion = null;

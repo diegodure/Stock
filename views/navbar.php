@@ -55,4 +55,5 @@
   <div id="spinerContainer">
     <img src="../img/Impulse.png" id="spiner" class="giro">
   </div>
+  <input type="hidden" name="requieredPhoto" id="requieredPhoto">
 </nav>

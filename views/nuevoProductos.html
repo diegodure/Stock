@@ -64,7 +64,7 @@
 			<br>
 			<br>
 			<div class="form-group">
-				<label for="nombre" class="col-sm-4 control-label">Proveedor</label>
+				<label for="nombre" class="col-sm-4 control-label">Proveedor (*)</label>
 				<div class="col-sm-8">
 					<select name="selectProveedor" class="form-control" id="selectProveedor" ng-model="proveedor">
 						<option value="">---Seleccionar---</option> <!-- not selected / blank option -->
@@ -90,8 +90,8 @@
 			</div>
 			<br>
 			<br>
-			<div class="form-group">
-				<label for="nombre" class="col-sm-4 control-label">Fecha de vencimiento</label>
+			<div class="form-group" ng-if="requieredPhoto == 0">
+				<label for="nombre" class="col-sm-4 control-label">Foto</label>
 				<div class="col-sm-8">
 					<input  onchange="angular.element(this).scope().SelectFile(event)"  type="file" id="imageFile" name="file" accept="image/*" multiple ng-model="imageFile">
 				</div>
