@@ -61,6 +61,34 @@ angular.module('login',['angularModalService'])
 		});
 	};
 
+	$scope.deleteEnterprise = function(empresa){
+		// Debes proveer un controlador y una plantilla.
+		ModalService.showModal({
+			templateUrl: "eliminarEmpresa.html",
+      		controller: "eliminarEmpresaCtrl",
+      		inputs: {
+				id: empresa.idEmpresas,
+				nombre: empresa.Nombre
+			}
+		}).then(function(modal){
+			modal.close.then(function(result){
+				$scope.selectEnterprise();
+			})
+		})
+	}
+
+	$scope.createEnterprise = function(){
+		// Debes proveer un controlador y una plantilla.
+		ModalService.showModal({
+			templateUrl: "nuevaEmpresa.html",
+      		controller: "nuevaEmpresaCtrl"
+		}).then(function(modal){
+			modal.close.then(function(result){
+				$scope.selectEnterprise();
+			})
+		})
+	}
+
 	$scope.modifyEnterprise = function(empresa){
 		var empresa = empresa;
 		ModalService.showModal({
@@ -79,7 +107,6 @@ angular.module('login',['angularModalService'])
   			}
 		}).then(function(modal){
 			modal.close.then(function(result){
-				// $scope.resultadoModal = result;
 				$scope.selectEnterprise();
 			})
 		})
@@ -103,55 +130,7 @@ angular.module('login',['angularModalService'])
 			$scope.branchOffices = data;
 		});
 	};
-	//Seccion donde se registran empresas
-	$scope.registerEnterprise = function(){
-		
-		var model = {
-			name: $scope.name,
-			description: $scope.description,
-			country: $scope.country,
-			city: $scope.city,
-			neighborhood: $scope.neighborhood,
-			address: $scope.address,
-			phone: $scope.phone
-		};	
-		console.log(model);
-	    if(model.name != undefined && model.city != undefined && model.neighborhood != undefined 
-	     && model.address != undefined && model.country != undefined){
-	    	$http.post("../models/insertEmpresas.php", model)
-			.success(function(res){
-				console.log(res);
-		 	if(res == "0" || res == 0){
-		 	//	$rootScope.idEnterprise = res;
-		 	//	$rootScope.enterprise = res;
-		 		$scope.name = null;
-		 		$scope.description = null;
-				$scope.city = null;
-				$scope.neighborhood = null;
-				$scope.address = null;
-				$scope.phone = null;
-				$scope.country = null;
-		 		$scope.msgTitle = 'Exitoso';
-		    $scope.msgBody  = 'Empresa creada correctamente!';
-		    $scope.msgType  = 'success';
-		 		flash.pop({title: $scope.msgTitle, body: $scope.msgBody, type: $scope.msgType});
-		 		$scope.$apply();
-			}else{
-				$scope.msgTitle = 'Alerta';
-		    $scope.msgBody  = 'Ocurrio un error!';
-		    $scope.msgType  = 'error';
-		 		flash.pop({title: $scope.msgTitle, body: $scope.msgBody, type: $scope.msgType});
-			}
-				
-			});
-	    }else{
-	    	$scope.msgTitle = 'Alerta';
-	    	$scope.msgBody  = 'Debe llenar todos los campos!';
-	    	$scope.msgType  = 'warning';
-	 			flash.pop({title: $scope.msgTitle, body: $scope.msgBody, type: $scope.msgType});
-	    }		
-		
-	};
+	
 
 
 	//Seccion donde se registrar las suscursales
@@ -287,26 +266,137 @@ angular.module('login',['angularModalService'])
 			idPais: $scope.miPais.idPais,
 			id: idEmpresa
 		};
-		$http.post("../models/modificarEmpresa.php", model)
+		if(model.nombre == undefined || model.ciudad == undefined || model.barrio == undefined
+			|| model.direccion == undefined || model.idPais == undefined){
+			$scope.msgTitle = 'Atención';
+		  	$scope.msgBody  = 'Debe completar los campos requeridos!';
+		  	$scope.msgType  = 'warning';
+		 	flash.pop({title: $scope.msgTitle, body: $scope.msgBody, type: $scope.msgType});
+		}else{
+			$http.post("../models/modificarEmpresa.php", model)
+			.success(function(res){
+				if(res == "error"){
+						$scope.msgTitle = 'Error';
+			    	$scope.msgBody  = 'Ha ocurrido un error!';
+			    	$scope.msgType  = 'error';
+			 			flash.pop({title: $scope.msgTitle, body: $scope.msgBody, type: $scope.msgType});
+					}else{
+						$scope.msgTitle = 'Exitoso';
+			    	$scope.msgBody  = res;
+			    	$scope.msgType  = 'success';
+			 			flash.pop({title: $scope.msgTitle, body: $scope.msgBody, type: $scope.msgType});
+			 			$scope.nombre = null;
+						$scope.descripcion = null;
+						$scope.ciudad = null;
+						$scope.barrio = null;
+						$scope.direccion = null;
+						$scope.telefono = null;
+						close();
+					}
+			});
+		}
+		
+	};
+})
+
+.controller('nuevaEmpresaCtrl', function($scope, close, $http, flash){
+	angular.element($("#spinerContainer")).css("display", "block");
+		$http.get('../models/selectCountries.php').success(function(data){
+			angular.element($("#spinerContainer")).css("display", "none");
+			var modalHeader = angular.element($(".modal-header")).innerHeight();
+		 	var navbar = angular.element($(".navbar-fixed-bottom")).innerHeight();
+		 	var modalFooter = angular.element($(".modal-footer")).innerHeight();
+		    var modalBody = angular.element($(".modal-body"));
+			var contentHeight = window.outerHeight - modalHeader - modalFooter  - navbar - 200;
+			modalBody.css("maxHeight", contentHeight);
+			$scope.paises = data;
+
+		});
+
+	$scope.cerrarModal = function(){
+		close();
+	};
+		//Seccion donde se registran empresas
+	$scope.registerEnterprise = function(){
+		
+		var model = {
+			name: $scope.nombre,
+			description: $scope.descripcion,
+			country: $scope.pais,
+			city: $scope.ciudad,
+			neighborhood: $scope.barrio,
+			address: $scope.direccion,
+			phone: $scope.telefono
+		};	
+		console.log(model);
+	    if(model.name != undefined && model.city != undefined && model.neighborhood != undefined 
+	     && model.address != undefined && model.country != undefined){
+	     	angular.element($("#spinerContainer")).css("display", "block");
+	    	$http.post("../models/insertEmpresa.php", model)
+			.success(function(res){
+				angular.element($("#spinerContainer")).css("display", "none");
+				console.log(res);
+			 	if(res != "error"){
+			 		$scope.name = null;
+			 		$scope.description = null;
+					$scope.city = null;
+					$scope.neighborhood = null;
+					$scope.address = null;
+					$scope.phone = null;
+					$scope.country = null;
+			 		$scope.msgTitle = 'Exitoso';
+			    	$scope.msgBody  = 'Empresa creada correctamente!';
+			    	$scope.msgType  = 'success';
+			 		flash.pop({title: $scope.msgTitle, body: $scope.msgBody, type: $scope.msgType});
+			 		$scope.$apply();
+				}else{
+					$scope.msgTitle = 'Alerta';
+			    	$scope.msgBody  = 'Ocurrio un error!';
+			    	$scope.msgType  = 'error';
+			 		flash.pop({title: $scope.msgTitle, body: $scope.msgBody, type: $scope.msgType});
+				}
+				
+			});
+	    }else{
+	    	$scope.msgTitle = 'Alerta';
+	    	$scope.msgBody  = 'Debe llenar todos los campos!';
+	    	$scope.msgType  = 'warning';
+	 			flash.pop({title: $scope.msgTitle, body: $scope.msgBody, type: $scope.msgType});
+	    }		
+		
+	};
+})
+
+//El controller del modal eliminar totalmente independiente de la pagina principal (productos)
+.controller('eliminarEmpresaCtrl', function($scope, close, $http, id, nombre, flash){
+
+
+	$scope.cerrarModal = function(){
+		close();
+	};
+	$scope.eliminarEmpresa = function(){
+
+		var model = {
+			idEmpresa: id,
+			nombre: nombre
+		};
+		console.log(model)
+		angular.element($("#spinerContainer")).css("display", "block");
+		$http.post("../models/eliminarEmpresa.php", model)
 		.success(function(res){
+			close();
+			angular.element($("#spinerContainer")).css("display", "none");
 			if(res == "error"){
 					$scope.msgTitle = 'Error';
-		    	$scope.msgBody  = 'Ha ocurrido un error!';
-		    	$scope.msgType  = 'error';
+		    		$scope.msgBody  = 'Ha ocurrido un error!';
+		    		$scope.msgType  = 'error';
 		 			flash.pop({title: $scope.msgTitle, body: $scope.msgBody, type: $scope.msgType});
-				}else{
+			}else{
 					$scope.msgTitle = 'Exitoso';
 		    	$scope.msgBody  = res;
 		    	$scope.msgType  = 'success';
 		 			flash.pop({title: $scope.msgTitle, body: $scope.msgBody, type: $scope.msgType});
-		 			$scope.nombre = null;
-					$scope.descripcion = null;
-					$scope.ciudad = null;
-					$scope.barrio = null;
-					$scope.direccion = null;
-					$scope.telefono = null;
-					close();
-				}
+			}
 		});
 	};
 })

@@ -25,7 +25,7 @@
 		<div class="panel panel-info">
 			<div class="panel-heading">
 				<div class="btn-group pull-right">
-					<button type='button' class="btn btn-info" ng-click="mostrarModal()"><span class="glyphicon glyphicon-plus" ></span> Nueva Empresa</button>
+					<button type='button' class="btn btn-info" ng-click="createEnterprise()"><span class="glyphicon glyphicon-plus" ></span> Nueva Empresa</button>
 				</div>
 				<h4><i class='glyphicon glyphicon-search'></i> Buscar Empresa</h4>
 			</div>
@@ -69,7 +69,7 @@
 
 									<td><span class="pull-right">
 									<a href="#" class='btn btn-default' title='Editar empresa' ng-click="modifyEnterprise(empresa)" data-toggle="modal"><i class="glyphicon glyphicon-edit"></i></a> 
-									<a href="#" class='btn btn-default' title='Borrar empresa' ng-click="eliminar(empresa)"><i class="glyphicon glyphicon-trash"></i> </a></span></td>
+									<a href="#" class='btn btn-default' title='Borrar empresa' ng-click="deleteEnterprise(empresa)"><i class="glyphicon glyphicon-trash"></i> </a></span></td>
 								</tr>
 								
 							</table>
