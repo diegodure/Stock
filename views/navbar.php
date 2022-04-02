@@ -21,7 +21,14 @@
       <ul class="nav navbar-nav">
 
         <li class="" id="liClient"><a href="clientes.php"><i class='glyphicon glyphicon-user'></i> Clientes</a></li>
-        <li class="" id="liProveedores"><a href="proveedores.php"><i class='glyphicon glyphicon-user'></i> Proveedores</a></li>
+        <li class="" id="liProveedores">
+          <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class='glyphicon glyphicon-signal'></i> Proveedores
+          <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="proveedores.php">Proveedores</a></li>
+            <li><a href="empresas.php">Empresas</a></li>
+          </ul>
+        </li>
         <li class="" id="liProductos"><a href="productos.php"><i class='glyphicon glyphicon-shopping-cart'></i> Productos</a></li>
         <li class="" id="liCompras"><a href="compras.php"><i class='glyphicon glyphicon-barcode'></i> Compras</a></li>
         <li class="" id="liVentas"><a href="ventas.php"><i class='glyphicon glyphicon-barcode'></i> Ventas</a></li>
@@ -56,4 +63,5 @@
     <img src="../img/Impulse.png" id="spiner" class="giro">
   </div>
   <input type="hidden" name="requieredPhoto" id="requieredPhoto">
+  <input type="hidden" name="expirationDate" id="expirationDate">
 </nav>

@@ -38,11 +38,52 @@ angular.module('login',['angularModalService'])
 	}
 
 	$scope.selectEnterprise = function(){
+		angular.element($("#spinerContainer")).css("display", "block");
 		$http.get('../models/selectEnterprise.php').success(function(data){
-			$scope.enterprise = data;
-			console.log(data);
-			//$scope.idEnterprise = data.idEmpresas;
+			angular.element($("#spinerContainer")).css("display", "none");
+			if(data == "error"){
+				$scope.enterprise = [];
+			}else{
+				$scope.enterprise = data;
+				if(data.length > 0){
+					var topbar = angular.element($(".navbar-default")).innerHeight();
+		 			var navbar = angular.element($(".navbar-fixed-bottom")).innerHeight();
+		 			var formGroup = angular.element($(".form-group")).innerHeight();
+	        		var table = angular.element($(".table-responsive"));
+					var heightTable = window.outerHeight - topbar - navbar  - formGroup - 250;
+					table.css("maxHeight", heightTable);
+
+					var heightPanelInfo = window.outerHeight - topbar - navbar - 150;
+					var panelInfo = angular.element($(".panel-info"));
+				}	
+			}
+			
 		});
+	};
+
+	$scope.modifyEnterprise = function(empresa){
+		var empresa = empresa;
+		ModalService.showModal({
+			templateUrl: "modificarEmpresa.html",
+			controller: "modificarEmpresaCtrl",
+			 inputs: {
+			 	idEmpresa: empresa.idEmpresas,
+    			nombre: empresa.Nombre,
+    			descripcion: empresa.Descripcion,
+    			ciudad: empresa.Ciudad,
+    			barrio: empresa.Barrio,
+    			direccion: empresa.Dirreccion,
+    			telefono: empresa.Telefono,
+    			pais: empresa.Pais,
+    			idPais: empresa.idPais
+  			}
+		}).then(function(modal){
+			modal.close.then(function(result){
+				// $scope.resultadoModal = result;
+				$scope.selectEnterprise();
+			})
+		})
+		
 	};
 
 	$scope.selectCountries = function(){
@@ -206,5 +247,66 @@ angular.module('login',['angularModalService'])
 	    }
 
 	};
-	$scope.$apply(); 
+})
+
+.controller('modificarEmpresaCtrl', function($scope, close, $http, flash, idEmpresa, nombre, descripcion, ciudad,
+ barrio, direccion, telefono, pais, idPais){
+ 	var miPais;
+	angular.element($("#spinerContainer")).css("display", "block");
+	$http.get('../models/selectCountries.php').success(function(data){
+		angular.element($("#spinerContainer")).css("display", "none");
+		var modalHeader = angular.element($(".modal-header")).innerHeight();
+	 	var navbar = angular.element($(".navbar-fixed-bottom")).innerHeight();
+	 	var modalFooter = angular.element($(".modal-footer")).innerHeight();
+	    var modalBody = angular.element($(".modal-body"));
+		var contentHeight = window.outerHeight - modalHeader - modalFooter  - navbar - 250;
+		modalBody.css("maxHeight", contentHeight);
+		$scope.paises = data;
+		miPais = {"idPais":idPais, "Nombre":pais};
+		$scope.miPais = miPais; 
+	});
+	$scope.idEmpresa = idEmpresa;
+	$scope.nombre = nombre;
+	$scope.descripcion = descripcion;
+	$scope.ciudad = ciudad;
+	$scope.barrio = barrio;
+	$scope.direccion = direccion;
+	$scope.telefono = telefono;
+	$scope.cerrarModal = function(){
+		close();
+	};
+	$scope.modificarEmpresa = function(){
+		var model = {
+			id: idEmpresa,
+			nombre: $scope.nombre,
+			descripcion: $scope.descripcion,
+			ciudad: $scope.ciudad,
+			barrio: $scope.barrio,
+			direccion: $scope.direccion,
+			telefono: $scope.telefono,
+			idPais: $scope.miPais.idPais,
+			id: idEmpresa
+		};
+		$http.post("../models/modificarEmpresa.php", model)
+		.success(function(res){
+			if(res == "error"){
+					$scope.msgTitle = 'Error';
+		    	$scope.msgBody  = 'Ha ocurrido un error!';
+		    	$scope.msgType  = 'error';
+		 			flash.pop({title: $scope.msgTitle, body: $scope.msgBody, type: $scope.msgType});
+				}else{
+					$scope.msgTitle = 'Exitoso';
+		    	$scope.msgBody  = res;
+		    	$scope.msgType  = 'success';
+		 			flash.pop({title: $scope.msgTitle, body: $scope.msgBody, type: $scope.msgType});
+		 			$scope.nombre = null;
+					$scope.descripcion = null;
+					$scope.ciudad = null;
+					$scope.barrio = null;
+					$scope.direccion = null;
+					$scope.telefono = null;
+					close();
+				}
+		});
+	};
 })

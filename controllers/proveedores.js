@@ -66,10 +66,6 @@ angular.module('proveedores',['angularModalService'])
 					var heightPanelInfo = window.outerHeight - topbar - navbar - 150;
 					var panelInfo = angular.element($(".panel-info"));
 			
-					//panelInfo.css("height", heightPanelInfo);
-					
-					//Como agregar clases con angularjs
-					//table.addClass('customClass');
 				}
 			}
 			

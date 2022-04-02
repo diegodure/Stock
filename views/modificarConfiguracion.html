@@ -33,6 +33,7 @@
 					ng-options="configuracion.Nombre for configuracion in configuraciones track by configuracion.Estado"
 					ng-model="myNewConfig">
 					</select>
+					<input ng-if="nombre == 'Vencimiento'" ng-change="setNewValue()" type="number" id="myNewConfig" ng-model="myNewConfig">
 					<input type="hidden" class="form-control" ng-model="estado" required>
 				</div>
 			</div>
