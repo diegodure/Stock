@@ -34,16 +34,16 @@ angular.module('ventas',['angularModalService'])
 
 	$scope.selectConfiguraciones = function(){
     angular.element($("#spinerContainer")).css("display", "block");
-    $http.get('../models/selectConfiguraciones.php').success(function(data){
-      if(data == "error"){
-        $scope.configuraciones = [];
-      }else{
-        $scope.configuraciones = data;
-        
-      }
-      angular.element($("#spinerContainer")).css("display", "none");
-    });
-  };
+	    $http.get('../models/selectConfiguraciones.php').success(function(data){
+	      if(data == "error"){
+	        $scope.configuraciones = [];
+	      }else{
+	        $scope.configuraciones = data;
+	        
+	      }
+	      angular.element($("#spinerContainer")).css("display", "none");
+	    });
+  	};
 	//Inicializamos las variables 
 	 $scope.productos = [];
 	 var total = 0, iva = 0;
@@ -94,7 +94,7 @@ angular.module('ventas',['angularModalService'])
 		}
 		for(var i = 0; i < $scope.configuraciones.length; i++){
 			if($scope.configuraciones[i]["Nombre"] == "Cantidad mínima" && $scope.configuraciones[i]["Estado"] == "0"){
-				if(($scope.prod.CantidadActual - $scope.cantidad) <= $scope.prod.CantidadMinima){
+				if(($scope.prod.CantidadActual - $scope.cantidad) <= $scope.prod.CantidadMinima && $scope.prod.CantidadMinima != 0){
 					$scope.msgTitle = 'Atención';
 			    	$scope.msgBody  = "El producto "+$scope.prod.Nombre+" llego a la cantidad mínima";
 			    	$scope.msgType  = 'warning';

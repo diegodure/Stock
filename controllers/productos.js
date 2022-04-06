@@ -24,7 +24,7 @@ angular.module('productos',['angularModalService','720kb.datepicker'])
 })
 
 
-.controller('ProductosCtrl', function($scope, $http, ModalService){
+.controller('ProductosCtrl', function($scope, $http, ModalService, flash){
 	angular.element(document).ready(function () {
 
     	$scope.selectProducts();
@@ -32,6 +32,54 @@ angular.module('productos',['angularModalService','720kb.datepicker'])
 	window.onresize = function () {
          $scope.logResize();
     };
+    
+    $scope.selectConfiguraciones = function(){
+    	$scope.productsInExpireToAlert = [];
+	    $http.get('../models/selectConfiguraciones.php').success(function(data){
+	      if(data == "error"){
+	        $scope.configuraciones = [];
+	      }else{
+	        $scope.configuraciones = data;
+	        for(var i = 0; i < $scope.configuraciones.length; i++){
+				if($scope.configuraciones[i]["Nombre"] == "Vencimiento" && $scope.configuraciones[i]["Estado"] >= "0"){
+					$scope.daysToExpiration = $scope.configuraciones[i]["Estado"];
+				}
+			}
+			if($scope.daysToExpiration > 0){
+				var date = new Date();
+				var mes= date.getMonth()+1;
+	 			var dia= date.getDate();
+				var mes = (mes < 10) ? ("0" + mes) : mes;
+	 			var dia = (dia < 10) ? ("0" + dia) : dia;
+				var d1 = Date.UTC(date.getFullYear(),mes,dia);
+				var date2, d2, dif, dias;
+				for(var i = 0; i < $scope.productos.length; i++){
+					if($scope.productos[i]["Vencimiento"]){
+						date2 = new Date($scope.productos[i]["Vencimiento"]);
+						mes= date2.getMonth()+1;
+						dia= date2.getDate()+1;
+						mes = (mes < 10) ? ("0" + mes) : mes;
+						dia = (dia < 10) ? ("0" + dia) : dia;
+						d2 = Date.UTC(date2.getFullYear(),mes,dia);
+						dif = d2-d1;
+						dias = Math.floor(dif / (1000 * 60 * 60 * 24));
+						if(dias > 0 && dias < parseInt($scope.daysToExpiration)){
+							$scope.productsInExpireToAlert.push($scope.productos[i])
+						}
+					}
+				}
+				if($scope.productsInExpireToAlert.length > 0){
+					$scope.msgTitle = 'Error';
+		    		$scope.msgBody  = 'Hay productos por vencer!';
+		    		$scope.msgType  = 'error';
+		 			flash.pop({title: $scope.msgTitle, body: $scope.msgBody, type: $scope.msgType});
+					console.log($scope.productsInExpireToAlert);
+				}				
+			}
+			
+	      }
+	    });
+  	};
 
 	 $scope.logResize = function () {
 	 	var topbar = angular.element($(".navbar-default")).innerHeight();
@@ -57,8 +105,7 @@ angular.module('productos',['angularModalService','720kb.datepicker'])
 			modal.close.then(function(result){
 				// Una vez que el modal sea cerrado, la libreria invoca esta función
         		// y en result tienes el resultado.
-        		
-        		$scope.resultadoModal = result;
+        		;
         		$scope.selectProducts();
 			})
 		})
@@ -85,7 +132,7 @@ angular.module('productos',['angularModalService','720kb.datepicker'])
 
 					var heightPanelInfo = window.outerHeight - topbar - navbar - 150;
 					var panelInfo = angular.element($(".panel-info"));
-			
+					$scope.selectConfiguraciones();
 					//panelInfo.css("height", heightPanelInfo);
 					//Como agregar clases con angularjs
 					//table.addClass('customClass');
@@ -267,6 +314,7 @@ angular.module('productos',['angularModalService','720kb.datepicker'])
 		close();
 	};
 	$scope.modificarProducto = function(){
+
 		let configuracion = {
           		headers: {
               "Content-Type": undefined,
@@ -284,6 +332,7 @@ angular.module('productos',['angularModalService','720kb.datepicker'])
 			precioPromocional: $scope.precioPromocional,
 			precioUnitario: $scope.precioUnitario,
 			precioMayorista: $scope.precioMayorista,
+			fechaVencimiento: angular.element($("#newDate")).val(),
 			proveedor: $scope.miProv.idProveedores
 		};
 		if(model.nombre == undefined || model.descripcion == undefined || model.precioUnitario == undefined

@@ -23,9 +23,16 @@
 	$proveedor = $data->{"proveedor"};
 	
 	include("../conect.php");
+	if (!empty($data->{"fechaVencimiento"})) {
+		$fechaVencimiento = $data->{"fechaVencimiento"};
+		$sql = "update productos set Nombre='$nombre', Descripcion='$descripcion', CantidadActual='$cantidad', 
+	CantidadMinima='$cantidadMin',PrecioUnitario='$precioUnitario',PrecioMayorista='$precioMayorista',PrecioPromocional='$precioPromocional', Proveedores_idProveedores='$proveedor', Vencimiento='$fechaVencimiento' where idProductos='$idP'";
+	}else{
+		$sql = "update productos set Nombre='$nombre', Descripcion='$descripcion', CantidadActual='$cantidad', 
+	CantidadMinima='$cantidadMin',PrecioUnitario='$precioUnitario',PrecioMayorista='$precioMayorista',PrecioPromocional='$precioPromocional', Proveedores_idProveedores='$proveedor', Vencimiento=null where idProductos='$idP'";
+	}
 
-	$sql = "update productos set Nombre='$nombre', Descripcion='$descripcion', CantidadActual='$cantidad', 
-	CantidadMinima='$cantidadMin',PrecioUnitario='$precioUnitario',PrecioMayorista='$precioMayorista',PrecioPromocional='$precioPromocional', Proveedores_idProveedores='$proveedor' where idProductos='$idP'";
+	
 	$results = $con->query($sql);
 
 	if(!$results){ 
