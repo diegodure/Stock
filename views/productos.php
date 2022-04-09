@@ -20,8 +20,20 @@
 <div class="container">
 
 
-<div ng-controller="ProductosCtrl" class="container">
-
+<div ng-controller="ProductosCtrl" class="container">	
+		<i class='glyphicon glyphicon-warning-sign iconExpiredProducts' 
+		 ng-click="showExpiredProducts()" title="Ver productos por vencer"></i>	
+		 <div class="modalExpiredProducts">
+		 	<p>Productos por vencer <span aria-hidden="true" 
+		 		style="float: right;margin-right: 10px;cursor: pointer;" ng-click="hideExpiredProducts()">×</span></p>
+		 	<ul ng-repeat="productToExpire in productsInExpireToAlert">
+		 		<li style="list-style: none;font-weight: bold;">
+		 			Nombre: {{productToExpire.Nombre}}
+		 		</li>
+		 		<li>Descripcion: {{productToExpire.Descripcion}}</li>
+		 		<li>Vencimiento: {{productToExpire.Vencimiento}}</li>
+		 	</ul>
+		 </div>
 		<div class="panel panel-info">
 			<div class="panel-heading">
 				<div class="btn-group pull-right">

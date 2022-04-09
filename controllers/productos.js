@@ -69,11 +69,11 @@ angular.module('productos',['angularModalService','720kb.datepicker'])
 					}
 				}
 				if($scope.productsInExpireToAlert.length > 0){
-					$scope.msgTitle = 'Error';
+					angular.element($(".iconExpiredProducts")).css("display", "block");
+					$scope.msgTitle = 'Atención';
 		    		$scope.msgBody  = 'Hay productos por vencer!';
 		    		$scope.msgType  = 'error';
 		 			flash.pop({title: $scope.msgTitle, body: $scope.msgBody, type: $scope.msgType});
-					console.log($scope.productsInExpireToAlert);
 				}				
 			}
 			
@@ -195,6 +195,15 @@ angular.module('productos',['angularModalService','720kb.datepicker'])
 		})
 	};
 
+	$scope.showExpiredProducts = function(){
+		angular.element($(".iconExpiredProducts")).css("display", "none");
+		angular.element($(".modalExpiredProducts")).css("display", "block");
+	}
+
+	$scope.hideExpiredProducts = function(){
+		angular.element($(".iconExpiredProducts")).css("display", "block");
+		angular.element($(".modalExpiredProducts")).css("display", "none");
+	}
 	
 })
 
