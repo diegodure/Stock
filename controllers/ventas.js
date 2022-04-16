@@ -114,7 +114,7 @@ angular.module('ventas',['angularModalService'])
 
 		//ubicamos los datos en el array para mostrarlos en la tabla
 		$scope.productos.push({idP: $scope.prod.idProductos, nombre: $scope.prod.Nombre, descripcion: $scope.prod.Descripcion,
-		 precio: precio, cantidad: $scope.cantidad, subTotal: subTotal});
+		precio: precio, cantidad: $scope.cantidad, subTotal: subTotal});
 		$scope.prod.Nombre = null;
 		$scope.prod.Descripcion = null;		
 		$scope.cantidad = null;
@@ -131,63 +131,89 @@ angular.module('ventas',['angularModalService'])
 		//alert(total);
 		var pos = $scope.productos.indexOf(producto);
 		$scope.productos.splice(pos, 1); //pasamos el indice a ser eliminado (pos) y luego la cantidad de elementos a ser eliminados
-		
+		$scope.msgTitle = 'Info';
+		$scope.msgBody  = 'Se sacó el producto!';
+		$scope.msgType  = 'info';
+		flash.pop({title: $scope.msgTitle, body: $scope.msgBody, type: $scope.msgType});
 	};
+
+	$scope.prepareToSell = function(){
+		if($scope.total == "" || $scope.total == null){
+			$scope.msgTitle = 'Info';
+    		$scope.msgBody  = 'No hay productos por vender!';
+    		$scope.msgType  = 'info';
+ 			flash.pop({title: $scope.msgTitle, body: $scope.msgBody, type: $scope.msgType});
+		}else{
+			angular.element($(".modalImpulse")).css("display", "block");
+		}
+		
+	}
+
+	$scope.hideModalToSell = function(){
+		angular.element($(".modalImpulse")).css("display", "none");
+		$scope.payment = null;
+		$scope.vuelto = null;
+	}
+
+	$scope.calcularVuelto = function(){
+		$scope.vuelto = $scope.payment - $scope.total; 
+	}
 
 	$scope.facturar = function(productos, cliente){
 			
-			var length = productos.length;
+			// var length = productos.length;
 		
-			//Obtenemos los productos
-			var productos = productos;
+			// //Obtenemos los productos
+			// var productos = productos;
 			
-			var detFac = [];
+			// var detFac = [];
 
-			for ( i=0; i < length; i++){
-				 detFac.push({
-					id : productos[i].idP,
-					precio: productos[i].precio,
-					cantidad : productos[i].cantidad,
-					subT: productos[i].subTotal,
-			 });
-			}
+			// for ( i=0; i < length; i++){
+			// 	 detFac.push({
+			// 		id : productos[i].idP,
+			// 		precio: productos[i].precio,
+			// 		cantidad : productos[i].cantidad,
+			// 		subT: productos[i].subTotal,
+			//  });
+			// }
 
-			//almacenamos los datos del cliente
-			var factura = {
-				id: $scope.cliente.id,
-				total: $scope.total
-			};
+			// //almacenamos los datos del cliente
+			// var factura = {
+			// 	id: $scope.cliente.id,
+			// 	total: $scope.total
+			// };
 
-			//alert($scope.total);
-			var pos = 0;
-			angular.element($("#spinerContainer")).css("display", "block");
-			$http.post("../models/insertFacturas.php", factura)
-			.success(function(res){
-				$http.post("../models/detFactura.php", detFac)
-					.success(function (res) {
-						angular.element($("#spinerContainer")).css("display", "none");
-						if(res == "error"){
-							$scope.msgTitle = 'Error';
-					    	$scope.msgBody  = 'Ha ocurrido un error!';
-					    	$scope.msgType  = 'error';
-					 		flash.pop({title: $scope.msgTitle, body: $scope.msgBody, type: $scope.msgType});
-						}else{
-							$scope.msgTitle = 'Exitoso';
-					    	$scope.msgBody  = res;
-					    	$scope.msgType  = 'success';
-					 		flash.pop({title: $scope.msgTitle, body: $scope.msgBody, type: $scope.msgType});
-						}
-					});
-				$scope.cliente.id = null;
-				$scope.cliente.nombre = null;
-				$scope.cliente.apellido = null;
-				$scope.cliente.info = null;
-				$scope.cliente.user = null;
-				$scope.total = null;
-				$scope.productos.splice(pos);
-			});
-			total = 0;
-		
+			// //alert($scope.total);
+			// var pos = 0;
+			// angular.element($("#spinerContainer")).css("display", "block");
+			// $http.post("../models/insertFacturas.php", factura)
+			// .success(function(res){
+			// 	$http.post("../models/detFactura.php", detFac)
+			// 		.success(function (res) {
+			// 			angular.element($("#spinerContainer")).css("display", "none");
+			// 			if(res == "error"){
+			// 				$scope.msgTitle = 'Error';
+			// 		    	$scope.msgBody  = 'Ha ocurrido un error!';
+			// 		    	$scope.msgType  = 'error';
+			// 		 		flash.pop({title: $scope.msgTitle, body: $scope.msgBody, type: $scope.msgType});
+			// 			}else{
+			// 				$scope.msgTitle = 'Exitoso';
+			// 		    	$scope.msgBody  = res;
+			// 		    	$scope.msgType  = 'success';
+			// 		 		flash.pop({title: $scope.msgTitle, body: $scope.msgBody, type: $scope.msgType});
+			// 			}
+			// 		});
+			// 	$scope.cliente.id = null;
+			// 	$scope.cliente.nombre = null;
+			// 	$scope.cliente.apellido = null;
+			// 	$scope.cliente.info = null;
+			// 	$scope.cliente.user = null;
+			// 	$scope.total = null;
+			// 	$scope.productos.splice(pos);
+			// });
+			// total = 0;
+			$scope.payment = null;
+			$scope.vuelto = null;
 	};
 
 })
@@ -230,6 +256,15 @@ angular.module('ventas',['angularModalService'])
 	angular.element($("#spinerContainer")).css("display", "block");
 	$http.get('../models/selectProductos.php').success(function(data){
 		angular.element($("#spinerContainer")).css("display", "none");
+		var topbar = angular.element($(".navbar-default")).innerHeight();
+		var navbar = angular.element($(".navbar-fixed-bottom")).innerHeight();
+		var formGroup = angular.element($(".form-group")).innerHeight();
+		var table = angular.element($(".productoFactura"));
+		var heightTable = window.outerHeight - topbar - navbar  - formGroup - 250;
+		table.css("maxHeight", heightTable);
+
+		var heightPanelInfo = window.outerHeight - topbar - navbar - 150;
+		var panelInfo = angular.element($(".panel-info"));
 		$scope.productos = data;
 	});
 

@@ -266,10 +266,27 @@ body{
     top: 70px;
     display: none;
 }
-.modalExpiredProducts p{
+.modalImpulse p{
     background: #3498db;
     color: white;
     text-align: center;
     font-weight: bold;
+}
+
+.tableAbm{
+    overflow: auto;
+}
+
+.modalVentas{
+    border-radius: 10px;
+    position: absolute;
+    background: white;
+    z-index: 1000;
+    top: 80%;
+    left: 60%;
+    display: none;
+}
+.btnModalContainer{
+    padding: 10px;
 }
 

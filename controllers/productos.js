@@ -197,12 +197,12 @@ angular.module('productos',['angularModalService','720kb.datepicker'])
 
 	$scope.showExpiredProducts = function(){
 		angular.element($(".iconExpiredProducts")).css("display", "none");
-		angular.element($(".modalExpiredProducts")).css("display", "block");
+		angular.element($(".modalImpulse")).css("display", "block");
 	}
 
 	$scope.hideExpiredProducts = function(){
 		angular.element($(".iconExpiredProducts")).css("display", "block");
-		angular.element($(".modalExpiredProducts")).css("display", "none");
+		angular.element($(".modalImpulse")).css("display", "none");
 	}
 	
 })
