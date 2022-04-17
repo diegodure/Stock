@@ -159,29 +159,31 @@ angular.module('ventas',['angularModalService'])
 		$scope.vuelto = $scope.payment - $scope.total; 
 	}
 
-	$scope.facturar = function(productos, cliente){
-			
-			// var length = productos.length;
+	$scope.facturar = function(productos, cliente, isInvoice){
+			console.log(productos);
+			console.log(cliente);
+			console.log(isInvoice);
+			var length = productos.length;
 		
-			// //Obtenemos los productos
-			// var productos = productos;
+			//Obtenemos los productos
+			var productos = productos;
 			
-			// var detFac = [];
+			var detFac = [];
 
-			// for ( i=0; i < length; i++){
-			// 	 detFac.push({
-			// 		id : productos[i].idP,
-			// 		precio: productos[i].precio,
-			// 		cantidad : productos[i].cantidad,
-			// 		subT: productos[i].subTotal,
-			//  });
-			// }
+			for ( i=0; i < length; i++){
+				 detFac.push({
+					id : productos[i].idP,
+					precio: productos[i].precio,
+					cantidad : productos[i].cantidad,
+					subT: productos[i].subTotal,
+			 });
+			}
 
-			// //almacenamos los datos del cliente
-			// var factura = {
-			// 	id: $scope.cliente.id,
-			// 	total: $scope.total
-			// };
+			//almacenamos los datos del cliente
+			var factura = {
+				id: $scope.cliente.id,
+				total: $scope.total
+			};
 
 			// //alert($scope.total);
 			// var pos = 0;

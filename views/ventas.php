@@ -33,9 +33,9 @@
 		 		</div>
 		 	</div>
 		 	<div class="btnModalContainer">
-		 		<button type="submit" class="btn btn-default" ng-click="facturar(productos, cliente)">
+		 		<button type="submit" class="btn btn-default" ng-click="facturar(productos, cliente, true)">
 				<span class="glyphicon glyphicon-plus"></span>Facturar</button>
-				<button type="submit" class="btn btn-default" ng-click="facturar(productos, cliente)">
+				<button type="submit" class="btn btn-default" ng-click="facturar(productos, cliente, false)">
 				<span class="glyphicon glyphicon-plus"></span>Vender</button>
 		 	</div>
 		 </div>
@@ -79,7 +79,7 @@
 							</div>
 
 							<div class="form-group row">
-								<label for="q" class="col-md-6 control-label">Info del Cliente</label>
+								<label for="q" class="col-md-6 control-label">CI/RUC del Cliente</label>
 								<div class="col-md-6">
 									<input type="text" class="form-control" required placeholder="Info del cliente" ng-model="cliente.info"  readonly>
 								</div>
@@ -153,7 +153,7 @@
 						</form>
 
 
-						<div class="table-responsive" style="overflow-x: inherit;">
+						<div class="table-responsive" id="tableProduct" style="overflow-x: inherit;">
 							<table class="table">
 								<tr class="info">
 									<th>Codigo</th>
