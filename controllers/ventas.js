@@ -184,7 +184,25 @@ angular.module('ventas',['angularModalService'])
 				id: $scope.cliente.id,
 				total: $scope.total
 			};
+			if (isInvoice) {
+				//Ejmplo 1
+				// var docDefinition = { content: 'This is an sample PDF printed with pdfMake' };
+    //     		pdfMake.createPdf(docDefinition).open();
 
+    			//Ejemplo2
+    			html2canvas(document.getElementById('tableProduct'), {
+		         onrendered: function(canvas) {
+		           var data = canvas.toDataURL();
+		           var docDefinition = {
+		             content: [{
+		               image: data,
+		               width: 500,
+		             }]
+		           };
+		           pdfMake.createPdf(docDefinition).download("test.pdf");
+		         }
+		       });
+			}
 			// //alert($scope.total);
 			// var pos = 0;
 			// angular.element($("#spinerContainer")).css("display", "block");
