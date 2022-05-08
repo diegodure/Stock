@@ -125,7 +125,6 @@ angular.module('reportesBalances',['720kb.datepicker','chart.js'])
                     $scope.data.push(sumTotalCompra,sumTotalVenta,resBalance);
                     $scope.datos.push(compras,ventas);
                     var a = $scope.etiquetas.reverse();
-                    
               
                 var mylineGraph = new Chart(line, {
                   type: "line",

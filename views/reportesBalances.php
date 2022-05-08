@@ -70,21 +70,21 @@
 					</div>
 				</form>
 
-				<div class="container">
+					<div class="container">
 					
-				  <div class="row">
-				  	<div class="col col-md-12 col-lg-12 col-xl-12" style="width: 94%;">
-				  		<canvas id="mylineGraph"></canvas>
-				  	</div>
-				    <div class="col col-md-12 col-lg-12 col-xl-12" style="width: 94%;">
-				    	
-				    	<canvas class="chart chart-bar" chart-data="datos" chart-labels="etiquetas" chart-series="series"></canvas>
-				    </div>
-				    <div class="col col-md-12 col-lg-12 col-xl-12" style="width: 94%;">
-				     <canvas id="pie" class="chart chart-pie" chart-data="data" chart-labels="labels"></canvas>
-				      
-				    </div>
-				    </div>
+						<div class="row">
+						  	<div class="col col-md-12 col-lg-12 col-xl-12" style="width: 94%;">
+						  		<canvas id="mylineGraph"></canvas>
+						  	</div>
+						    <div class="col col-md-12 col-lg-12 col-xl-12" style="width: 94%;">
+						    	
+						    	<canvas class="chart chart-bar" chart-data="datos" chart-labels="etiquetas" chart-series="series"></canvas>
+						    </div>
+						    <div class="col col-md-12 col-lg-12 col-xl-12" style="width: 94%;">
+						     <canvas id="pie" class="chart chart-pie" chart-data="data" chart-labels="labels"></canvas>
+						      
+						    </div>
+						</div>
 				    
 				  </div>
 				</div>

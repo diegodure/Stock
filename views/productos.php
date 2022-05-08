@@ -24,7 +24,7 @@
 		<i class='glyphicon glyphicon-warning-sign iconExpiredProducts' 
 		 ng-click="showExpiredProducts()" title="Ver productos por vencer"></i>	
 		 <div class="modalImpulse modalExpiredProducts">
-		 	<p>Calcular vuelto <span aria-hidden="true" 
+		 	<p>Productos por vencer <span aria-hidden="true" 
 		 		style="float: right;margin-right: 10px;cursor: pointer;" ng-click="hideExpiredProducts()">×</span></p>
 		 	<ul ng-repeat="productToExpire in productsInExpireToAlert">
 		 		<li style="list-style: none;font-weight: bold;">
