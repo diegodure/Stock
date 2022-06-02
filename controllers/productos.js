@@ -63,7 +63,7 @@ angular.module('productos',['angularModalService','720kb.datepicker'])
 						d2 = Date.UTC(date2.getFullYear(),mes,dia);
 						dif = d2-d1;
 						dias = Math.floor(dif / (1000 * 60 * 60 * 24));
-						if(dias > 0 && dias < parseInt($scope.daysToExpiration)){
+						if(dias < parseInt($scope.daysToExpiration)){
 							$scope.productsInExpireToAlert.push($scope.productos[i])
 						}
 					}
@@ -71,7 +71,7 @@ angular.module('productos',['angularModalService','720kb.datepicker'])
 				if($scope.productsInExpireToAlert.length > 0){
 					angular.element($(".iconExpiredProducts")).css("display", "block");
 					$scope.msgTitle = 'Atención';
-		    		$scope.msgBody  = 'Hay productos por vencer!';
+		    		$scope.msgBody  = 'Hay productos vencidos o por vencer!';
 		    		$scope.msgType  = 'error';
 		 			flash.pop({title: $scope.msgTitle, body: $scope.msgBody, type: $scope.msgType});
 				}				

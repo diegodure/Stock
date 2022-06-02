@@ -114,7 +114,7 @@ angular.module('ventas',['angularModalService'])
 
 		//ubicamos los datos en el array para mostrarlos en la tabla
 		$scope.productos.push({idP: $scope.prod.idProductos, nombre: $scope.prod.Nombre, descripcion: $scope.prod.Descripcion,
-		precio: precio, cantidad: $scope.cantidad, subTotal: subTotal});
+		precio: precio, cantidad: $scope.cantidad, subTotal: subTotal,condicion: $scope.price.type});
 		$scope.prod.Nombre = null;
 		$scope.prod.Descripcion = null;		
 		$scope.cantidad = null;
@@ -171,12 +171,13 @@ angular.module('ventas',['angularModalService'])
 			var detFac = [];
 
 			for ( i=0; i < length; i++){
-				 detFac.push({
+				detFac.push({
 					id : productos[i].idP,
 					precio: productos[i].precio,
 					cantidad : productos[i].cantidad,
 					subT: productos[i].subTotal,
-			 });
+					condicion: productos[i].condicion
+			 	});
 			}
 
 			//almacenamos los datos del cliente

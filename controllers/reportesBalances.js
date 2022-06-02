@@ -69,7 +69,6 @@ angular.module('reportesBalances',['720kb.datepicker','chart.js'])
                       if(i == 0){
                         sumTotalVenta = sumTotalVenta + sumVenta;
                         ventas.push(sumVenta);
-                        
                       }
                     }
 

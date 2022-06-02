@@ -161,6 +161,7 @@
 									<th>Descripcion</th>
 									<th>Precio</th>
 									<th>Cantidad</th>
+									<th>Condición Venta</th>
 									<th>SubTotal</th>
 									<th class='text-right'>Acciones</th>
 								</tr>
@@ -177,6 +178,8 @@
 									<td>{{producto.precio | currency:'₲'}}</td>
 									
 									<td>{{producto.cantidad}}</td>
+
+									<td>{{producto.condicion}}</td>
 
                                     <td>{{producto.subTotal | currency:'₲'}}</td>
 
