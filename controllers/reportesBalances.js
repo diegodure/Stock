@@ -1,6 +1,29 @@
 angular.module('reportesBalances',['720kb.datepicker','chart.js'])
 
-    .controller("ReportesBalancesCtrl", function ($scope, $http) {
+.factory("flash", function($rootScope) {
+
+  return {
+
+    pop: function(message) {
+      switch(message.type) {
+        case 'success':
+          toastr.success(message.body, message.title);
+          break;
+        case 'info':
+          toastr.info(message.body, message.title);
+          break;
+        case 'warning':
+          toastr.warning(message.body, message.title);
+          break;
+        case 'error':
+          toastr.error(message.body, message.title);
+          break;
+      }
+    }
+  };
+})
+
+.controller("ReportesBalancesCtrl", function ($scope, $http, flash) {
 
     //	$scope.calendar = function (date) {
 	//	$scope.fecha = date;
@@ -24,13 +47,29 @@ angular.module('reportesBalances',['720kb.datepicker','chart.js'])
           //  [65, 59, 80, 81],
           //  [28, 48, 40, 19]
        // ];
-	
+	$scope.downloadReport = function(){
+    html2canvas(document.getElementById('reportContainer'), {
+      onrendered: function(canvas) {
+        var data = canvas.toDataURL();
+        var docDefinition = {
+          content: [{
+            image: data,
+            width: 500,
+          }]
+        };
+        pdfMake.createPdf(docDefinition).open();
+        // pdfMake.createPdf(docDefinition).download("test.pdf");
+      }
+    });
+  }     
         $scope.report = function (date1,date2) {
             var line = document.getElementById("mylineGraph").getContext("2d");
-
+            var barChart = document.getElementById("barChart")
               $scope.datos = [];
               $scope.data = [];
               $scope.etiquetas = [];
+              $scope.colors = ['#ff0000','#3498DB','#717984','#F1C40F'];
+              $scope.options = {legend:{display:true,position:"top"}}
               compras = [];
               ventas = [];
               sumCompra, sumTotalCompra = 0;
@@ -41,8 +80,14 @@ angular.module('reportesBalances',['720kb.datepicker','chart.js'])
                 fecha1: date1,
                 fecha2: date2
               };
-              angular.element($("#spinerContainer")).css("display", "block");
-              $http.post('../models/selectVenta.php', fechas).success(function (data) {
+              if (fechas.fecha1 == undefined || fechas.fecha2 == undefined) {
+                $scope.msgTitle = 'Atención';
+                $scope.msgBody  = 'Debe seleccionar el rango de fechas!';
+                $scope.msgType  = 'warning';
+                flash.pop({title: $scope.msgTitle, body: $scope.msgBody, type: $scope.msgType});
+              }else{
+                angular.element($("#spinerContainer")).css("display", "block");
+                $http.post('../models/selectVenta.php', fechas).success(function (data) {
                   $scope.ventas = data;
                   var num = 0;
                   var dateCompare = 0;
@@ -133,9 +178,8 @@ angular.module('reportesBalances',['720kb.datepicker','chart.js'])
                       {
                         label: "COMPRAS",
                         data: compras,
-                        fill: true,
-                        borderColor: "rgba(55, 130, 220, .65)",
-                        backgroundColor: "rgba(55, 130, 220, 0.1)",
+                        fill: false,
+                        borderColor: "rgba(245, 35, 56, .65)",
                         lineTension: 0,
                         pointBorderWidth: 2,
                         borderDash: [5, 5],
@@ -145,9 +189,11 @@ angular.module('reportesBalances',['720kb.datepicker','chart.js'])
                         label: "VENTAS",
                         data: ventas,
                         fill: false,
-                        borderColor: "rgba(245, 35, 56, .65)",
+                        borderColor: "rgba(55, 130, 220, .65)",
+                        backgroundColor: "rgba(55, 130, 220, 0.1)",
                         lineTension: 0,
                         pointBorderWidth: 2,
+                        borderDash: [5, 5],
                         pointStyle: "rectRounded"
                       }
                     ]
@@ -155,8 +201,16 @@ angular.module('reportesBalances',['720kb.datepicker','chart.js'])
                   options: {
                     title: {
                       display: true,
-                      text: "Gráficos de compras y ventas",
+                      text: "Gráficos de compras y ventas del "+fechas.fecha1+" al "+fechas.fecha2,
                       fontSize: 26,
+                    },
+                    legend:{
+                      display: true,
+                      position: 'top',
+                      labels: {
+                        boxWidth:80,
+                        fontColor: 'black'
+                      }
                     },
                     plugins: {
                      datalabels: {
@@ -165,9 +219,9 @@ angular.module('reportesBalances',['720kb.datepicker','chart.js'])
                     }
                   }
                 });
+                
               });
-              
-          
+              }
               
         };
 

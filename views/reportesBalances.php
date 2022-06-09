@@ -3,7 +3,7 @@
     include("../conect.php");
     
     if(isset($_SESSION['user'])){
-    	$title = "Balances | Simple Invoice"
+    	$title = "Impulse"
   ?>
   <!DOCTYPE html>
 <html>
@@ -65,21 +65,21 @@
 
 					<div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
 					<button type='button' class="btn btn-info" ng-click="report(date1,date2)"><span class="glyphicon glyphicon-plus"></span> Buscar</button>
-					
+					<button type='button' ng-show="etiquetas.length > 0" class="btn btn-info" ng-click="downloadReport()"><span class="glyphicon glyphicon-download-alt"></span> Descargar</button>
 
 					</div>
 				</div>
 
-				<div class="row">
+				<div class="row" id="reportContainer">
 				  	<div class="col col-md-12 col-lg-12 col-xl-12">
 				  		<canvas id="mylineGraph"></canvas>
 				  	</div>
 				    <div class="col col-md-12 col-lg-12 col-xl-12" >
 				    	
-				    	<canvas class="chart chart-bar" chart-data="datos" chart-labels="etiquetas" chart-series="series"></canvas>
+				    	<canvas id="barChart" class="chart chart-bar" chart-colors="colors" chart-data="datos" chart-labels="etiquetas" chart-series="series" chart-legend="options"></canvas>
 				    </div>
 				    <div class="col col-md-12 col-lg-12 col-xl-12" >
-				     <canvas id="pie" class="chart chart-pie" chart-data="data" chart-labels="labels"></canvas>
+				     <canvas id="pie" class="chart chart-pie" chart-options="options" chart-colors="colors" chart-data="data" chart-labels="labels"></canvas>
 				      
 				    </div>
 				</div>
