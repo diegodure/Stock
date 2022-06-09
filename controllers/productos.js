@@ -70,10 +70,14 @@ angular.module('productos',['angularModalService','720kb.datepicker'])
 				}
 				if($scope.productsInExpireToAlert.length > 0){
 					angular.element($(".iconExpiredProducts")).css("display", "block");
-					$scope.msgTitle = 'Atención';
-		    		$scope.msgBody  = 'Hay productos vencidos o por vencer!';
-		    		$scope.msgType  = 'error';
-		 			flash.pop({title: $scope.msgTitle, body: $scope.msgBody, type: $scope.msgType});
+					if(angular.element($("#showToast")).val() == false || angular.element($("#showToast")).val() == "false"){
+						angular.element($("#showToast")).val(true);
+						$scope.msgTitle = 'Atención';
+			    		$scope.msgBody  = 'Hay productos vencidos o por vencer!';
+			    		$scope.msgType  = 'error';
+			 			flash.pop({title: $scope.msgTitle, body: $scope.msgBody, type: $scope.msgType});
+					}
+					
 				}				
 			}
 			

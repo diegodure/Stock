@@ -25,7 +25,7 @@
     <script src="../bower_components/toastr/toastr.min.js"></script>
     <script type="text/javascript" src="../node_modules/pdfmake/build/pdfmake.min.js"></script>
     <script type="text/javascript" src="../node_modules/pdfmake/build/vfs_fonts.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+    <script src="../controllers/html2Canvas.min.js"></script>
 
     <script type="text/javascript" src="../controllers/login.js"></script>
     <script type="text/javascript" src="../controllers/clientes.js"></script>

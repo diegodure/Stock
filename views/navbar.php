@@ -65,4 +65,5 @@
   
   <input type="hidden" name="requieredPhoto" id="requieredPhoto">
   <input type="hidden" name="expirationDate" id="expirationDate">
+  <input type="hidden" name="showToast" id="showToast" value="false">
 </nav>
