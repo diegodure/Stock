@@ -1,9 +1,30 @@
 angular.module('facturas',['angularModalService'])
 
+.factory("flash", function($rootScope) {
+
+  return {
+
+    pop: function(message) {
+      switch(message.type) {
+        case 'success':
+          toastr.success(message.body, message.title);
+          break;
+        case 'info':
+          toastr.info(message.body, message.title);
+          break;
+        case 'warning':
+          toastr.warning(message.body, message.title);
+          break;
+        case 'error':
+          toastr.error(message.body, message.title);
+          break;
+      }
+    }
+  };
+})
 
 
-
-.controller('FacturasCtrl', function($scope, $http, ModalService){
+.controller('FacturasCtrl', function($scope, $http, ModalService, flash){
 
 
 	//Inicializamos las variables 
@@ -19,9 +40,8 @@ angular.module('facturas',['angularModalService'])
 			modal.close.then(function(result){
 				// Una vez que el modal sea cerrado, la libreria invoca esta función
         		// y en result tienes el resultado.
-        		console.log(result);
         		$scope.cliente = result;
-        		//location.reload();
+        	
 			})
 		})
 	};
@@ -74,7 +94,10 @@ angular.module('facturas',['angularModalService'])
 		var pos = $scope.productos.indexOf(producto);
 		console.log(pos);
 		$scope.productos.splice(pos, 1); //pasamos el indice a ser eliminado (pos) y luego la cantidad de elementos a ser eliminados
-		
+		$scope.msgTitle = 'Info';
+		$scope.msgBody  = 'Se sacó el producto!';
+		$scope.msgType  = 'info';
+		flash.pop({title: $scope.msgTitle, body: $scope.msgBody, type: $scope.msgType});
 	};
 
 	$scope.facturar = function(productos, cliente){
@@ -102,7 +125,6 @@ angular.module('facturas',['angularModalService'])
 				total: $scope.total
 			};
 
-			//alert($scope.total);
 			var pos = 0;
 			$http.post("../models/insertFacturas.php", factura)
 			.success(function(res){

@@ -27,7 +27,7 @@ angular.module('productos',['angularModalService','720kb.datepicker'])
 .controller('ProductosCtrl', function($scope, $http, ModalService, flash){
 	angular.element(document).ready(function () {
 
-    	$scope.selectProducts();
+    	$scope.selectProducts(true);
 	});
 	window.onresize = function () {
          $scope.logResize();
@@ -43,6 +43,10 @@ angular.module('productos',['angularModalService','720kb.datepicker'])
 	        for(var i = 0; i < $scope.configuraciones.length; i++){
 				if($scope.configuraciones[i]["Nombre"] == "Vencimiento" && $scope.configuraciones[i]["Estado"] >= "0"){
 					$scope.daysToExpiration = $scope.configuraciones[i]["Estado"];
+				}
+				if(data[i]["Nombre"] == "Foto del producto" && data[i]["Estado"] == "0"){
+					$scope.requieredPhoto = data[i]["Estado"];
+					angular.element($("#requieredPhoto")).val(data[i]["Estado"]);
 				}
 			}
 			if($scope.daysToExpiration > 0){
@@ -109,8 +113,10 @@ angular.module('productos',['angularModalService','720kb.datepicker'])
 			modal.close.then(function(result){
 				// Una vez que el modal sea cerrado, la libreria invoca esta función
         		// y en result tienes el resultado.
-        		;
-        		$scope.selectProducts();
+        		if(result != undefined){
+        			$scope.selectProducts(true);
+        		}
+        		
 			})
 		})
 	};
@@ -118,34 +124,35 @@ angular.module('productos',['angularModalService','720kb.datepicker'])
 
 	
 	//La parte del select donde mostramos los datos en la tabla
-	$scope.selectProducts = function(){
-		angular.element($("#spinerContainer")).css("display", "block");
-		$http.get('../models/selectProductos.php').success(function(data){
-			angular.element($("#spinerContainer")).css("display", "none");
-			if(data == "error"){
-				$scope.productos = [];
-			}else{
-				$scope.productos = data;
-				if(data.length > 0){
-					var topbar = angular.element($(".navbar-default")).innerHeight();
-		 			var navbar = angular.element($(".navbar-fixed-bottom")).innerHeight();
-		 			var formGroup = angular.element($(".form-group")).innerHeight();
-	        		var table = angular.element($(".table-responsive"));
-					var heightTable = window.outerHeight - topbar - navbar  - formGroup - 250;
-					table.css("maxHeight", heightTable);
+	$scope.selectProducts = function(searchProducts){
+		if(searchProducts){
+			angular.element($("#spinerContainer")).css("display", "block");
+			$http.get('../models/selectProductos.php').success(function(data){
+				angular.element($("#spinerContainer")).css("display", "none");
+				if(data == "error"){
+					$scope.productos = [];
+				}else{
+					$scope.productos = data;
+					
+					if(data.length > 0){
+						var topbar = angular.element($(".navbar-default")).innerHeight();
+			 			var navbar = angular.element($(".navbar-fixed-bottom")).innerHeight();
+			 			var formGroup = angular.element($(".form-group")).innerHeight();
+		        		var table = angular.element($(".table-responsive"));
+						var heightTable = window.outerHeight - topbar - navbar  - formGroup - 250;
+						table.css("maxHeight", heightTable);
 
-					var heightPanelInfo = window.outerHeight - topbar - navbar - 150;
-					var panelInfo = angular.element($(".panel-info"));
-					$scope.selectConfiguraciones();
-					//panelInfo.css("height", heightPanelInfo);
-					//Como agregar clases con angularjs
-					//table.addClass('customClass');
+						var heightPanelInfo = window.outerHeight - topbar - navbar - 150;
+						var panelInfo = angular.element($(".panel-info"));
+						$scope.selectConfiguraciones();
+					}
+					
 				}
 				
-			}
 			
+			});
+		}
 		
-		});
 	};
 
 	
@@ -502,8 +509,7 @@ angular.module('productos',['angularModalService','720kb.datepicker'])
 		  				response = res;
 		  			});
 				}
-				response = res;
-				close();
+				response = res;				
 				angular.element($("#spinerContainer")).css("display", "none");
 				if(response == "error"){
 					$scope.msgTitle = 'Error';
@@ -511,6 +517,7 @@ angular.module('productos',['angularModalService','720kb.datepicker'])
 		    		$scope.msgType  = 'error';
 		 			flash.pop({title: $scope.msgTitle, body: $scope.msgBody, type: $scope.msgType});
 				}else{
+					close(true);
 					$scope.msgTitle = 'Exitoso';
 		    		$scope.msgBody  = response;
 		    		$scope.msgType  = 'success';

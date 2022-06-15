@@ -207,6 +207,9 @@
 								</div>
 
 							</div>
+							<div id="saleToPrint" class="table-responsive" style="display: none;">
+							
+							</div>
 					</div>
 			</div>
 

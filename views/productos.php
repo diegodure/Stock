@@ -62,22 +62,30 @@
 							<table class="table">
 								<tr class="info">
 									<th>Código</th>
-									<th><span class="caret" style="cursor: pointer;" ng-click="ordenarPor('Nombre')"></span>Nombre/s<span class="caret" style="cursor: pointer;" ng-click="ordenarPor('-Nombre')"></span></th>
+									<th>
+										<span class="caret" style="cursor: pointer;" ng-click="ordenarPor('Nombre')"></span>Nombre/s<span class="caret" style="cursor: pointer;" ng-click="ordenarPor('-Nombre')"></span>
+									</th>
 									<th>Descripcion</th>
 									<th>Cantidad</th>
-									<th>Precio</th>
+									<th>Precio Venta</th>
+									<th>Precio Mayorista</th>
+									<th>Precio Promocional</th>
 									<th>Proveedor</th>
 									<th class='text-right'>Acciones</th>
 								</tr>
 								
 								<tr ng-repeat="producto in productos | orderBy:ordenSeleccionado | filter:buscar">
 									<td>{{producto.idProductos}}</td>
-									<td>{{producto.Nombre}}</td>
+									<td>
+										{{producto.Nombre}}
+									</td>
 									<td>{{producto.Descripcion}}</td>
 							
 									<!-- Filtro lowercase para letras en minusculas -->
 									<td>{{producto.CantidadActual}}</td>
 									<td>{{producto.PrecioUnitario | currency :'₲':0}}</td>
+									<td>{{producto.PrecioMayorista | currency :'₲':0}}</td>
+									<td>{{producto.PrecioPromocional | currency :'₲':0}}</td>
 									<td>{{producto.provN}}</td>
 									
 

@@ -160,9 +160,6 @@ angular.module('ventas',['angularModalService'])
 	}
 
 	$scope.facturar = function(productos, cliente, isInvoice){
-			console.log(productos);
-			console.log(cliente);
-			console.log(isInvoice);
 			var length = productos.length;
 		
 			//Obtenemos los productos
@@ -190,15 +187,103 @@ angular.module('ventas',['angularModalService'])
 				// var docDefinition = { content: 'This is an sample PDF printed with pdfMake' };
     //     		pdfMake.createPdf(docDefinition).open();
 
-    			//Ejemplo2
-    			html2canvas(document.getElementById('tableProduct'), {
+    			var row = [];
+				row.push([{text: 'Artículo', style: 'tableHeader'}, {text: 'Cantidad', style: 'tableHeader'},{text: 'Importe', style: 'tableHeader'}]);
+				for (var i = 0; i < productos.length; i++) {
+					row.push([productos[i].nombre,productos[i].cantidad,productos[i].precio])
+				}
+    			html2canvas(document.getElementById('saleToPrint'), {
 		         onrendered: function(canvas) {
 		           var data = canvas.toDataURL();
 		           var docDefinition = {
-		             content: [{
-		               image: data,
-		               width: 500,
-		             }]
+		           	 pageSize: 'C6',
+		             content: [
+		             	{
+		             		text: 'Título del negocio',
+							style: 'header'
+						},
+						{
+							text: 'Nº RUC',
+							style: 'subheader'
+						},
+						{
+							text: 'Dirección',
+							style: 'subheader'
+						},
+						{
+							text: 'Teléfono',
+							style: 'subheader'
+						},
+						'\n..................................................................................................................................................................',
+						{
+		             		text: 'Numero de venta 0000',
+							style: 'header'
+						},
+						'..................................................................................................................................................................',
+						{
+		             		text: 'Fecha: 2022/06/25',
+							style: 'clientInfo'
+						},
+						{
+		             		text: 'Cliente: '+cliente.nombre,
+							style: 'clientInfo'
+						},
+						{
+		             		text: 'Ruc: '+cliente.info,
+							style: 'clientInfo'
+						},
+						'\n',
+						{
+							style: 'tableProduct',
+							table: {
+								widths: [ '*', '*', '*', '*', '*' ],
+								headerRows: 1,
+								body: row
+							},
+							layout: 'headerLineOnly'
+						},
+						'\n..................................................................................................................................................................',
+						{
+		             		text: 'Total: '+$scope.total,
+							style: 'clientInfo'
+						},
+						{
+							text: 'Vendedor: Nombre y Apellido',
+							style: 'clientInfo'
+						}
+		             ],
+								styles: {
+									header: {
+										fontSize: 16,
+										bold: true,
+										alignment: 'center'
+									},
+									subheader: {
+										fontSize: 15,
+										bold: true,
+										alignment: 'center'
+									},
+									quote: {
+										italics: true
+									},
+									small: {
+										fontSize: 8
+									},
+									clientInfo : {
+										fontSize: 14,
+										bold: false,
+										alignment: 'left'
+									},
+									tableHeader: {
+										bold: true,
+										fontSize: 13,
+										alignment: 'center',
+										color: 'black'
+									},
+									tableProduct: {
+										alignment : 'center'
+									}
+								}
 		           };
 		           pdfMake.createPdf(docDefinition).open();
 		           // pdfMake.createPdf(docDefinition).download("test.pdf");
@@ -207,33 +292,33 @@ angular.module('ventas',['angularModalService'])
 			}
 			// //alert($scope.total);
 			var pos = 0;
-			angular.element($("#spinerContainer")).css("display", "block");
-			$http.post("../models/insertFacturas.php", factura)
-			.success(function(res){
-				$http.post("../models/detFactura.php", detFac)
-					.success(function (res) {
-						angular.element($("#spinerContainer")).css("display", "none");
-						if(res == "error"){
-							$scope.msgTitle = 'Error';
-					    	$scope.msgBody  = 'Ha ocurrido un error!';
-					    	$scope.msgType  = 'error';
-					 		flash.pop({title: $scope.msgTitle, body: $scope.msgBody, type: $scope.msgType});
-						}else{
-							$scope.msgTitle = 'Exitoso';
-					    	$scope.msgBody  = res;
-					    	$scope.msgType  = 'success';
-					 		flash.pop({title: $scope.msgTitle, body: $scope.msgBody, type: $scope.msgType});
-					 		$scope.hideModalToSell();
-						}
-					});
-				$scope.cliente.id = null;
-				$scope.cliente.nombre = null;
-				$scope.cliente.apellido = null;
-				$scope.cliente.info = null;
-				$scope.cliente.user = null;
-				$scope.total = null;
-				$scope.productos.splice(pos);
-			});
+			// angular.element($("#spinerContainer")).css("display", "block");
+			// $http.post("../models/insertFacturas.php", factura)
+			// .success(function(res){
+			// 	$http.post("../models/detFactura.php", detFac)
+			// 		.success(function (res) {
+			// 			angular.element($("#spinerContainer")).css("display", "none");
+			// 			if(res == "error"){
+			// 				$scope.msgTitle = 'Error';
+			// 		    	$scope.msgBody  = 'Ha ocurrido un error!';
+			// 		    	$scope.msgType  = 'error';
+			// 		 		flash.pop({title: $scope.msgTitle, body: $scope.msgBody, type: $scope.msgType});
+			// 			}else{
+			// 				$scope.msgTitle = 'Exitoso';
+			// 		    	$scope.msgBody  = res;
+			// 		    	$scope.msgType  = 'success';
+			// 		 		flash.pop({title: $scope.msgTitle, body: $scope.msgBody, type: $scope.msgType});
+			// 		 		$scope.hideModalToSell();
+			// 			}
+			// 		});
+			// 	$scope.cliente.id = null;
+			// 	$scope.cliente.nombre = null;
+			// 	$scope.cliente.apellido = null;
+			// 	$scope.cliente.info = null;
+			// 	$scope.cliente.user = null;
+			// 	$scope.total = null;
+			// 	$scope.productos.splice(pos);
+			// });
 			total = 0;
 			$scope.payment = null;
 			$scope.vuelto = null;
