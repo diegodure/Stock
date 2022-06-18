@@ -134,7 +134,7 @@ angular.module('reportesBalances',['720kb.datepicker','chart.js'])
                              if($scope.compras[i]['Fecha'] == $scope.etiquetas[j]) 
                                      igual=true;
                          }
-                        if(!igual)array.push($scope.compras[i]['Fecha']);
+                        if(!igual)$scope.etiquetas.push($scope.compras[i]['Fecha']);
                     }
                     
 
