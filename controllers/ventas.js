@@ -292,33 +292,33 @@ angular.module('ventas',['angularModalService'])
 			}
 			// //alert($scope.total);
 			var pos = 0;
-			// angular.element($("#spinerContainer")).css("display", "block");
-			// $http.post("../models/insertFacturas.php", factura)
-			// .success(function(res){
-			// 	$http.post("../models/detFactura.php", detFac)
-			// 		.success(function (res) {
-			// 			angular.element($("#spinerContainer")).css("display", "none");
-			// 			if(res == "error"){
-			// 				$scope.msgTitle = 'Error';
-			// 		    	$scope.msgBody  = 'Ha ocurrido un error!';
-			// 		    	$scope.msgType  = 'error';
-			// 		 		flash.pop({title: $scope.msgTitle, body: $scope.msgBody, type: $scope.msgType});
-			// 			}else{
-			// 				$scope.msgTitle = 'Exitoso';
-			// 		    	$scope.msgBody  = res;
-			// 		    	$scope.msgType  = 'success';
-			// 		 		flash.pop({title: $scope.msgTitle, body: $scope.msgBody, type: $scope.msgType});
-			// 		 		$scope.hideModalToSell();
-			// 			}
-			// 		});
-			// 	$scope.cliente.id = null;
-			// 	$scope.cliente.nombre = null;
-			// 	$scope.cliente.apellido = null;
-			// 	$scope.cliente.info = null;
-			// 	$scope.cliente.user = null;
-			// 	$scope.total = null;
-			// 	$scope.productos.splice(pos);
-			// });
+			angular.element($("#spinerContainer")).css("display", "block");
+			$http.post("../models/insertFacturas.php", factura)
+			.success(function(res){
+				$http.post("../models/detFactura.php", detFac)
+					.success(function (res) {
+						angular.element($("#spinerContainer")).css("display", "none");
+						if(res == "error"){
+							$scope.msgTitle = 'Error';
+					    	$scope.msgBody  = 'Ha ocurrido un error!';
+					    	$scope.msgType  = 'error';
+					 		flash.pop({title: $scope.msgTitle, body: $scope.msgBody, type: $scope.msgType});
+						}else{
+							$scope.msgTitle = 'Exitoso';
+					    	$scope.msgBody  = res;
+					    	$scope.msgType  = 'success';
+					 		flash.pop({title: $scope.msgTitle, body: $scope.msgBody, type: $scope.msgType});
+					 		$scope.hideModalToSell();
+						}
+					});
+				$scope.cliente.id = null;
+				$scope.cliente.nombre = null;
+				$scope.cliente.apellido = null;
+				$scope.cliente.info = null;
+				$scope.cliente.user = null;
+				$scope.total = null;
+				$scope.productos.splice(pos);
+			});
 			total = 0;
 			$scope.payment = null;
 			$scope.vuelto = null;

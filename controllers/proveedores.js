@@ -67,6 +67,7 @@ angular.module('proveedores',['angularModalService'])
 					var panelInfo = angular.element($(".panel-info"));
 			
 				}
+				console.log($scope.proveedores)
 			}
 			
 		});
@@ -211,9 +212,9 @@ angular.module('proveedores',['angularModalService'])
 	//El controller del modal nuevo totalmente independiente de la pagina principal (productos)
 .controller('modalCtrl', function($scope, close, $http, flash, ModalService){
 	
-	$scope.getSucursales = function(){
+	$scope.getEnterprises = function(){
 		angular.element($("#spinerContainer")).css("display", "block");
-		$http.get('../models/selectSucursales.php').success(function(data){
+		$http.get('../models/selectEnterprise.php').success(function(data){
 			angular.element($("#spinerContainer")).css("display", "none");
 			var modalHeader = angular.element($(".modal-header")).innerHeight();
 		 	var navbar = angular.element($(".navbar-fixed-bottom")).innerHeight();
@@ -221,7 +222,7 @@ angular.module('proveedores',['angularModalService'])
 		    var modalBody = angular.element($(".modal-body"));
 			var contentHeight = window.outerHeight - modalHeader - modalFooter  - navbar - 250;
 			modalBody.css("maxHeight", contentHeight);
-			$scope.sucursales = data;
+			$scope.enterprises = data;
 
 		});
 	}
@@ -234,27 +235,27 @@ angular.module('proveedores',['angularModalService'])
 			nombre: $scope.nombre,
 			apellido: $scope.apellido,
 			info: $scope.info,
-			sucursal: $scope.sucursal
+			enterprises: $scope.enterprise
 		};
 
 		if (model.nombre == undefined || model.apellido == undefined || 
 			model.info == undefined || model.sucursal == undefined) {
 			$scope.msgTitle = 'Atención';
-		  $scope.msgBody  = 'Debe completar los campos requeridos!';
-		  $scope.msgType  = 'warning';
+		  	$scope.msgBody  = 'Debe completar los campos requeridos!';
+		  	$scope.msgType  = 'warning';
 		 	flash.pop({title: $scope.msgTitle, body: $scope.msgBody, type: $scope.msgType});
 		}else{
 			$http.post("../models/insertProveedores.php", model)
 			.success(function(res){	
 				if(res == "error"){
 						$scope.msgTitle = 'Error';
-			    	$scope.msgBody  = 'Ha ocurrido un error!';
-			    	$scope.msgType  = 'error';
+			    		$scope.msgBody  = 'Ha ocurrido un error!';
+			    		$scope.msgType  = 'error';
 			 			flash.pop({title: $scope.msgTitle, body: $scope.msgBody, type: $scope.msgType});
 					}else{
 						$scope.msgTitle = 'Exitoso';
-			    	$scope.msgBody  = res;
-			    	$scope.msgType  = 'success';
+			    		$scope.msgBody  = res;
+			    		$scope.msgType  = 'success';
 			 			flash.pop({title: $scope.msgTitle, body: $scope.msgBody, type: $scope.msgType});
 						$scope.nombre = null;
 						$scope.apellido = null;
@@ -268,6 +269,6 @@ angular.module('proveedores',['angularModalService'])
 	};
 	
 
-	$scope.getSucursales();
+	$scope.getEnterprises();
 })
 
