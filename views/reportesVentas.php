@@ -71,8 +71,8 @@
 				</form>
 
 				<div class="container">
-				  <div class="row" style="display: flex;">
-				    <div class="col" style="display:inline-block;width: 45%" >
+				  <div class="row">
+				    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
 				    	<div class="table-responsive">
 				    		<table class="table">
 								<tr class="info">
@@ -92,7 +92,7 @@
 				    	</div>
 				      
 				    </div>
-				    <div class="col" style="display:inline-block;width: 48%">
+				    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
 				      <div class="table-responsive">
 				    		<table class="table">
 								<tr class="info">

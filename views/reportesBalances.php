@@ -3,7 +3,7 @@
     include("../conect.php");
     
     if(isset($_SESSION['user'])){
-    	$title = "Balances | Simple Invoice"
+    	$title = "Impulse"
   ?>
   <!DOCTYPE html>
 <html>
@@ -25,9 +25,9 @@
 				<h4><i class='glyphicon glyphicon-search'></i> Buscar Balance</h4>
 			</div>
 			<div class="panel-body">
-				<form class="form-horizontal" role="form" id="datos_cotizacion">
+				<div class="row">
 						
-            	    <div class="form-group row" style="display: inline-block;width: 45%;">
+            	    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
             		    <label for="q" class="col-md-4 control-label">Fecha desde</label>
             		    <div class="col-md-6">
 
@@ -45,7 +45,7 @@
 
             		</div>
 
-            		<div class="form-group row" style="display: inline-block;width: 45%;">
+            		<div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
             		    <label for="q" class="col-md-4 control-label">Fecha hasta</label>
             		    <div class="col-md-6">
 
@@ -63,30 +63,27 @@
 
             		</div>
 
-					<div class="btn-group pull-right">
-					<button type='button' class="btn btn-info" ng-click="report(date1,date2)"><span class="glyphicon glyphicon-plus"></span> Buscar</button>
-					
+					<div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+					<button type='button' class="btn btn-info" ng-click="createReport(date1,date2)"><span class="glyphicon glyphicon-plus"></span> Buscar</button>
+					<button type='button' ng-show="etiquetas.length > 0" class="btn btn-info" ng-click="downloadReport()"><span class="glyphicon glyphicon-download-alt"></span> Descargar</button>
 
 					</div>
-				</form>
+				</div>
 
-				<div class="container">
-					
-				  <div class="row">
-				  	<div class="col col-md-12 col-lg-12 col-xl-12" style="width: 94%;">
+				<div class="row" id="reportContainer">
+				  	<div class="col col-md-12 col-lg-12 col-xl-12">
 				  		<canvas id="mylineGraph"></canvas>
 				  	</div>
-				    <div class="col col-md-12 col-lg-12 col-xl-12" style="width: 94%;">
+				    <div class="col col-md-12 col-lg-12 col-xl-12" >
 				    	
-				    	<canvas class="chart chart-bar" chart-data="datos" chart-labels="etiquetas" chart-series="series"></canvas>
+				    	<canvas id="barChart" class="chart chart-bar" chart-colors="colors" chart-data="datos" chart-labels="etiquetas" chart-series="series" chart-legend="options"></canvas>
 				    </div>
-				    <div class="col col-md-12 col-lg-12 col-xl-12" style="width: 94%;">
-				     <canvas id="pie" class="chart chart-pie" chart-data="data" chart-labels="labels"></canvas>
+				    <div class="col col-md-12 col-lg-12 col-xl-12" >
+				     <canvas id="pie" class="chart chart-pie" chart-options="options" chart-colors="colors" chart-data="data" chart-labels="labels"></canvas>
 				      
 				    </div>
-				    </div>
+				</div>
 				    
-				  </div>
 				</div>
 
 			</div>

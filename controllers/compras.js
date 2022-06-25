@@ -55,6 +55,7 @@ angular.module('compras',['angularModalService'])
 				// y en result tienes el resultado
 				
 				$scope.prod = result;
+				$scope.precio = result.precio;
 				
 			})
 		})
@@ -94,7 +95,10 @@ angular.module('compras',['angularModalService'])
 		//alert(total);
 		var pos = $scope.productos.indexOf(producto);
 		$scope.productos.splice(pos, 1); //pasamos el indice a ser eliminado (pos) y luego la cantidad de elementos a ser eliminados
-		
+		$scope.msgTitle = 'Info';
+		$scope.msgBody  = 'Se sacó el producto!';
+		$scope.msgType  = 'info';
+		flash.pop({title: $scope.msgTitle, body: $scope.msgBody, type: $scope.msgType});
 	};
 
 	$scope.facturar = function(productos, proveedor){
@@ -196,10 +200,7 @@ angular.module('compras',['angularModalService'])
 			user: proveedor.Empresa,
 			id: proveedor.idProveedores
 		};
-		 // serveData = clientes;
-		 // $scope.obj = serveData;
-		 //console.log($scope.obj);
-		 //console.log(clientes);
+	
 		 close(proveedor);
 	};
 })
@@ -237,8 +238,7 @@ angular.module('compras',['angularModalService'])
 				//table.addClass('customClass');
 			}
 		}
-		
-		//console.log($scope.productos);
+	
 	});
 
 	//La parte donde elegimos el producto
@@ -246,7 +246,8 @@ angular.module('compras',['angularModalService'])
 		var productos = {
 			idP: producto.idProductos,
 			nombre: producto.Nombre,
-			descripcion: producto.Descripcion
+			descripcion: producto.Descripcion,
+			precio: producto.PrecioUnitario
 		};
 		
 		 close(productos);

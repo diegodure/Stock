@@ -61,10 +61,16 @@
 							
 									<!-- Filtro lowercase para letras en minusculas -->
 									<td>
+										<span style="font-weight: bold;" ng-if="configuracion.Estado != 0 && configuracion.Nombre == 'Vencimiento'">
+											{{configuracion.Estado}} día(s)
+										</span>
 										<span style="font-weight: bold;" ng-if="configuracion.Estado == 1">
 											Deshabilitado
 										</span>
-										<span style="font-weight: bold;" ng-if="configuracion.Estado == 0">
+										<span style="font-weight: bold;" ng-if="configuracion.Estado == 0 && configuracion.Nombre == 'Vencimiento'">
+											Deshabilitado
+										</span>
+										<span style="font-weight: bold;" ng-if="configuracion.Estado == 0 && configuracion.Nombre != 'Vencimiento'">
 											Habilitado
 										</span>
 										

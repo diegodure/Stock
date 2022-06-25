@@ -24,8 +24,8 @@
         $precio = $obj['precio'];
         $cantidad = $obj['cantidad'];
         $subT = $obj['subT'];
-        $sql2 = "insert into det_compras (Compras_idCompras, Productos_idProductos, Cantidad, Precio, subTotal)
-        values ('$idC', '$idP', '$cantidad', '$precio', '$subT')";
+        $sql2 = "insert into det_compras (Compras_idCompras, Productos_idProductos, Cantidad, Precio, subTotal, Condicion)
+        values ('$idC', '$idP', '$cantidad', '$precio', '$subT','Contado')";
 	    //print ($iva);
 	    $con->query($sql2);
 

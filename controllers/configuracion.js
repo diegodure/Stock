@@ -93,7 +93,10 @@ angular.module('configuracion',['angularModalService'])
     $scope.configuraciones = [{"Estado":"0","Nombre":"Sí"},{"Estado":"1","Nombre":"No"}];
     myNewConfig = {"idConfiguracion":id, "Estado":estado};
     $scope.myNewConfig = myNewConfig;
+  }else if(nombre == "Vencimiento"){
+    $scope.myNewConfig = parseInt(estado);
   }
+
   $scope.nombre = nombre;
   $scope.descripcion = descripcion;
   $scope.estado = estado;
@@ -102,7 +105,12 @@ angular.module('configuracion',['angularModalService'])
   };
 
   $scope.setNewValue = function(){
-    $scope.estado = angular.element($("#myNewConfig option:selected")).val()
+    if ($scope.nombre == "Vencimiento") {
+      $scope.estado = angular.element($("#myNewConfig")).val();
+    }else{
+      $scope.estado = angular.element($("#myNewConfig option:selected")).val();  
+    }
+    
   };
 
   $scope.modificarConfiguracion = function(){
@@ -112,7 +120,6 @@ angular.module('configuracion',['angularModalService'])
       estado: $scope.estado,
       id: id
     };
-   
     angular.element($("#spinerContainer")).css("display", "block");
     $http.post("../models/modificarConfiguracion.php", model)
     .success(function(res){
@@ -131,6 +138,8 @@ angular.module('configuracion',['angularModalService'])
         $scope.nombre = null;
         $scope.apellido = null;
         $scope.info = null;
+        angular.element($("#requieredPhoto")).val('');
+        angular.element($("#expirationDate")).val('');
       }
       
     });

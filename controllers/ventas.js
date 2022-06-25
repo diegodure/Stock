@@ -34,16 +34,16 @@ angular.module('ventas',['angularModalService'])
 
 	$scope.selectConfiguraciones = function(){
     angular.element($("#spinerContainer")).css("display", "block");
-    $http.get('../models/selectConfiguraciones.php').success(function(data){
-      if(data == "error"){
-        $scope.configuraciones = [];
-      }else{
-        $scope.configuraciones = data;
-        
-      }
-      angular.element($("#spinerContainer")).css("display", "none");
-    });
-  };
+	    $http.get('../models/selectConfiguraciones.php').success(function(data){
+	      if(data == "error"){
+	        $scope.configuraciones = [];
+	      }else{
+	        $scope.configuraciones = data;
+	        
+	      }
+	      angular.element($("#spinerContainer")).css("display", "none");
+	    });
+  	};
 	//Inicializamos las variables 
 	 $scope.productos = [];
 	 var total = 0, iva = 0;
@@ -94,7 +94,7 @@ angular.module('ventas',['angularModalService'])
 		}
 		for(var i = 0; i < $scope.configuraciones.length; i++){
 			if($scope.configuraciones[i]["Nombre"] == "Cantidad mínima" && $scope.configuraciones[i]["Estado"] == "0"){
-				if(($scope.prod.CantidadActual - $scope.cantidad) <= $scope.prod.CantidadMinima){
+				if(($scope.prod.CantidadActual - $scope.cantidad) <= $scope.prod.CantidadMinima && $scope.prod.CantidadMinima != 0){
 					$scope.msgTitle = 'Atención';
 			    	$scope.msgBody  = "El producto "+$scope.prod.Nombre+" llego a la cantidad mínima";
 			    	$scope.msgType  = 'warning';
@@ -114,7 +114,7 @@ angular.module('ventas',['angularModalService'])
 
 		//ubicamos los datos en el array para mostrarlos en la tabla
 		$scope.productos.push({idP: $scope.prod.idProductos, nombre: $scope.prod.Nombre, descripcion: $scope.prod.Descripcion,
-		 precio: precio, cantidad: $scope.cantidad, subTotal: subTotal});
+		precio: precio, cantidad: $scope.cantidad, subTotal: subTotal,condicion: $scope.price.type});
 		$scope.prod.Nombre = null;
 		$scope.prod.Descripcion = null;		
 		$scope.cantidad = null;
@@ -131,11 +131,35 @@ angular.module('ventas',['angularModalService'])
 		//alert(total);
 		var pos = $scope.productos.indexOf(producto);
 		$scope.productos.splice(pos, 1); //pasamos el indice a ser eliminado (pos) y luego la cantidad de elementos a ser eliminados
-		
+		$scope.msgTitle = 'Info';
+		$scope.msgBody  = 'Se sacó el producto!';
+		$scope.msgType  = 'info';
+		flash.pop({title: $scope.msgTitle, body: $scope.msgBody, type: $scope.msgType});
 	};
 
-	$scope.facturar = function(productos, cliente){
-			
+	$scope.prepareToSell = function(){
+		if($scope.total == "" || $scope.total == null){
+			$scope.msgTitle = 'Info';
+    		$scope.msgBody  = 'No hay productos por vender!';
+    		$scope.msgType  = 'info';
+ 			flash.pop({title: $scope.msgTitle, body: $scope.msgBody, type: $scope.msgType});
+		}else{
+			angular.element($(".modalImpulse")).css("display", "block");
+		}
+		
+	}
+
+	$scope.hideModalToSell = function(){
+		angular.element($(".modalImpulse")).css("display", "none");
+		$scope.payment = null;
+		$scope.vuelto = null;
+	}
+
+	$scope.calcularVuelto = function(){
+		$scope.vuelto = $scope.payment - $scope.total; 
+	}
+
+	$scope.facturar = function(productos, cliente, isInvoice){
 			var length = productos.length;
 		
 			//Obtenemos los productos
@@ -144,12 +168,13 @@ angular.module('ventas',['angularModalService'])
 			var detFac = [];
 
 			for ( i=0; i < length; i++){
-				 detFac.push({
+				detFac.push({
 					id : productos[i].idP,
 					precio: productos[i].precio,
 					cantidad : productos[i].cantidad,
 					subT: productos[i].subTotal,
-			 });
+					condicion: productos[i].condicion
+			 	});
 			}
 
 			//almacenamos los datos del cliente
@@ -157,8 +182,115 @@ angular.module('ventas',['angularModalService'])
 				id: $scope.cliente.id,
 				total: $scope.total
 			};
+			if (isInvoice) {
+				//Ejmplo 1
+				// var docDefinition = { content: 'This is an sample PDF printed with pdfMake' };
+    //     		pdfMake.createPdf(docDefinition).open();
 
-			//alert($scope.total);
+    			var row = [];
+				row.push([{text: 'Artículo', style: 'tableHeader'}, {text: 'Cantidad', style: 'tableHeader'},{text: 'Importe', style: 'tableHeader'}]);
+				for (var i = 0; i < productos.length; i++) {
+					row.push([productos[i].nombre,productos[i].cantidad,productos[i].precio])
+				}
+    			html2canvas(document.getElementById('saleToPrint'), {
+		         onrendered: function(canvas) {
+		           var data = canvas.toDataURL();
+		           var docDefinition = {
+		           	 pageSize: 'C6',
+		             content: [
+		             	{
+		             		text: 'Título del negocio',
+							style: 'header'
+						},
+						{
+							text: 'Nº RUC',
+							style: 'subheader'
+						},
+						{
+							text: 'Dirección',
+							style: 'subheader'
+						},
+						{
+							text: 'Teléfono',
+							style: 'subheader'
+						},
+						'\n..................................................................................................................................................................',
+						{
+		             		text: 'Numero de venta 0000',
+							style: 'header'
+						},
+						'..................................................................................................................................................................',
+						{
+		             		text: 'Fecha: 2022/06/25',
+							style: 'clientInfo'
+						},
+						{
+		             		text: 'Cliente: '+cliente.nombre,
+							style: 'clientInfo'
+						},
+						{
+		             		text: 'Ruc: '+cliente.info,
+							style: 'clientInfo'
+						},
+						'\n',
+						{
+							style: 'tableProduct',
+							table: {
+								widths: [ '*', '*', '*', '*', '*' ],
+								headerRows: 1,
+								body: row
+							},
+							layout: 'headerLineOnly'
+						},
+						'\n..................................................................................................................................................................',
+						{
+		             		text: 'Total: '+$scope.total,
+							style: 'clientInfo'
+						},
+						{
+							text: 'Vendedor: Nombre y Apellido',
+							style: 'clientInfo'
+						}
+		             ],
+								styles: {
+									header: {
+										fontSize: 16,
+										bold: true,
+										alignment: 'center'
+									},
+									subheader: {
+										fontSize: 15,
+										bold: true,
+										alignment: 'center'
+									},
+									quote: {
+										italics: true
+									},
+									small: {
+										fontSize: 8
+									},
+									clientInfo : {
+										fontSize: 14,
+										bold: false,
+										alignment: 'left'
+									},
+									tableHeader: {
+										bold: true,
+										fontSize: 13,
+										alignment: 'center',
+										color: 'black'
+									},
+									tableProduct: {
+										alignment : 'center'
+									}
+								}
+		           };
+		           pdfMake.createPdf(docDefinition).open();
+		           // pdfMake.createPdf(docDefinition).download("test.pdf");
+		         }
+		       });
+			}
+			// //alert($scope.total);
 			var pos = 0;
 			angular.element($("#spinerContainer")).css("display", "block");
 			$http.post("../models/insertFacturas.php", factura)
@@ -176,6 +308,7 @@ angular.module('ventas',['angularModalService'])
 					    	$scope.msgBody  = res;
 					    	$scope.msgType  = 'success';
 					 		flash.pop({title: $scope.msgTitle, body: $scope.msgBody, type: $scope.msgType});
+					 		$scope.hideModalToSell();
 						}
 					});
 				$scope.cliente.id = null;
@@ -187,7 +320,8 @@ angular.module('ventas',['angularModalService'])
 				$scope.productos.splice(pos);
 			});
 			total = 0;
-		
+			$scope.payment = null;
+			$scope.vuelto = null;
 	};
 
 })
@@ -230,6 +364,15 @@ angular.module('ventas',['angularModalService'])
 	angular.element($("#spinerContainer")).css("display", "block");
 	$http.get('../models/selectProductos.php').success(function(data){
 		angular.element($("#spinerContainer")).css("display", "none");
+		var topbar = angular.element($(".navbar-default")).innerHeight();
+		var navbar = angular.element($(".navbar-fixed-bottom")).innerHeight();
+		var formGroup = angular.element($(".form-group")).innerHeight();
+		var table = angular.element($(".productoFactura"));
+		var heightTable = window.outerHeight - topbar - navbar  - formGroup - 250;
+		table.css("maxHeight", heightTable);
+
+		var heightPanelInfo = window.outerHeight - topbar - navbar - 150;
+		var panelInfo = angular.element($(".panel-info"));
 		$scope.productos = data;
 	});
 

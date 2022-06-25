@@ -98,7 +98,7 @@
 							</div>
 
 							<div class="form-group row">
-								<label for="q" class="col-md-6 control-label">Precio del Producto</label>
+								<label for="q" class="col-md-6 control-label">Costo del Producto</label>
 								<div class="col-md-6">
 									<input type="text" class="form-control" required placeholder="Precio del producto" ng-model="precio" >
 								</div>

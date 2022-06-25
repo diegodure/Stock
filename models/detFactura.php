@@ -24,8 +24,9 @@
         $precio = $obj['precio'];
         $cantidad = $obj['cantidad'];
         $subT = $obj['subT'];
-        $sql2 = "insert into det_ventas (Ventas_idVentas, Productos_idProductos, Cantidad, Precio, subtotal)
-        values ('$idV', '$idP', '$cantidad', '$precio', '$subT')";
+        $condicion = $obj['condicion'];
+        $sql2 = "insert into det_ventas (Ventas_idVentas, Productos_idProductos, Cantidad, Precio, subtotal, Condicion)
+        values ('$idV', '$idP', '$cantidad', '$precio', '$subT', '$condicion')";
 	    //print ($iva);
 	    $con->query($sql2);
 

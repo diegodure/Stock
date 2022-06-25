@@ -23,6 +23,9 @@
     <script type="text/javascript" src="../bower_components/angular-chart.js/dist/angular-chart.min.js"></script>
     <script type="text/javascript" src="../node_modules/angular-input-masks/releases/angular-input-masks-standalone.min.js"></script>
     <script src="../bower_components/toastr/toastr.min.js"></script>
+    <script type="text/javascript" src="../node_modules/pdfmake/build/pdfmake.min.js"></script>
+    <script type="text/javascript" src="../node_modules/pdfmake/build/vfs_fonts.js"></script>
+    <script src="../controllers/html2Canvas.min.js"></script>
 
     <script type="text/javascript" src="../controllers/login.js"></script>
     <script type="text/javascript" src="../controllers/clientes.js"></script>

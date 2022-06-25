@@ -20,8 +20,20 @@
 <div class="container">
 
 
-<div ng-controller="ProductosCtrl" class="container">
-
+<div ng-controller="ProductosCtrl" class="container">	
+		<i class='glyphicon glyphicon-warning-sign iconExpiredProducts' 
+		 ng-click="showExpiredProducts()" title="Ver productos por vencer"></i>	
+		 <div class="modalImpulse modalExpiredProducts">
+		 	<p>Productos por vencer <span aria-hidden="true" 
+		 		style="float: right;margin-right: 10px;cursor: pointer;" ng-click="hideExpiredProducts()">×</span></p>
+		 	<ul ng-repeat="productToExpire in productsInExpireToAlert">
+		 		<li style="list-style: none;font-weight: bold;">
+		 			Nombre: {{productToExpire.Nombre}}
+		 		</li>
+		 		<li>Descripcion: {{productToExpire.Descripcion}}</li>
+		 		<li>Vencimiento: {{productToExpire.Vencimiento}}</li>
+		 	</ul>
+		 </div>
 		<div class="panel panel-info">
 			<div class="panel-heading">
 				<div class="btn-group pull-right">
@@ -46,26 +58,34 @@
 							</div>
 				
 						</form>
-						<div class="table-responsive">
+						<div class="table-responsive tableAbm">
 							<table class="table">
 								<tr class="info">
 									<th>Código</th>
-									<th><span class="caret" style="cursor: pointer;" ng-click="ordenarPor('Nombre')"></span>Nombre/s<span class="caret" style="cursor: pointer;" ng-click="ordenarPor('-Nombre')"></span></th>
+									<th>
+										<span class="caret" style="cursor: pointer;" ng-click="ordenarPor('Nombre')"></span>Nombre/s<span class="caret" style="cursor: pointer;" ng-click="ordenarPor('-Nombre')"></span>
+									</th>
 									<th>Descripcion</th>
 									<th>Cantidad</th>
-									<th>Precio</th>
+									<th>Precio Venta</th>
+									<th>Precio Mayorista</th>
+									<th>Precio Promocional</th>
 									<th>Proveedor</th>
 									<th class='text-right'>Acciones</th>
 								</tr>
 								
 								<tr ng-repeat="producto in productos | orderBy:ordenSeleccionado | filter:buscar">
 									<td>{{producto.idProductos}}</td>
-									<td>{{producto.Nombre}}</td>
+									<td>
+										{{producto.Nombre}}
+									</td>
 									<td>{{producto.Descripcion}}</td>
 							
 									<!-- Filtro lowercase para letras en minusculas -->
 									<td>{{producto.CantidadActual}}</td>
 									<td>{{producto.PrecioUnitario | currency :'₲':0}}</td>
+									<td>{{producto.PrecioMayorista | currency :'₲':0}}</td>
+									<td>{{producto.PrecioPromocional | currency :'₲':0}}</td>
 									<td>{{producto.provN}}</td>
 									
 

@@ -244,4 +244,41 @@ body{
   }
   
 }
+.iconExpiredProducts{
+    font-size: 30px;
+    cursor: pointer;
+    position: absolute;
+    left: 10px;
+    top: 70px;
+    color: #BD362F;
+    opacity: 0.8;
+    display: none;
+}
+.modalExpiredProducts{
+    border-radius: 10px;
+    width: 250px;
+    max-height: 250px;
+    position: absolute;
+    background: white;
+    z-index: 1000;
+    overflow: auto;
+    left: 8px;
+    top: 70px;
+    display: none;
+}
+.modalImpulse p{
+    background: #3498db;
+    color: white;
+    text-align: center;
+    font-weight: bold;
+}
+
+.tableAbm{
+    overflow: auto;
+}
+
+
+.btnModalContainer{
+    padding: 10px;
+}
 

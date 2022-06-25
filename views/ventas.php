@@ -21,7 +21,24 @@
 
 
 <div ng-controller="VentasCtrl" class="container">
-
+		<div class="modalImpulse modalVentas">
+		 	<p>Calcular vuelto <span aria-hidden="true" 
+		 		style="float: right;margin-right: 10px;cursor: pointer;" ng-click="hideModalToSell()">×</span></p>
+		 	<div style="padding: 15px;">
+		 		<div>
+		 			<label>Pago</label> <input type="number" name="pay" ng-model="payment" ng-change="calcularVuelto()">
+		 		</div>
+		 		<div>
+		 			<label>Vuelto</label> <input type="number" readonly name="vuelto" ng-model="vuelto">
+		 		</div>
+		 	</div>
+		 	<div class="btnModalContainer">
+		 		<button type="submit" class="btn btn-default" ng-click="facturar(productos, cliente, true)">
+				<span class="glyphicon glyphicon-plus"></span>Facturar</button>
+				<button type="submit" class="btn btn-default" ng-click="facturar(productos, cliente, false)">
+				<span class="glyphicon glyphicon-plus"></span>Vender</button>
+		 	</div>
+		 </div>
 		<div class="panel panel-info">
 			<div class="panel-heading">
 				
@@ -62,7 +79,7 @@
 							</div>
 
 							<div class="form-group row">
-								<label for="q" class="col-md-6 control-label">Info del Cliente</label>
+								<label for="q" class="col-md-6 control-label">CI/RUC del Cliente</label>
 								<div class="col-md-6">
 									<input type="text" class="form-control" required placeholder="Info del cliente" ng-model="cliente.info"  readonly>
 								</div>
@@ -104,13 +121,13 @@
 									<label>Mayorista<input type="radio" ng-model="price.type" value="mayorista"></label>
 									<label>Promocional<input type="radio" ng-model="price.type" value="promocional"></label>
 									<span ng-if="price.type === 'minorista'">
-									<input type="text" class="form-control" required placeholder="Precio del producto" ng-model="prod.PrecioUnitario" readonly>
+									<input type="text" class="form-control" required placeholder="Precio del producto" ng-model="prod.PrecioUnitario | currency:'₲'" readonly>
 									</span>
 									<span ng-if="price.type === 'mayorista'">
-									<input type="text" class="form-control" required placeholder="Precio del producto" ng-model="prod.PrecioMayorista" readonly>
+									<input type="text" class="form-control" required placeholder="Precio del producto" ng-model="prod.PrecioMayorista | currency:'₲'" readonly>
 									</span>
 									<span ng-if="price.type === 'promocional'">
-									<input type="text" class="form-control" required placeholder="Precio del producto" ng-model="prod.PrecioPromocional" readonly>
+									<input type="text" class="form-control" required placeholder="Precio del producto" ng-model="prod.PrecioPromocional | currency:'₲'" readonly>
 									</span>
 								</div>
 							</div>
@@ -136,7 +153,7 @@
 						</form>
 
 
-						<div class="table-responsive" style="overflow-x: inherit;">
+						<div class="table-responsive" id="tableProduct" style="overflow-x: inherit;">
 							<table class="table">
 								<tr class="info">
 									<th>Codigo</th>
@@ -144,6 +161,7 @@
 									<th>Descripcion</th>
 									<th>Precio</th>
 									<th>Cantidad</th>
+									<th>Condición Venta</th>
 									<th>SubTotal</th>
 									<th class='text-right'>Acciones</th>
 								</tr>
@@ -160,6 +178,8 @@
 									<td>{{producto.precio | currency:'₲'}}</td>
 									
 									<td>{{producto.cantidad}}</td>
+
+									<td>{{producto.condicion}}</td>
 
                                     <td>{{producto.subTotal | currency:'₲'}}</td>
 
@@ -178,14 +198,17 @@
 									<input type="text" class="form-control" required placeholder="Total" ng-model="total | currency:'₲'" readonly>
 								</div>
 
-								<label for="q" class="col-md-3 control-label">Facturar</label>
+								<label for="q" class="col-md-3 control-label">Vender</label>
 								
 								<div class="col-md-3">
-									<button type="submit" class="btn btn-default" ng-click="facturar(productos, cliente)">
-									<span class="glyphicon glyphicon-plus"></span>Facturar</button>
-									<span></span>
+									<button class="btn btn-default" ng-click="prepareToSell()">
+									<span class="glyphicon glyphicon-plus"></span>Vender</button>
+									
 								</div>
 
+							</div>
+							<div id="saleToPrint" class="table-responsive" style="display: none;">
+							
 							</div>
 					</div>
 			</div>

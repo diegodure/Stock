@@ -20,7 +20,7 @@
 			</div>
 
 			<br>
-			<div class="table-responsive">
+			<div class="table-responsive productoFactura">
 							<table class="table">
 								<tr class="info">
 									<th>Código</th>
@@ -40,9 +40,9 @@
 									<!-- Filtro lowercase para letras en minusculas -->
 									<td>{{producto.Descripcion | lowercase}}</td>
 
-									<td>{{producto.PrecioUnitario}}</td>
-									<td>{{producto.PrecioMayorista}}</td>
-									<td>{{producto.PrecioPromocional}}</td>
+									<td>{{producto.PrecioUnitario | currency:'₲'}}</td>
+									<td>{{producto.PrecioMayorista | currency:'₲'}}</td>
+									<td>{{producto.PrecioPromocional | currency:'₲'}}</td>
 									<td>{{producto.provN}}</td>
 
 									<td><span class="pull-right">

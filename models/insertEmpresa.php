@@ -7,11 +7,11 @@
 	$address = $data->{"address"};
 	$phone = $data->{"phone"};
 	$country = $data->{"country"};
-	if($description == undefined){
-		$description = null;
+	if(empty($data->{"description"})){
+		$description = 0;
 	}
-	if($phone == undefined){
-		$phone = null;
+	if(!empty($data->{"phone"})){
+		$phone = 0;
 	}
 	include("../conect.php");
 
