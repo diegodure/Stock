@@ -2,10 +2,10 @@
 	$data = json_decode(file_get_contents("php://input"));
 	$idE = $data->{"id"};
 	$nombre = $data->{"nombre"};
-	if(!empty($data->{"cantidad"})){
-		$descripcion = $data->{"descripcion"};
-	}else{
+	if(empty($data->{"descripcion"})){
 		$descripcion = "";
+	}else{
+		$descripcion = $data->{"descripcion"};
 	}
 	$ciudad = $data->{"ciudad"};
 	$barrio = $data->{"barrio"};

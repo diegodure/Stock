@@ -5,14 +5,17 @@
 	$city = $data->{"city"};
 	$neighborhood = $data->{"neighborhood"};
 	$address = $data->{"address"};
-	$phone = $data->{"phone"};
+	if(empty($data->{"phone"})){
+		$phone = 0;
+	}else{
+		$phone = $data->{"phone"};
+	}
+	
 	$country = $data->{"country"};
 	if(empty($data->{"description"})){
 		$description = 0;
 	}
-	if(!empty($data->{"phone"})){
-		$phone = 0;
-	}
+	
 	include("../conect.php");
 
 	$sql = "insert into empresas (idEmpresas, Nombre, Descripcion, Ciudad, Barrio, Dirreccion, Telefono, Paises_IdPais, active) values (null, '$name', '$description', '$city', '$neighborhood', '$address', '$phone', '$country', 0)";

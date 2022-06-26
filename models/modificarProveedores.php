@@ -3,12 +3,12 @@
 	$nombre = $data->{"nombre"};
 	$apellido = $data->{"apellido"};
 	$info = $data->{"info"};
-	$idSucursal = $data->{"idSucursal"};
+	$idEmpresa = $data->{"idEmpresa"};
 	$id = $data->{"id"};
 	
 	include("../conect.php");
 
-	$sql = "update proveedores set Nombre='$nombre', Apellido='$apellido',Informacion='$info',Sucursal_idSucursal='$idSucursal' where idProveedores='$id'";
+	$sql = "update proveedores set Nombre='$nombre', Apellido='$apellido',Informacion='$info',Empresas_idEmpresas='$idEmpresa' where idProveedores='$id'";
 	$results = $con->query($sql);
 
 	if(!$results){ 

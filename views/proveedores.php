@@ -64,7 +64,7 @@
 							
 									<!-- Filtro lowercase para letras en minusculas -->
 									<td>{{proveedor.Informacion}}</td>
-									<td>{{proveedor.Sucursal}}</td>
+									<td>{{proveedor.Empresa}}</td>
 
 
 									<td><span class="pull-right">
