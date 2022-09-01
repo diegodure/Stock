@@ -71,7 +71,13 @@
 						</form>
 
 						<form class="form-vertical col-lg-6 col-md-6 col-sm-6 col-xs-12" role="form" ng-submit="agregarProducto()">
+							<input type="text" ng-model="codigoBarras">
+    						<br>
+							<angular-barcode ng-model="codigoBarras" bc-options="opciones" bc-class="barcode" bc-type="svg"></angular-barcode>
 
+							<p id="resultado">Aquí aparecerá el código</p>
+		<p>A continuación, el contenedor: </p>
+		<div id="contenedor"></div>
 							<div class="form-group row">
 								<label for="q" class="col-md-6 control-label">Buscar Producto</label>
 								

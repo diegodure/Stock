@@ -1,4 +1,4 @@
-angular.module('compras',['angularModalService'])
+angular.module('compras',['angularModalService','angular-barcode'])
 
 .factory("flash", function($rootScope) {
 
@@ -24,7 +24,28 @@ angular.module('compras',['angularModalService'])
 })
 
 .controller('ComprasCtrl', function($scope, $http, ModalService, flash){
+	$scope.opciones = {
+      format: 'CODE128',
+      lineColor: '#000000',
+      width: 2,
+      height: 100,
+      displayValue: true,
+      fontOptions: '',
+      font: 'monospace',
+      textAlign: 'center',
+      textPosition: 'bottom',
+      textMargin: 2,
+      fontSize: 20,
+      background: '#ffffff',
+      margin: 0,
+      marginTop: undefined,
+      marginBottom: undefined,
+      marginLeft: undefined,
+      marginRight: undefined,
+      valid: function(valid) {}
+    };
 
+    $scope.codigoBarras = "parzibyte.me";
 	//Inicializamos las variables 
 	 $scope.productos = [];
 	 var total = 0, iva = 0;

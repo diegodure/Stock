@@ -168,7 +168,7 @@ angular.module('productos',['angularModalService','720kb.datepicker'])
 			templateUrl: "modificarProducto.html",
 			controller: "modificarCtrl",
 			 inputs: {
-			 		idP: producto.idProductos,
+			 	idP: producto.idProductos,
     			nombre: producto.Nombre,
     			descripcion: producto.Descripcion,
     			PrecioUnitario: producto.PrecioUnitario,
@@ -488,8 +488,8 @@ angular.module('productos',['angularModalService','720kb.datepicker'])
 		if(model.nombre == undefined || model.descripcion == undefined || model.precioUnitario == undefined
 			|| model.precioMayorista == undefined || model.proveedor == undefined){
 			$scope.msgTitle = 'Atención';
-		  $scope.msgBody  = 'Debe completar los campos requeridos!';
-		  $scope.msgType  = 'warning';
+		  	$scope.msgBody  = 'Debe completar los campos requeridos!';
+		  	$scope.msgType  = 'warning';
 		 	flash.pop({title: $scope.msgTitle, body: $scope.msgBody, type: $scope.msgType});
 		}else{
 			let configuracion = {

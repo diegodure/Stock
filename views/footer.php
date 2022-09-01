@@ -26,6 +26,10 @@
     <script type="text/javascript" src="../node_modules/pdfmake/build/pdfmake.min.js"></script>
     <script type="text/javascript" src="../node_modules/pdfmake/build/vfs_fonts.js"></script>
     <script src="../controllers/html2Canvas.min.js"></script>
+    <script type="text/javascript" src="https://rawgit.com/isonet/angular-barcode/master/dist/angular-barcode.js"></script>
+<!--     <script src="https://unpkg.com/quagga@0.12.1/dist/quagga.min.js"></script> -->
+
+    <script src="https://cdn.rawgit.com/serratus/quaggaJS/0420d5e0/dist/quagga.min.js"></script>
 
     <script type="text/javascript" src="../controllers/login.js"></script>
     <script type="text/javascript" src="../controllers/clientes.js"></script>
