@@ -84,7 +84,10 @@ angular.module('login',['angularModalService'])
       		controller: "nuevaEmpresaCtrl"
 		}).then(function(modal){
 			modal.close.then(function(result){
-				$scope.selectEnterprise();
+				if(result){
+					$scope.selectEnterprise();
+				}
+				
 			})
 		})
 	}
@@ -107,7 +110,9 @@ angular.module('login',['angularModalService'])
   			}
 		}).then(function(modal){
 			modal.close.then(function(result){
-				$scope.selectEnterprise();
+				if(result){
+					$scope.selectEnterprise();
+				}
 			})
 		})
 		
@@ -145,7 +150,7 @@ angular.module('login',['angularModalService'])
 			address: $scope.address,
 			phone: $scope.phone
 		};
-		console.log(model);
+	
 		if(model.name != undefined && model.city != undefined && model.neighborhood != undefined 
 	     && model.address != undefined && model.country != undefined){
 	    	$http.post("../models/insertBranchOffices.php", model)
@@ -194,7 +199,6 @@ angular.module('login',['angularModalService'])
 			phone: $scope.telefono,
 			country: $scope.country
 		};
-		console.log(model);
 		if(model.userAlias != undefined && model.userPassword != undefined && model.userFirstName != undefined 
 	     && model.userLastName != undefined && model.userRol != undefined && model.userBranchOffice != undefined){
 	    	$http.post("../models/insertUsers.php", model)
@@ -244,14 +248,14 @@ angular.module('login',['angularModalService'])
 		miPais = {"idPais":idPais, "Nombre":pais};
 		$scope.miPais = miPais; 
 	});
-	$scope.idEmpresa = idEmpresa;
-	$scope.nombre = nombre;
-	$scope.descripcion = descripcion;
-	$scope.ciudad = ciudad;
-	$scope.barrio = barrio;
-	$scope.direccion = direccion;
-	$scope.telefono = telefono;
-	$scope.cerrarModal = function(){
+		$scope.idEmpresa = idEmpresa;
+		$scope.nombre = nombre;
+		$scope.descripcion = descripcion;
+		$scope.ciudad = ciudad;
+		$scope.barrio = barrio;
+		$scope.direccion = direccion;
+		$scope.telefono = telefono;
+		$scope.cerrarModal = function(){
 		close();
 	};
 	$scope.modificarEmpresa = function(){
@@ -291,7 +295,7 @@ angular.module('login',['angularModalService'])
 						$scope.barrio = null;
 						$scope.direccion = null;
 						$scope.telefono = null;
-						close();
+						close(true);
 					}
 			});
 		}
@@ -345,14 +349,14 @@ angular.module('login',['angularModalService'])
 					$scope.phone = null;
 					$scope.country = null;
 			 		$scope.msgTitle = 'Exitoso';
-			    	$scope.msgBody  = 'Empresa creada correctamente!';
-			    	$scope.msgType  = 'success';
+			    $scope.msgBody  = 'Empresa creada correctamente!';
+			    $scope.msgType  = 'success';
 			 		flash.pop({title: $scope.msgTitle, body: $scope.msgBody, type: $scope.msgType});
-			 		$scope.$apply();
+			 		close(true);
 				}else{
 					$scope.msgTitle = 'Alerta';
-			    	$scope.msgBody  = 'Ocurrio un error!';
-			    	$scope.msgType  = 'error';
+			    $scope.msgBody  = 'Ocurrio un error!';
+			    $scope.msgType  = 'error';
 			 		flash.pop({title: $scope.msgTitle, body: $scope.msgBody, type: $scope.msgType});
 				}
 				
@@ -384,14 +388,15 @@ angular.module('login',['angularModalService'])
 		angular.element($("#spinerContainer")).css("display", "block");
 		$http.post("../models/eliminarEmpresa.php", model)
 		.success(function(res){
-			close();
+			
 			angular.element($("#spinerContainer")).css("display", "none");
 			if(res == "error"){
 					$scope.msgTitle = 'Error';
-		    		$scope.msgBody  = 'Ha ocurrido un error!';
-		    		$scope.msgType  = 'error';
+		    	$scope.msgBody  = 'Ha ocurrido un error!';
+		    	$scope.msgType  = 'error';
 		 			flash.pop({title: $scope.msgTitle, body: $scope.msgBody, type: $scope.msgType});
 			}else{
+					close(true);
 					$scope.msgTitle = 'Exitoso';
 		    	$scope.msgBody  = res;
 		    	$scope.msgType  = 'success';

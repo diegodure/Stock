@@ -40,8 +40,10 @@ angular.module('proveedores',['angularModalService'])
 			modal.close.then(function(result){
 				// Una vez que el modal sea cerrado, la libreria invoca esta función
         		// y en result tienes el resultado.
-        		$scope.resultadoModal = result;
-        		$scope.selectProviders();
+        		if(result){
+        			$scope.selectProviders();
+        		}
+        		
 			})
 		})
 	};
@@ -59,7 +61,7 @@ angular.module('proveedores',['angularModalService'])
 					var topbar = angular.element($(".navbar-default")).innerHeight();
 		 			var navbar = angular.element($(".navbar-fixed-bottom")).innerHeight();
 		 			var formGroup = angular.element($(".form-group")).innerHeight();
-	        		var table = angular.element($(".table-responsive"));
+	        var table = angular.element($(".table-responsive"));
 					var heightTable = window.outerHeight - topbar - navbar  - formGroup - 250;
 					table.css("maxHeight", heightTable);
 
@@ -67,7 +69,7 @@ angular.module('proveedores',['angularModalService'])
 					var panelInfo = angular.element($(".panel-info"));
 			
 				}
-				console.log($scope.proveedores)
+			
 			}
 			
 		});
@@ -90,13 +92,15 @@ angular.module('proveedores',['angularModalService'])
     			apellido: proveedor.Apellido,
     			info: proveedor.Informacion,
     			id: proveedor.idProveedores,
-    			sucursalId: proveedor.idSucursal,
-    			sucursal: proveedor.Sucursal
+    			empresaId: proveedor.idEmpresa,
+    			empresa: proveedor.Empresa
   			}
 		}).then(function(modal){
 			modal.close.then(function(result){
 				// $scope.resultadoModal = result;
-				$scope.selectProviders();
+				if(result){
+    			$scope.selectProviders();
+    		}
 			})
 		})
 		
@@ -114,7 +118,9 @@ angular.module('proveedores',['angularModalService'])
 			}
 		}).then(function(modal){
 			modal.close.then(function(result){
-				$scope.selectProviders();
+				if(result){
+    			$scope.selectProviders();
+    		}
 			})
 		})
 	};
@@ -139,7 +145,7 @@ angular.module('proveedores',['angularModalService'])
 		angular.element($("#spinerContainer")).css("display", "block");
 		$http.post("../models/eliminarProveedores.php", model)
 		.success(function(res){
-			close();
+			
 			angular.element($("#spinerContainer")).css("display", "none");
 			if(res == "error"){
 					$scope.msgTitle = 'Error';
@@ -147,6 +153,7 @@ angular.module('proveedores',['angularModalService'])
 		    	$scope.msgType  = 'error';
 		 			flash.pop({title: $scope.msgTitle, body: $scope.msgBody, type: $scope.msgType});
 			}else{
+					close(true);
 					$scope.msgTitle = 'Exitoso';
 		    	$scope.msgBody  = res;
 		    	$scope.msgType  = 'success';
@@ -157,20 +164,20 @@ angular.module('proveedores',['angularModalService'])
 })
 
 	//El controller del modal modificar totalmente independiente de la pagina principal (productos)
-.controller('modificarCtrl', function($scope, close, $http, nombre, apellido, info, sucursalId, sucursal, id, flash){
-	var miSucursal;
+.controller('modificarCtrl', function($scope, close, $http, nombre, apellido, info, empresaId, empresa, id, flash){
+	var miEmpresa;
 	angular.element($("#spinerContainer")).css("display", "block");
-	$http.get('../models/selectSucursales.php').success(function(data){
+	$http.get('../models/selectEnterprise.php').success(function(data){
 		angular.element($("#spinerContainer")).css("display", "none");
 		var modalHeader = angular.element($(".modal-header")).innerHeight();
 	 	var navbar = angular.element($(".navbar-fixed-bottom")).innerHeight();
 	 	var modalFooter = angular.element($(".modal-footer")).innerHeight();
-	    var modalBody = angular.element($(".modal-body"));
+	  var modalBody = angular.element($(".modal-body"));
 		var contentHeight = window.outerHeight - modalHeader - modalFooter  - navbar - 250;
 		modalBody.css("maxHeight", contentHeight);
-		$scope.sucursales = data;
-		miSucursal = {"idSucursal":sucursalId, "Nombre":sucursal};
-		$scope.miSucursal = miSucursal; 
+		$scope.empresas = data;
+		miEmpresa = {"idEmpresas":empresaId, "Nombre":empresa};
+		$scope.miEmpresa = miEmpresa; 
 	});
 	$scope.nombre = nombre;
 	$scope.apellido = apellido;
@@ -183,10 +190,10 @@ angular.module('proveedores',['angularModalService'])
 			nombre: $scope.nombre,
 			apellido: $scope.apellido,
 			info: $scope.info,
-			idSucursal: $scope.miSucursal.idSucursal,
+			idEmpresa: $scope.miEmpresa.idEmpresas,
 			id: id
 		};
-
+		
 		$http.post("../models/modificarProveedores.php", model)
 		.success(function(res){
 			if(res == "error"){
@@ -202,7 +209,7 @@ angular.module('proveedores',['angularModalService'])
 		 			$scope.nombre = null;
 					$scope.apellido = null;
 					$scope.info = null;
-					close();
+					close(true);
 				}
 		});
 	};
@@ -219,7 +226,7 @@ angular.module('proveedores',['angularModalService'])
 			var modalHeader = angular.element($(".modal-header")).innerHeight();
 		 	var navbar = angular.element($(".navbar-fixed-bottom")).innerHeight();
 		 	var modalFooter = angular.element($(".modal-footer")).innerHeight();
-		    var modalBody = angular.element($(".modal-body"));
+		  var modalBody = angular.element($(".modal-body"));
 			var contentHeight = window.outerHeight - modalHeader - modalFooter  - navbar - 250;
 			modalBody.css("maxHeight", contentHeight);
 			$scope.enterprises = data;
@@ -235,11 +242,11 @@ angular.module('proveedores',['angularModalService'])
 			nombre: $scope.nombre,
 			apellido: $scope.apellido,
 			info: $scope.info,
-			enterprises: $scope.enterprise
+			enterprise: $scope.enterprise
 		};
 
 		if (model.nombre == undefined || model.apellido == undefined || 
-			model.info == undefined || model.sucursal == undefined) {
+			model.info == undefined || model.enterprise == undefined) {
 			$scope.msgTitle = 'Atención';
 		  	$scope.msgBody  = 'Debe completar los campos requeridos!';
 		  	$scope.msgType  = 'warning';
@@ -249,19 +256,19 @@ angular.module('proveedores',['angularModalService'])
 			.success(function(res){	
 				if(res == "error"){
 						$scope.msgTitle = 'Error';
-			    		$scope.msgBody  = 'Ha ocurrido un error!';
-			    		$scope.msgType  = 'error';
+			    	$scope.msgBody  = 'Ha ocurrido un error!';
+			    	$scope.msgType  = 'error';
 			 			flash.pop({title: $scope.msgTitle, body: $scope.msgBody, type: $scope.msgType});
 					}else{
 						$scope.msgTitle = 'Exitoso';
-			    		$scope.msgBody  = res;
-			    		$scope.msgType  = 'success';
+			    	$scope.msgBody  = res;
+			    	$scope.msgType  = 'success';
 			 			flash.pop({title: $scope.msgTitle, body: $scope.msgBody, type: $scope.msgType});
 						$scope.nombre = null;
 						$scope.apellido = null;
 						$scope.info = null;
 						$scope.empresa = null;
-						close();
+						close(true);
 					}		
 			});
 		}

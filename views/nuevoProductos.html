@@ -68,7 +68,7 @@
 				<div class="col-sm-8">
 					<select name="selectProveedor" class="form-control" id="selectProveedor" ng-model="proveedor">
 						<option value="">---Seleccionar---</option> <!-- not selected / blank option -->
-	      				<option ng-repeat="proveedor in proveedores" value="{{proveedor.idProveedores}}">{{proveedor.Nombre}}</option> <!-- interpolation -->
+	      				<option ng-repeat="proveedor in proveedores" value="{{proveedor.idProveedores}}">{{proveedor.Nombre}} ({{proveedor.Empresa}})</option> <!-- interpolation -->
 					</select>
 				</div>
 				

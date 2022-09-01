@@ -336,6 +336,7 @@ angular.module('ventas',['angularModalService'])
 	$http.get('../models/selectClientes.php').success(function(data){
 		angular.element($("#spinerContainer")).css("display", "none");
 		$scope.clientes = data;
+		angular.element($("#q")).focus();
 	});
 
 	//La parte donde elegimos el usuario
@@ -374,10 +375,12 @@ angular.module('ventas',['angularModalService'])
 		var heightPanelInfo = window.outerHeight - topbar - navbar - 150;
 		var panelInfo = angular.element($(".panel-info"));
 		$scope.productos = data;
+		angular.element($("#q")).focus();
 	});
 
 	//La parte donde elegimos el producto
 	$scope.elegir = function(producto){
 		close(producto);
 	};
+
 })
