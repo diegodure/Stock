@@ -47,7 +47,7 @@
 							<div class="form-group row">
 								<label for="q" class="col-md-2 control-label">Nombre del Producto</label>
 								<div class="col-md-5">
-									<input type="text" class="form-control" id="q" placeholder="Nombre del producto" ng-model="buscar.Nombre">
+									<input type="text" class="form-control" id="q" placeholder="Nombre del producto" ng-model="buscar.$">
 								</div>
 								<div class="col-md-3">
 									<button type="button" class="btn btn-default">
@@ -74,7 +74,7 @@
 									<th class='text-right'>Acciones</th>
 								</tr>
 								
-								<tr ng-repeat="producto in productos | orderBy:ordenSeleccionado | filter:buscar">
+								<tr ng-repeat="producto in productos | orderBy:ordenSeleccionado | filter:buscar:strict">
 									<td>{{producto.idProductos}}</td>
 									<td>
 										{{producto.Nombre}}

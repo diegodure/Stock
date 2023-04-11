@@ -97,7 +97,7 @@
 						Subir foto
 					</p>
 					<input onchange="angular.element(this).scope().SelectFile(event)"  type="file" id="imageFile" name="file" accept="image/*" multiple ng-model="imageFile">
-					<img ng-show="imagen" width="100%" id="imgToUpload" height="100%" src="data:image/png;base64,{{imagen}}" data-err-src="../img/avatar_2x.png">
+					<img ng-show="imagen" width="100%" id="imgToUpload" height="100%" src="data:image/*;base64,{{imagen}}" data-err-src="../img/avatar_2x.png">
 					
 				</div>
 			</div>
