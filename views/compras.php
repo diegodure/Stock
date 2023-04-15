@@ -150,7 +150,7 @@
 									
 									<td>{{producto.cantidad}}</td>
 
-                                    <td>{{producto.subTotal | currency:'₲'}}</td>
+                           <td>{{producto.subTotal | currency:'₲'}}</td>
 
 
 									<td><span class="pull-right"> 

@@ -304,6 +304,7 @@ angular.module('reportesBalances',['720kb.datepicker','chart.js'])
                     }
                     compras.reverse();
                     compras.push(0);
+                    console.log(compras)
                     resBalance = sumTotalVenta - sumTotalCompra;
                     $scope.data.push(sumTotalCompra,sumTotalVenta,resBalance);
                     $scope.datos.push(compras,ventas);

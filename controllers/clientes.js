@@ -118,7 +118,9 @@ angular.module('clientes',['angularModalService'])
 			}
 		}).then(function(modal){
 			modal.close.then(function(result){
-				$scope.selectClientes();
+				if(result){
+					$scope.selectClientes();
+				}
 			})
 		})
 	};
@@ -140,7 +142,6 @@ angular.module('clientes',['angularModalService'])
 		angular.element($("#spinerContainer")).css("display", "block");
 		$http.post("../models/eliminarClientes.php", model)
 		.success(function(res){
-			close();
 			angular.element($("#spinerContainer")).css("display", "none");
 			if(res == "error"){
 				$scope.msgTitle = 'Error';
@@ -151,7 +152,8 @@ angular.module('clientes',['angularModalService'])
 				$scope.msgTitle = 'Exitoso';
 		    	$scope.msgBody  = res;
 		    	$scope.msgType  = 'success';
-		 		flash.pop({title: $scope.msgTitle, body: $scope.msgBody, type: $scope.msgType});				
+		 		flash.pop({title: $scope.msgTitle, body: $scope.msgBody, type: $scope.msgType});	
+		 		close(true);			
 			}			
 		});
 	};
@@ -177,7 +179,6 @@ angular.module('clientes',['angularModalService'])
 		angular.element($("#spinerContainer")).css("display", "block");
 		$http.post("../models/modificarClientes.php", model)
 		.success(function(res){
-			close();
 			angular.element($("#spinerContainer")).css("display", "none");
 			if(res == "error"){
 				$scope.msgTitle = 'Error';
@@ -185,6 +186,7 @@ angular.module('clientes',['angularModalService'])
 		    	$scope.msgType  = 'error';
 		 		flash.pop({title: $scope.msgTitle, body: $scope.msgBody, type: $scope.msgType});
 			}else{
+				close(true);
 				$scope.msgTitle = 'Exitoso';
 		    	$scope.msgBody  = res;
 		    	$scope.msgType  = 'success';
@@ -219,7 +221,6 @@ angular.module('clientes',['angularModalService'])
 			angular.element($("#spinerContainer")).css("display", "block");
 			$http.post("../models/insertClientes.php", model)
 			.success(function(res){
-				close();
 				angular.element($("#spinerContainer")).css("display", "none");
 				if(res == "error"){
 					$scope.msgTitle = 'Error';
@@ -234,6 +235,7 @@ angular.module('clientes',['angularModalService'])
 		 			$scope.nombre = null;
 					$scope.apellido = null;
 					$scope.ruc = null;
+					close(true);
 				}
 			});
 		}

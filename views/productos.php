@@ -70,7 +70,7 @@
 									<th>Precio Venta</th>
 									<th>Precio Mayorista</th>
 									<th>Precio Promocional</th>
-									<th>Proveedor</th>
+									<th>Costo</th>
 									<th class='text-right'>Acciones</th>
 								</tr>
 								
@@ -86,7 +86,7 @@
 									<td>{{producto.PrecioUnitario | currency :'₲':0}}</td>
 									<td>{{producto.PrecioMayorista | currency :'₲':0}}</td>
 									<td>{{producto.PrecioPromocional | currency :'₲':0}}</td>
-									<td>{{producto.provN}}</td>
+									<td>{{producto.Costo | currency :'₲':0}}</td>
 									
 
 									<td><span class="pull-right">

@@ -195,10 +195,11 @@ angular.module('compras',['angularModalService'])
 	//La parte donde elegimos el usuario
 	$scope.elegir = function(proveedor){
 		var proveedor = {
+			id: proveedor.idProveedores,
 			nombre: proveedor.Nombre,
 			apellido: proveedor.Apellido,
 			user: proveedor.Empresa,
-			id: proveedor.idProveedores
+			info: proveedor.Informacion
 		};
 	
 		 close(proveedor);
@@ -247,7 +248,7 @@ angular.module('compras',['angularModalService'])
 			idP: producto.idProductos,
 			nombre: producto.Nombre,
 			descripcion: producto.Descripcion,
-			precio: producto.PrecioUnitario
+			precio: producto.Costo
 		};
 		
 		 close(productos);

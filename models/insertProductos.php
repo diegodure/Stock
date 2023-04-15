@@ -20,13 +20,13 @@
 	}
 	$precioUnitario = $data->{"precioUnitario"};
 	$precioMayorista = $data->{"precioMayorista"};
-	$proveedor = $data->{"proveedor"};
+	$costo = $data->{"costoProducto"};
 	include("../conect.php");
 	if (!empty($data->{"fechaVencimiento"})) {
 		$fechaVencimiento = $data->{"fechaVencimiento"};
-		$sql = "insert into productos (idProductos, Nombre, Descripcion, CantidadActual, CantidadMinima, PrecioUnitario, PrecioMayorista, PrecioPromocional, Proveedores_idProveedores, active, Vencimiento, Imagen, CodigoBarra) values (null, '$nombre', '$descripcion','$cantidad', '$cantidadMin', '$precioUnitario', '$precioMayorista', $precioPromocional, '$proveedor', 0, '$fechaVencimiento', null, '0')";
+		$sql = "insert into productos (idProductos, Nombre, Descripcion, CantidadActual, CantidadMinima, PrecioUnitario, PrecioMayorista, PrecioPromocional, active, Vencimiento, Imagen, CodigoBarra, Costo) values (null, '$nombre', '$descripcion','$cantidad', '$cantidadMin', '$precioUnitario', '$precioMayorista', $precioPromocional, 0, '$fechaVencimiento', null, '0',$costo)";
 	}else{
-		$sql = "insert into productos (idProductos, Nombre, Descripcion, CantidadActual, CantidadMinima, PrecioUnitario, PrecioMayorista, PrecioPromocional, Proveedores_idProveedores, active, Vencimiento, Imagen, CodigoBarra) values (null, '$nombre', '$descripcion','$cantidad', '$cantidadMin', '$precioUnitario', '$precioMayorista', $precioPromocional, '$proveedor', 0, null, null, '0')";
+		$sql = "insert into productos (idProductos, Nombre, Descripcion, CantidadActual, CantidadMinima, PrecioUnitario, PrecioMayorista, PrecioPromocional, active, Vencimiento, Imagen, CodigoBarra, Costo) values (null, '$nombre', '$descripcion','$cantidad', '$cantidadMin', '$precioUnitario', '$precioMayorista', $precioPromocional, 0, null, null, '0',$costo)";
 	}
 	
 	$results = $con->query($sql);

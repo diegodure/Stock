@@ -92,7 +92,6 @@ angular.module('proveedores',['angularModalService'])
     			apellido: proveedor.Apellido,
     			info: proveedor.Informacion,
     			id: proveedor.idProveedores,
-    			empresaId: proveedor.idEmpresa,
     			empresa: proveedor.Empresa
   			}
 		}).then(function(modal){
@@ -164,24 +163,12 @@ angular.module('proveedores',['angularModalService'])
 })
 
 	//El controller del modal modificar totalmente independiente de la pagina principal (productos)
-.controller('modificarCtrl', function($scope, close, $http, nombre, apellido, info, empresaId, empresa, id, flash){
-	var miEmpresa;
-	angular.element($("#spinerContainer")).css("display", "block");
-	$http.get('../models/selectEnterprise.php').success(function(data){
-		angular.element($("#spinerContainer")).css("display", "none");
-		var modalHeader = angular.element($(".modal-header")).innerHeight();
-	 	var navbar = angular.element($(".navbar-fixed-bottom")).innerHeight();
-	 	var modalFooter = angular.element($(".modal-footer")).innerHeight();
-	  var modalBody = angular.element($(".modal-body"));
-		var contentHeight = window.outerHeight - modalHeader - modalFooter  - navbar - 250;
-		modalBody.css("maxHeight", contentHeight);
-		$scope.empresas = data;
-		miEmpresa = {"idEmpresas":empresaId, "Nombre":empresa};
-		$scope.miEmpresa = miEmpresa; 
-	});
+.controller('modificarCtrl', function($scope, close, $http, nombre, apellido, info, empresa, id, flash){
+	
 	$scope.nombre = nombre;
 	$scope.apellido = apellido;
 	$scope.info = info;
+	$scope.enterprise = empresa;
 	$scope.cerrarModal = function(){
 		close();
 	};
@@ -219,21 +206,6 @@ angular.module('proveedores',['angularModalService'])
 	//El controller del modal nuevo totalmente independiente de la pagina principal (productos)
 .controller('modalCtrl', function($scope, close, $http, flash, ModalService){
 	
-	$scope.getEnterprises = function(){
-		angular.element($("#spinerContainer")).css("display", "block");
-		$http.get('../models/selectEnterprise.php').success(function(data){
-			angular.element($("#spinerContainer")).css("display", "none");
-			var modalHeader = angular.element($(".modal-header")).innerHeight();
-		 	var navbar = angular.element($(".navbar-fixed-bottom")).innerHeight();
-		 	var modalFooter = angular.element($(".modal-footer")).innerHeight();
-		  var modalBody = angular.element($(".modal-body"));
-			var contentHeight = window.outerHeight - modalHeader - modalFooter  - navbar - 250;
-			modalBody.css("maxHeight", contentHeight);
-			$scope.enterprises = data;
-
-		});
-	}
-	
 	$scope.cerrarModal = function(){
 		close();
 	};
@@ -246,7 +218,7 @@ angular.module('proveedores',['angularModalService'])
 		};
 
 		if (model.nombre == undefined || model.apellido == undefined || 
-			model.info == undefined || model.enterprise == undefined) {
+			model.info == undefined) {
 			$scope.msgTitle = 'Atención';
 		  	$scope.msgBody  = 'Debe completar los campos requeridos!';
 		  	$scope.msgType  = 'warning';
@@ -274,8 +246,5 @@ angular.module('proveedores',['angularModalService'])
 		}
 		
 	};
-	
-
-	$scope.getEnterprises();
 })
 

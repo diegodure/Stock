@@ -97,9 +97,7 @@ angular.module('usuarios',['angularModalService'])
     			user: usuario.User,
     			pass: usuario.Pass,
     			idRoles: usuario.rolId,
-    			rol: usuario.rolId,
-    			idSucursal: usuario.idSucursal,
-    			sucursal: usuario.Sucursal
+    			rol: usuario.rolId
   			}
 		}).then(function(modal){
 			modal.close.then(function(result){
@@ -164,17 +162,13 @@ angular.module('usuarios',['angularModalService'])
 
 	//El controller del modal modificar totalmente independiente de la pagina principal (clientes)
 .controller('modificarCtrl', function($scope, close, $http, id, nombre, apellido, user,
-pass, idRoles, rol, idSucursal, sucursal, flash){
+pass, idRoles, rol, flash){
 	var myRol;
 	angular.element($("#spinerContainer")).css("display", "block");
 	$http.get('../models/selectRoles.php').success(function(data){
 		$scope.roles = data;
 		myRol = {"idRoles":idRoles, "Nombre":rol};
 		$scope.myRol = myRol; 
-	});
-	var mySucursal;
-	angular.element($("#spinerContainer")).css("display", "block");
-	$http.get('../models/selectSucursales.php').success(function(data){
 		angular.element($("#spinerContainer")).css("display", "none");
 		var modalHeader = angular.element($(".modal-header")).innerHeight();
 	 	var navbar = angular.element($(".navbar-fixed-bottom")).innerHeight();
@@ -182,10 +176,8 @@ pass, idRoles, rol, idSucursal, sucursal, flash){
 	  var modalBody = angular.element($(".modal-body"));
 		var contentHeight = window.outerHeight - modalHeader - modalFooter  - navbar - 250;
 		modalBody.css("maxHeight", contentHeight);
-		$scope.sucursales = data;
-		mySucursal = {"idSucursal":idSucursal, "Nombre":sucursal};
-		$scope.mySucursal = mySucursal; 
 	});
+	
 	$scope.idUsuario = id;
 	$scope.nombre = nombre;
 	$scope.apellido = apellido;
@@ -201,7 +193,6 @@ pass, idRoles, rol, idSucursal, sucursal, flash){
 			user: $scope.user,
 			pass: $scope.pass,
 			rol: $scope.myRol.idRoles,
-			sucursal: $scope.mySucursal.idSucursal,
 			idUsuario: $scope.idUsuario
 	};
 
@@ -235,17 +226,15 @@ pass, idRoles, rol, idSucursal, sucursal, flash){
 	angular.element($("#spinerContainer")).css("display", "block");
 	$http.get('../models/selectRoles.php').success(function(data){
 		$scope.roles = data;
-	});
-	$http.get('../models/selectSucursales.php').success(function(data){
 		angular.element($("#spinerContainer")).css("display", "none");
 		var modalHeader = angular.element($(".modal-header")).innerHeight();
 	 	var navbar = angular.element($(".navbar-fixed-bottom")).innerHeight();
 	 	var modalFooter = angular.element($(".modal-footer")).innerHeight();
-	    var modalBody = angular.element($(".modal-body"));
+	  var modalBody = angular.element($(".modal-body"));
 		var contentHeight = window.outerHeight - modalHeader - modalFooter  - navbar - 250;
 		modalBody.css("maxHeight", contentHeight);
-		$scope.sucursales = data;
 	});
+	
 	$scope.cerrarModal = function(){
 		close();
 	};
@@ -255,11 +244,10 @@ pass, idRoles, rol, idSucursal, sucursal, flash){
 			apellido: $scope.apellido,
 			user: $scope.user,
 			pass: $scope.pass,
-			sucursal: $scope.sucursal,
 			rol: $scope.rol
 		};
 		if(model.nombre == undefined || model.apellido == undefined || model.user == undefined 
-			|| model.pass == undefined || model.sucursal == undefined || model.rol == undefined){
+			|| model.pass == undefined || model.rol == undefined){
 			$scope.msgTitle = 'Atención';
 		  	$scope.msgBody  = 'Debe completar los campos requeridos!';
 		  	$scope.msgType  = 'warning';
