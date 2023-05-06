@@ -25,7 +25,7 @@
 		<div class="panel panel-info">
 			<div class="panel-heading">
 				
-				<h4><i class='glyphicon glyphicon-plus'></i> Nueva Compra</h4>
+				<h4><i class='glyphicon glyphicon-plus'></i> Nueva Compra <span style="float: right;">C(PROVEEDORES) P(PRODUCTOS) R(REGISTRAR)</span></h4>
 			</div>
 					<div class="panel-body row">
 						<form class="form-vertical col-lg-6 col-md-6 col-sm-6 col-xs-12" role="form">

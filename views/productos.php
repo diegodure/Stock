@@ -35,8 +35,9 @@
 		 	</ul>
 		 </div>
 		<div class="panel panel-info">
+			<input type="hidden" name="maxHeight" id="maxHeight">
 			<div class="panel-heading">
-				<div class="btn-group pull-right">
+				<div class="btn-group pull-right" ng-if="userRol != 'Vendedor'">
 					<button type='button' class="btn btn-info" ng-click="mostrarModalNuevoProducto()"><span class="glyphicon glyphicon-plus" ></span> Nuevo Producto</button>
 				</div>
 				<h4><i class='glyphicon glyphicon-search'></i> Buscar Producto</h4>
@@ -90,8 +91,8 @@
 									
 
 									<td><span class="pull-right">
-									<a href="#" class='btn btn-default' title='Editar producto' ng-click="modificar(producto)" data-toggle="modal"><i class="glyphicon glyphicon-edit"></i></a> 
-									<a href="#" class='btn btn-default' title='Borrar producto' ng-click="eliminar(producto)"><i class="glyphicon glyphicon-trash"></i> </a></span></td>
+									<a href="#" class='btn btn-default' title='Ver producto' ng-click="modificar(producto)" data-toggle="modal"><i class="glyphicon glyphicon-edit"></i></a> 
+									<a ng-if="userRol != 'Vendedor'" href="#" class='btn btn-default' title='Borrar producto' ng-click="eliminar(producto)"><i class="glyphicon glyphicon-trash"></i> </a></span></td>
 								</tr>
 								
 							</table>
@@ -115,6 +116,9 @@
 
 <script type="text/javascript" src="bd2.js"></script> -->
 </body>
+<script type="text/javascript">
+	var userRol = "<?php echo $_SESSION['user'];?>";
+</script>
 </html>
 <?php
 		if($_SESSION['user'] != "Administrador"){
@@ -126,5 +130,4 @@
 	 	echo '<script> alert("User o password incorrectos");</script>';
         echo '<script> window.location="login.php";</script>';
     }
-
 ?>

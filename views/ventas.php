@@ -231,9 +231,13 @@
 </body>
 </html>
 <?php
+		if($_SESSION['user'] != "Administrador"){
+			echo '<script>
+			isNotAdmin();
+			</script>';
+		}
 	 }else{
 	 	echo '<script> alert("User o password incorrectos");</script>';
         echo '<script> window.location="login.php";</script>';
     }
-
 ?>

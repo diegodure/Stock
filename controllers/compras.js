@@ -24,7 +24,17 @@ angular.module('compras',['angularModalService'])
 })
 
 .controller('ComprasCtrl', function($scope, $http, ModalService, flash){
+	window.onkeyup = function (e) {
+		if(e.keyCode == 67 && angular.element($(".modal")).length == 0) {
+			$scope.modalProveedor();
+		}else if(e.keyCode == 80 && angular.element($(".modal")).length == 0){
+			$scope.modalProducto();
+		}else if(e.keyCode == 82 && angular.element($(".modal")).length == 0){
+			$scope.prepareToSell();
+		}else if(e.keyCode == 70 && angular.element($(".modalVentas")).css("display") == "block"){
 
+		}
+  };
 	//Inicializamos las variables 
 	 $scope.productos = [];
 	 var total = 0, iva = 0;

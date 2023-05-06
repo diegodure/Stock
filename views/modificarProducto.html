@@ -102,7 +102,7 @@
 		</div>
 	<div class="modal-footer">
 		<button class="btn btn-default" ng-click="cerrarModal()">Cerrar</button>
-		<button type="submit" class="btn btn-primary" ng-click="modificarProducto()">Guardar Datos</button>
+		<button type="submit" class="btn btn-primary" ng-if="userRol != 'Vendedor'" ng-click="modificarProducto()">Guardar Datos</button>
 	</div>
 </div>
 </div>

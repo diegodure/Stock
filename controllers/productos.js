@@ -28,6 +28,7 @@ angular.module('productos',['angularModalService','720kb.datepicker'])
 	angular.element(document).ready(function () {
 
     	$scope.selectProducts(true);
+    	$scope.userRol = userRol;
 	});
 	window.onresize = function () {
          $scope.logResize();
@@ -178,7 +179,8 @@ angular.module('productos',['angularModalService','720kb.datepicker'])
     			CantidadMinima: producto.CantidadMinima,
     			Imagen: producto.Imagen,
     			fechaVencimiento: producto.Vencimiento,
-    			costo: producto.Costo
+    			costo: producto.Costo,
+    			userRol: $scope.userRol
   			}
 		}).then(function(modal){
 			modal.close.then(function(result){
@@ -253,7 +255,8 @@ angular.module('productos',['angularModalService','720kb.datepicker'])
 
 	//El controller del modal modificar totalmente independiente de la pagina principal (productos)
 .controller('modificarCtrl', function($scope, close, $http, idP, nombre, descripcion, PrecioUnitario, 
-	PrecioMayorista, PrecioPromocional, CantidadActual, CantidadMinima, Imagen, fechaVencimiento, costo, flash){
+	PrecioMayorista, PrecioPromocional, CantidadActual, CantidadMinima, Imagen, fechaVencimiento, 
+	costo, flash,userRol){
 	var miProveedor;
 	angular.element($("#spinerContainer")).css("display", "block");
 	if(angular.element($("#requieredPhoto")).val() == "" || angular.element($("#requieredPhoto")).val() == undefined 
@@ -262,9 +265,10 @@ angular.module('productos',['angularModalService','720kb.datepicker'])
 			var modalHeader = angular.element($(".modal-header")).innerHeight();
 		 	var navbar = angular.element($(".navbar-fixed-bottom")).innerHeight();
 		 	var modalFooter = angular.element($(".modal-footer")).innerHeight();
-		  var modalBody = angular.element($(".modal-body"));
+		 	var modalBody = angular.element($(".modal-body"));
 			var contentHeight = window.outerHeight - modalHeader - modalFooter  - navbar - 250;
 			modalBody.css("maxHeight", contentHeight);
+			angular.element($("#maxHeight")).val(contentHeight);
 			for(var i = 0; i < data.length; i++){
 				if(data[i]["Nombre"] == "Foto del producto"){
 					$scope.requieredPhoto = data[i]["Estado"];
@@ -282,6 +286,15 @@ angular.module('productos',['angularModalService','720kb.datepicker'])
 		$scope.expirationDate = angular.element($("#expirationDate")).val();
 		angular.element($("#spinerContainer")).css("display", "none");
 	}
+	
+	if(angular.element($("#maxHeight")).val() != ""){
+		angular.element($("#spinerContainer")).css("display", "block");
+		setTimeout(() => {
+			angular.element($("#spinerContainer")).css("display", "none");
+			var modalBody = angular.element($(".modal-body"));
+			modalBody.css("maxHeight", parseInt(angular.element($("#maxHeight")).val()));
+		},500)
+	}
 
 	$scope.idP = idP;
 	$scope.nombre = nombre;
@@ -294,6 +307,7 @@ angular.module('productos',['angularModalService','720kb.datepicker'])
 	$scope.fechaVencimiento = fechaVencimiento;
 	$scope.imagen = Imagen;
 	$scope.costoProducto = costo;
+	$scope.userRol = userRol;
 	var detImg;
 	var fd;
 	$scope.SelectFile = function (e) {
