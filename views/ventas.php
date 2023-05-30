@@ -26,7 +26,7 @@
 		 		style="float: right;margin-right: 10px;cursor: pointer;" ng-click="hideModalToSell()">×</span></p>
 		 	<div style="padding: 15px;">
 		 		<div>
-		 			<label>Pago</label> <input type="number" name="pay" ng-model="payment" ng-change="calcularVuelto()">
+		 			<label>Pago</label> <input id="pago" type="number" name="pay" ng-model="payment" ng-change="calcularVuelto()">
 		 		</div>
 		 		<div>
 		 			<label>Vuelto</label> <input type="number" readonly name="vuelto" ng-model="vuelto">
@@ -42,7 +42,7 @@
 		<div class="panel panel-info">
 			<div class="panel-heading">
 				
-				<h4><i class='glyphicon glyphicon-plus'></i> Nueva Venta</h4>
+				<h4><i class='glyphicon glyphicon-plus'></i> Nueva Venta <span style="float: right;">C(CLIENTES) P(PRODUCTOS) R(REGISTRAR)</span></h4>
 			</div>
 					<div class="panel-body row">
 						<form class="form-vertical col-lg-6 col-md-6 col-sm-6 col-xs-12" role="form">
@@ -135,7 +135,7 @@
 							<div class="form-group row">	
 								<label for="q" class="col-md-6 control-label">Cantidad del Producto</label>
 								<div class="col-md-6">
-									<input type="text" class="form-control" required placeholder="Cantidad del Producto" ng-model="cantidad">
+									<input type="number" id="cantidadProducto" class="form-control" required placeholder="Cantidad del Producto" ng-model="cantidad">
 								</div>
 							</div>
 
@@ -198,11 +198,11 @@
 									<input type="text" class="form-control" required placeholder="Total" ng-model="total | currency:'₲'" readonly>
 								</div>
 
-								<label for="q" class="col-md-3 control-label">Vender</label>
+								<label for="q" class="col-md-3 control-label">Registrar</label>
 								
 								<div class="col-md-3">
 									<button class="btn btn-default" ng-click="prepareToSell()">
-									<span class="glyphicon glyphicon-plus"></span>Vender</button>
+									<span class="glyphicon glyphicon-plus"></span>Registrar</button>
 									
 								</div>
 
@@ -231,9 +231,13 @@
 </body>
 </html>
 <?php
+		if($_SESSION['user'] != "Administrador"){
+			echo '<script>
+			isNotAdmin();
+			</script>';
+		}
 	 }else{
 	 	echo '<script> alert("User o password incorrectos");</script>';
         echo '<script> window.location="login.php";</script>';
     }
-
 ?>

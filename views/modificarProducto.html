@@ -64,14 +64,10 @@
 			<br>
 			<br>
 			<div class="form-group">
-				<label for="nombre" class="col-sm-4 control-label">Proveedor (*)</label>
+				<label for="nombre" class="col-sm-4 control-label">Costo Producto (*)</label>
 				<div class="col-sm-8">
-					<select class="form-control"
-      				ng-options="proveedor.Nombre for proveedor in proveedores track by proveedor.idProveedores"
-      				ng-model="miProv">	
-					</select>
+					<input type="text" class="form-control" ng-model="costoProducto" required>
 				</div>
-
 			</div>
 			<br>
 			<br>
@@ -97,7 +93,7 @@
 						Subir foto
 					</p>
 					<input onchange="angular.element(this).scope().SelectFile(event)"  type="file" id="imageFile" name="file" accept="image/*" multiple ng-model="imageFile">
-					<img ng-show="imagen" width="100%" id="imgToUpload" height="100%" src="data:image/png;base64,{{imagen}}" data-err-src="../img/avatar_2x.png">
+					<img ng-show="imagen" width="100%" id="imgToUpload" height="100%" src="data:image/*;base64,{{imagen}}" data-err-src="../img/avatar_2x.png">
 					
 				</div>
 			</div>
@@ -106,7 +102,7 @@
 		</div>
 	<div class="modal-footer">
 		<button class="btn btn-default" ng-click="cerrarModal()">Cerrar</button>
-		<button type="submit" class="btn btn-primary" ng-click="modificarProducto()">Guardar Datos</button>
+		<button type="submit" class="btn btn-primary" ng-if="userRol != 'Vendedor'" ng-click="modificarProducto()">Guardar Datos</button>
 	</div>
 </div>
 </div>

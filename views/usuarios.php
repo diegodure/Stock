@@ -56,7 +56,6 @@
 									<th><span class="caret" style="cursor: pointer;" ng-click="ordenarPor('Nombre')"></span>Nombre/s<span class="caret" style="cursor: pointer;" ng-click="ordenarPor('-Nombre')"></span></th>
 									<th>Apellido</th>
 									<th>Rol</th>
-									<th>Sucursal</th>
 									<th class='text-right'>Acciones</th>
 								</tr>
 								
@@ -68,7 +67,6 @@
 									<td>{{usuario.apellido | lowercase}}</td>
 							
 									<td>{{usuario.Rol}}</td>
-									<td>{{usuario.Sucursal}}</td>
 
 									<td><span class="pull-right">
 									<a href="#" class='btn btn-default' title='Editar usuario' ng-click="modificar(usuario)" data-toggle="modal"><i class="glyphicon glyphicon-edit"></i></a> 

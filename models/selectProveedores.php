@@ -2,7 +2,7 @@
 
 	include("../conect.php");
 
-	$sql = "select proveedores.idProveedores, proveedores.Nombre, proveedores.Apellido, proveedores.Informacion, empresas.Nombre as Empresa, empresas.idEmpresas as idEmpresa from proveedores inner join empresas on proveedores.Empresas_idEmpresas=empresas.idEmpresas where proveedores.active='0'";
+	$sql = "select proveedores.idProveedores, proveedores.Nombre, proveedores.Apellido, proveedores.Informacion, proveedores.Empresa from proveedores where proveedores.active='0'";
 
 
 	$results = $con->query($sql);

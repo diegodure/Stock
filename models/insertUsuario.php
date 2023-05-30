@@ -6,12 +6,10 @@
 	$user = $data->{"user"};
 	$pass = $data->{"pass"};
 	$rol = $data->{"rol"};
-	$sucursal = $data->{"sucursal"};
-	
 
 	include("../conect.php");
 
-	$sql = "insert into usuarios (idUser, User, Pass, nombre, apellido, Roles_idRoles, Sucursal_idSucursal, active) values (null, '$nombre', '$apellido','$user', '$pass', '$rol', '$sucursal', 0)";
+	$sql = "insert into usuarios (idUser, User, Pass, nombre, apellido, Roles_idRoles, active) values (null, '$user', '$pass','$nombre', '$apellido', '$rol', 0)";
 	$results = $con->query($sql);
 
 	if(!$results){ 

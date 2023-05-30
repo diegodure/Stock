@@ -6,12 +6,11 @@
 	$user = $data->{"user"};
 	$pass = $data->{"pass"};
 	$rol = $data->{"rol"};
-	$sucursal = $data->{"sucursal"};
 	
 	include("../conect.php");
 
 	$sql = "update usuarios set User='$user', Pass='$pass', nombre='$nombre', 
-	apellido='$apellido',Roles_idRoles='$rol', Sucursal_idSucursal='$sucursal' where idUser='$idUsuario'";
+	apellido='$apellido',Roles_idRoles='$rol' where idUser='$idUsuario'";
 	$results = $con->query($sql);
 
 	if(!$results){ 

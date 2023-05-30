@@ -28,6 +28,7 @@ angular.module('productos',['angularModalService','720kb.datepicker'])
 	angular.element(document).ready(function () {
 
     	$scope.selectProducts(true);
+    	$scope.userRol = userRol;
 	});
 	window.onresize = function () {
          $scope.logResize();
@@ -44,7 +45,7 @@ angular.module('productos',['angularModalService','720kb.datepicker'])
 				if($scope.configuraciones[i]["Nombre"] == "Vencimiento" && $scope.configuraciones[i]["Estado"] >= "0"){
 					$scope.daysToExpiration = $scope.configuraciones[i]["Estado"];
 				}
-				if(data[i]["Nombre"] == "Foto del producto" && data[i]["Estado"] == "0"){
+				if(data[i]["Nombre"] == "Foto del producto"){
 					$scope.requieredPhoto = data[i]["Estado"];
 					angular.element($("#requieredPhoto")).val(data[i]["Estado"]);
 				}
@@ -178,8 +179,8 @@ angular.module('productos',['angularModalService','720kb.datepicker'])
     			CantidadMinima: producto.CantidadMinima,
     			Imagen: producto.Imagen,
     			fechaVencimiento: producto.Vencimiento,
-    			proveedorId: producto.provId,
-    			proveedor: producto.provN
+    			costo: producto.Costo,
+    			userRol: $scope.userRol
   			}
 		}).then(function(modal){
 			modal.close.then(function(result){
@@ -254,41 +255,47 @@ angular.module('productos',['angularModalService','720kb.datepicker'])
 
 	//El controller del modal modificar totalmente independiente de la pagina principal (productos)
 .controller('modificarCtrl', function($scope, close, $http, idP, nombre, descripcion, PrecioUnitario, 
-	PrecioMayorista, PrecioPromocional, CantidadActual, CantidadMinima, Imagen, fechaVencimiento,
-	 proveedorId, proveedor, flash){
+	PrecioMayorista, PrecioPromocional, CantidadActual, CantidadMinima, Imagen, fechaVencimiento, 
+	costo, flash,userRol){
 	var miProveedor;
 	angular.element($("#spinerContainer")).css("display", "block");
-	$http.get('../models/selectProveedores.php').success(function(data){
-		var modalHeader = angular.element($(".modal-header")).innerHeight();
-	 	var navbar = angular.element($(".navbar-fixed-bottom")).innerHeight();
-	 	var modalFooter = angular.element($(".modal-footer")).innerHeight();
-	    var modalBody = angular.element($(".modal-body"));
-		var contentHeight = window.outerHeight - modalHeader - modalFooter  - navbar - 250;
-		modalBody.css("maxHeight", contentHeight);
-		$scope.proveedores = data;
-		miProveedor = {"idProveedores":proveedorId, "Nombre":proveedor};
-		$scope.miProv = miProveedor;
-		if(angular.element($("#requieredPhoto")).val() == "" || angular.element($("#requieredPhoto")).val() == undefined 
-			|| angular.element($("#expirationDate")).val() == "" || angular.element($("#expirationDate")).val() == undefined){
-			$http.get('../models/selectConfiguraciones.php').success(function(data){
-				for(var i = 0; i < data.length; i++){
-					if(data[i]["Nombre"] == "Foto del producto" && data[i]["Estado"] == "0"){
-						$scope.requieredPhoto = data[i]["Estado"];
-						angular.element($("#requieredPhoto")).val(data[i]["Estado"]);
-					}
-					if(data[i]["Nombre"] == "Vencimiento" && data[i]["Estado"] != "0"){
-						$scope.expirationDate = data[i]["Estado"];
-						angular.element($("#expirationDate")).val(data[i]["Estado"]);
-					}
-				}	
-			
-			});
-		}else{
-			$scope.requieredPhoto = angular.element($("#requieredPhoto")).val();
-			$scope.expirationDate = angular.element($("#expirationDate")).val();
-		}
+	if(angular.element($("#requieredPhoto")).val() == "" || angular.element($("#requieredPhoto")).val() == undefined 
+		|| angular.element($("#expirationDate")).val() == "" || angular.element($("#expirationDate")).val() == undefined){
+		$http.get('../models/selectConfiguraciones.php').success(function(data){
+			var modalHeader = angular.element($(".modal-header")).innerHeight();
+		 	var navbar = angular.element($(".navbar-fixed-bottom")).innerHeight();
+		 	var modalFooter = angular.element($(".modal-footer")).innerHeight();
+		 	var modalBody = angular.element($(".modal-body"));
+			var contentHeight = window.outerHeight - modalHeader - modalFooter  - navbar - 250;
+			modalBody.css("maxHeight", contentHeight);
+			angular.element($("#maxHeight")).val(contentHeight);
+			for(var i = 0; i < data.length; i++){
+				if(data[i]["Nombre"] == "Foto del producto"){
+					$scope.requieredPhoto = data[i]["Estado"];
+					angular.element($("#requieredPhoto")).val(data[i]["Estado"]);
+				}
+				if(data[i]["Nombre"] == "Vencimiento"){
+					$scope.expirationDate = data[i]["Estado"];
+					angular.element($("#expirationDate")).val(data[i]["Estado"]);
+				}
+			}	
+			angular.element($("#spinerContainer")).css("display", "none");
+		});
+	}else{
+		$scope.requieredPhoto = angular.element($("#requieredPhoto")).val();
+		$scope.expirationDate = angular.element($("#expirationDate")).val();
 		angular.element($("#spinerContainer")).css("display", "none");
-	});
+	}
+	
+	if(angular.element($("#maxHeight")).val() != ""){
+		angular.element($("#spinerContainer")).css("display", "block");
+		setTimeout(() => {
+			angular.element($("#spinerContainer")).css("display", "none");
+			var modalBody = angular.element($(".modal-body"));
+			modalBody.css("maxHeight", parseInt(angular.element($("#maxHeight")).val()));
+		},500)
+	}
+
 	$scope.idP = idP;
 	$scope.nombre = nombre;
 	$scope.descripcion = descripcion;
@@ -299,6 +306,8 @@ angular.module('productos',['angularModalService','720kb.datepicker'])
 	$scope.cantidadMin = CantidadMinima;
 	$scope.fechaVencimiento = fechaVencimiento;
 	$scope.imagen = Imagen;
+	$scope.costoProducto = costo;
+	$scope.userRol = userRol;
 	var detImg;
 	var fd;
 	$scope.SelectFile = function (e) {
@@ -307,7 +316,7 @@ angular.module('productos',['angularModalService','720kb.datepicker'])
 			var reader = new FileReader();
             
             const objectURL = URL.createObjectURL(imagen);
-  
+  					angular.element($("#imgToUpload")).removeAttr('src')
             angular.element($("#imgToUpload")).attr('src', objectURL)
             $scope.$apply();
                         
@@ -353,10 +362,10 @@ angular.module('productos',['angularModalService','720kb.datepicker'])
 			precioUnitario: $scope.precioUnitario,
 			precioMayorista: $scope.precioMayorista,
 			fechaVencimiento: angular.element($("#newDate")).val(),
-			proveedor: $scope.miProv.idProveedores
+			costoProducto: $scope.costoProducto
 		};
 		if(model.nombre == undefined || model.descripcion == undefined || model.precioUnitario == undefined
-			|| model.precioMayorista == undefined || model.proveedor == undefined){
+			|| model.precioMayorista == undefined || model.costoProducto == undefined){
 			$scope.msgTitle = 'Atención';
 		  $scope.msgBody  = 'Debe completar los campos requeridos!';
 		  $scope.msgType  = 'warning';
@@ -439,41 +448,44 @@ angular.module('productos',['angularModalService','720kb.datepicker'])
             };
             
 	};
-	angular.element($("#spinerContainer")).css("display", "block");
-	$http.get('../models/selectProveedores.php').success(function(data){
-		var modalHeader = angular.element($(".modal-header")).innerHeight();
-	 	var navbar = angular.element($(".navbar-fixed-bottom")).innerHeight();
-	 	var modalFooter = angular.element($(".modal-footer")).innerHeight();
-	    var modalBody = angular.element($(".modal-body"));
-		var contentHeight = window.outerHeight - modalHeader - modalFooter  - navbar - 250;
-		modalBody.css("maxHeight", contentHeight);
-		$scope.proveedores = data;
-		if(angular.element($("#requieredPhoto")).val() == "" || angular.element($("#requieredPhoto")).val() == undefined
-			|| angular.element($("#expirationDate")).val() == "" || angular.element($("#expirationDate")).val() == undefined){
-			$http.get('../models/selectConfiguraciones.php').success(function(data){
-				for(var i = 0; i < data.length; i++){
-					if(data[i]["Nombre"] == "Foto del producto" && data[i]["Estado"] == "0"){
-						$scope.requieredPhoto = data[i]["Estado"];
-						angular.element($("#requieredPhoto")).val(data[i]["Estado"]);
-					}
-					if(data[i]["Nombre"] == "Vencimiento" && data[i]["Estado"] != "0"){
-						$scope.expirationDate = data[i]["Estado"];
-						angular.element($("#expirationDate")).val(data[i]["Estado"]);
-					}
-				}	
-			
-			});
-		}else{
-			$scope.requieredPhoto = angular.element($("#requieredPhoto")).val();
-			$scope.expirationDate = angular.element($("#expirationDate")).val();
-		}
+	angular.element($("#spinerContainer")).css("display", "block");	
+	if(angular.element($("#requieredPhoto")).val() == "" || angular.element($("#requieredPhoto")).val() == undefined
+		|| angular.element($("#expirationDate")).val() == "" || angular.element($("#expirationDate")).val() == undefined){
+		$http.get('../models/selectConfiguraciones.php').success(function(data){
+			var modalHeader = angular.element($(".modal-header")).innerHeight();
+		 	var navbar = angular.element($(".navbar-fixed-bottom")).innerHeight();
+		 	var modalFooter = angular.element($(".modal-footer")).innerHeight();
+		  var modalBody = angular.element($(".modal-body"));
+			var contentHeight = window.outerHeight - modalHeader - modalFooter  - navbar - 250;
+			modalBody.css("maxHeight", contentHeight);
+			for(var i = 0; i < data.length; i++){
+				if(data[i]["Nombre"] == "Foto del producto" && data[i]["Estado"] == "0"){
+					$scope.requieredPhoto = data[i]["Estado"];
+					angular.element($("#requieredPhoto")).val(data[i]["Estado"]);
+				}
+				if(data[i]["Nombre"] == "Vencimiento" && data[i]["Estado"] != "0"){
+					$scope.expirationDate = data[i]["Estado"];
+					angular.element($("#expirationDate")).val(data[i]["Estado"]);
+				}else{
+					$scope.expirationDate = 0;
+				}
+			}	
+			angular.element($("#spinerContainer")).css("display", "none");
+		});
+	}else{
+		$scope.requieredPhoto = angular.element($("#requieredPhoto")).val();
+		$scope.expirationDate = angular.element($("#expirationDate")).val();
 		angular.element($("#spinerContainer")).css("display", "none");
-	});
+	}
+
 	$scope.cerrarModal = function(){
 		close();
 	};
 	$scope.guardarProducto = function(){
-		var file = document.getElementById("imageFile").files;
+		if($scope.requieredPhoto == 0 || $scope.requieredPhoto == "0"){
+			var file = document.getElementById("imageFile").files;
+		}
+		
 		var model = {
 			nombre: $scope.nombre,
 			descripcion: $scope.descripcion,
@@ -482,11 +494,12 @@ angular.module('productos',['angularModalService','720kb.datepicker'])
 			precioUnitario: $scope.precioUnitario,
 			precioMayorista: $scope.precioMayorista,
 			precioPromocional: $scope.precioPromocional,
-			proveedor: $scope.proveedor,
-			fechaVencimiento: $scope.fechaVencimiento
+			fechaVencimiento: $scope.fechaVencimiento,
+			costoProducto: $scope.costoProducto
 		};
+		console.log(model)
 		if(model.nombre == undefined || model.descripcion == undefined || model.precioUnitario == undefined
-			|| model.precioMayorista == undefined || model.proveedor == undefined){
+			|| model.precioMayorista == undefined){
 			$scope.msgTitle = 'Atención';
 		  	$scope.msgBody  = 'Debe completar los campos requeridos!';
 		  	$scope.msgType  = 'warning';
@@ -519,8 +532,8 @@ angular.module('productos',['angularModalService','720kb.datepicker'])
 				}else{
 					close(true);
 					$scope.msgTitle = 'Exitoso';
-		    		$scope.msgBody  = response;
-		    		$scope.msgType  = 'success';
+		    	$scope.msgBody  = response;
+		    	$scope.msgType  = 'success';
 		 			flash.pop({title: $scope.msgTitle, body: $scope.msgBody, type: $scope.msgType});
 					$scope.nombre = null;
 					$scope.descripcion = null;

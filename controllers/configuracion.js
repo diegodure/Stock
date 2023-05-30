@@ -79,7 +79,9 @@ angular.module('configuracion',['angularModalService'])
       }).then(function(modal){
         modal.close.then(function(result){
           // $scope.resultadoModal = result;
-          $scope.selectConfiguraciones();
+          if(result){
+            $scope.selectConfiguraciones();
+          }
         })
       })
   };
@@ -123,7 +125,6 @@ angular.module('configuracion',['angularModalService'])
     angular.element($("#spinerContainer")).css("display", "block");
     $http.post("../models/modificarConfiguracion.php", model)
     .success(function(res){
-      close();
       angular.element($("#spinerContainer")).css("display", "none");
       if(res == "error"){
         $scope.msgTitle = 'Error';
@@ -132,14 +133,15 @@ angular.module('configuracion',['angularModalService'])
         flash.pop({title: $scope.msgTitle, body: $scope.msgBody, type: $scope.msgType});
       }else{
         $scope.msgTitle = 'Exitoso';
-          $scope.msgBody  = res;
-          $scope.msgType  = 'success';
+        $scope.msgBody  = res;
+        $scope.msgType  = 'success';
         flash.pop({title: $scope.msgTitle, body: $scope.msgBody, type: $scope.msgType});
         $scope.nombre = null;
         $scope.apellido = null;
         $scope.info = null;
         angular.element($("#requieredPhoto")).val('');
         angular.element($("#expirationDate")).val('');
+        close(true);
       }
       
     });

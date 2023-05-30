@@ -35,8 +35,9 @@
 		 	</ul>
 		 </div>
 		<div class="panel panel-info">
+			<input type="hidden" name="maxHeight" id="maxHeight">
 			<div class="panel-heading">
-				<div class="btn-group pull-right">
+				<div class="btn-group pull-right" ng-if="userRol != 'Vendedor'">
 					<button type='button' class="btn btn-info" ng-click="mostrarModalNuevoProducto()"><span class="glyphicon glyphicon-plus" ></span> Nuevo Producto</button>
 				</div>
 				<h4><i class='glyphicon glyphicon-search'></i> Buscar Producto</h4>
@@ -47,7 +48,7 @@
 							<div class="form-group row">
 								<label for="q" class="col-md-2 control-label">Nombre del Producto</label>
 								<div class="col-md-5">
-									<input type="text" class="form-control" id="q" placeholder="Nombre del producto" ng-model="buscar.Nombre">
+									<input type="text" class="form-control" id="q" placeholder="Nombre del producto" ng-model="buscar.$">
 								</div>
 								<div class="col-md-3">
 									<button type="button" class="btn btn-default">
@@ -70,11 +71,11 @@
 									<th>Precio Venta</th>
 									<th>Precio Mayorista</th>
 									<th>Precio Promocional</th>
-									<th>Proveedor</th>
+									<th>Costo</th>
 									<th class='text-right'>Acciones</th>
 								</tr>
 								
-								<tr ng-repeat="producto in productos | orderBy:ordenSeleccionado | filter:buscar">
+								<tr ng-repeat="producto in productos | orderBy:ordenSeleccionado | filter:buscar:strict">
 									<td>{{producto.idProductos}}</td>
 									<td>
 										{{producto.Nombre}}
@@ -86,12 +87,12 @@
 									<td>{{producto.PrecioUnitario | currency :'₲':0}}</td>
 									<td>{{producto.PrecioMayorista | currency :'₲':0}}</td>
 									<td>{{producto.PrecioPromocional | currency :'₲':0}}</td>
-									<td>{{producto.provN}}</td>
+									<td>{{producto.Costo | currency :'₲':0}}</td>
 									
 
 									<td><span class="pull-right">
-									<a href="#" class='btn btn-default' title='Editar producto' ng-click="modificar(producto)" data-toggle="modal"><i class="glyphicon glyphicon-edit"></i></a> 
-									<a href="#" class='btn btn-default' title='Borrar producto' ng-click="eliminar(producto)"><i class="glyphicon glyphicon-trash"></i> </a></span></td>
+									<a href="#" class='btn btn-default' title='Ver producto' ng-click="modificar(producto)" data-toggle="modal"><i class="glyphicon glyphicon-edit"></i></a> 
+									<a ng-if="userRol != 'Vendedor'" href="#" class='btn btn-default' title='Borrar producto' ng-click="eliminar(producto)"><i class="glyphicon glyphicon-trash"></i> </a></span></td>
 								</tr>
 								
 							</table>
@@ -115,6 +116,9 @@
 
 <script type="text/javascript" src="bd2.js"></script> -->
 </body>
+<script type="text/javascript">
+	var userRol = "<?php echo $_SESSION['user'];?>";
+</script>
 </html>
 <?php
 		if($_SESSION['user'] != "Administrador"){
@@ -126,5 +130,4 @@
 	 	echo '<script> alert("User o password incorrectos");</script>';
         echo '<script> window.location="login.php";</script>';
     }
-
 ?>

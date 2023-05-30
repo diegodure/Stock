@@ -64,14 +64,10 @@
 			<br>
 			<br>
 			<div class="form-group">
-				<label for="nombre" class="col-sm-4 control-label">Proveedor (*)</label>
+				<label for="nombre" class="col-sm-4 control-label">Costo Producto (*)</label>
 				<div class="col-sm-8">
-					<select name="selectProveedor" class="form-control" id="selectProveedor" ng-model="proveedor">
-						<option value="">---Seleccionar---</option> <!-- not selected / blank option -->
-	      				<option ng-repeat="proveedor in proveedores" value="{{proveedor.idProveedores}}">{{proveedor.Nombre}} ({{proveedor.Empresa}})</option> <!-- interpolation -->
-					</select>
+					<input type="text" class="form-control" ng-model="costoProducto" required>
 				</div>
-				
 			</div>
 			<br>
 			<br>

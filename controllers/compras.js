@@ -24,6 +24,7 @@ angular.module('compras',['angularModalService','angular-barcode'])
 })
 
 .controller('ComprasCtrl', function($scope, $http, ModalService, flash){
+
 	$scope.opciones = {
       format: 'CODE128',
       lineColor: '#000000',
@@ -46,6 +47,19 @@ angular.module('compras',['angularModalService','angular-barcode'])
     };
 
     $scope.codigoBarras = "parzibyte.me";
+
+	window.onkeyup = function (e) {
+		if(e.keyCode == 67 && angular.element($(".modal")).length == 0) {
+			$scope.modalProveedor();
+		}else if(e.keyCode == 80 && angular.element($(".modal")).length == 0){
+			$scope.modalProducto();
+		}else if(e.keyCode == 82 && angular.element($(".modal")).length == 0){
+			$scope.prepareToSell();
+		}else if(e.keyCode == 70 && angular.element($(".modalVentas")).css("display") == "block"){
+
+		}
+  };
+
 	//Inicializamos las variables 
 	 $scope.productos = [];
 	 var total = 0, iva = 0;
@@ -216,10 +230,11 @@ angular.module('compras',['angularModalService','angular-barcode'])
 	//La parte donde elegimos el usuario
 	$scope.elegir = function(proveedor){
 		var proveedor = {
+			id: proveedor.idProveedores,
 			nombre: proveedor.Nombre,
 			apellido: proveedor.Apellido,
 			user: proveedor.Empresa,
-			id: proveedor.idProveedores
+			info: proveedor.Informacion
 		};
 	
 		 close(proveedor);
@@ -268,7 +283,7 @@ angular.module('compras',['angularModalService','angular-barcode'])
 			idP: producto.idProductos,
 			nombre: producto.Nombre,
 			descripcion: producto.Descripcion,
-			precio: producto.PrecioUnitario
+			precio: producto.Costo
 		};
 		
 		 close(productos);

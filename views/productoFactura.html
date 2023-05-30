@@ -9,7 +9,7 @@
 			<div class="form-group row">
 				<label for="q" class="col-md-2 control-label">Nombre del Producto</label>
 				<div class="col-md-5">
-					<input type="text" class="form-control" id="q" placeholder="Nombre del producto" ng-model="buscar.Nombre">
+					<input type="text" class="form-control" id="q" placeholder="Nombre del producto" ng-model="buscar.$">
 				</div>
 				<div class="col-md-2">
 					<button type="button" class="btn btn-default">
@@ -29,11 +29,10 @@
 									<th>Precio Minorista</th>
 									<th>Precio Mayorista</th>
 									<th>Precio Promocional</th>
-									<th>Proveedor</th>
-									<th class='text-right'>Acciones</th>
+									<th class='text-right'>Elegir</th>
 								</tr>
 								
-								<tr ng-repeat="producto in productos | orderBy:ordenSeleccionado | filter:buscar">
+								<tr ng-repeat="producto in productos | orderBy:ordenSeleccionado | filter:buscar:strict">
 									<td>{{producto.idProductos}}</td>
 									<td>{{producto.Nombre}}</td>
 							
@@ -43,7 +42,6 @@
 									<td>{{producto.PrecioUnitario | currency:'₲'}}</td>
 									<td>{{producto.PrecioMayorista | currency:'₲'}}</td>
 									<td>{{producto.PrecioPromocional | currency:'₲'}}</td>
-									<td>{{producto.provN}}</td>
 
 									<td><span class="pull-right">
 									<a href="#" class='btn btn-default' title='Elegir producto' ng-click="elegir(producto)" data-toggle="modal"><i class="glyphicon glyphicon-plus"></i></a> 

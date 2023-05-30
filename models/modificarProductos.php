@@ -20,16 +20,15 @@
 	}
 	$precioUnitario = $data->{"precioUnitario"};
 	$precioMayorista = $data->{"precioMayorista"};
-	$proveedor = $data->{"proveedor"};
-	
+	$costo = $data->{"costoProducto"};
 	include("../conect.php");
 	if (!empty($data->{"fechaVencimiento"})) {
 		$fechaVencimiento = $data->{"fechaVencimiento"};
 		$sql = "update productos set Nombre='$nombre', Descripcion='$descripcion', CantidadActual='$cantidad', 
-	CantidadMinima='$cantidadMin',PrecioUnitario='$precioUnitario',PrecioMayorista='$precioMayorista',PrecioPromocional='$precioPromocional', Proveedores_idProveedores='$proveedor', Vencimiento='$fechaVencimiento' where idProductos='$idP'";
+	CantidadMinima='$cantidadMin',PrecioUnitario='$precioUnitario',PrecioMayorista='$precioMayorista',PrecioPromocional='$precioPromocional', Costo='$costo', Vencimiento='$fechaVencimiento' where idProductos='$idP'";
 	}else{
 		$sql = "update productos set Nombre='$nombre', Descripcion='$descripcion', CantidadActual='$cantidad', 
-	CantidadMinima='$cantidadMin',PrecioUnitario='$precioUnitario',PrecioMayorista='$precioMayorista',PrecioPromocional='$precioPromocional', Proveedores_idProveedores='$proveedor', Vencimiento=null where idProductos='$idP'";
+	CantidadMinima='$cantidadMin',PrecioUnitario='$precioUnitario',PrecioMayorista='$precioMayorista',PrecioPromocional='$precioPromocional', Costo='$costo', Vencimiento=null where idProductos='$idP'";
 	}
 
 	

@@ -25,12 +25,23 @@ angular.module('ventas',['angularModalService'])
 
 .controller('VentasCtrl', function($scope, $http, ModalService, flash){
 	angular.element(document).ready(function () {
-
     	$scope.price = {
     		type : "minorista"
     	};
     	$scope.selectConfiguraciones();
 	});
+
+	window.onkeyup = function (e) {
+		if(e.keyCode == 67 && angular.element($(".modal")).length == 0) {
+			$scope.modalUsuario();
+		}else if(e.keyCode == 80 && angular.element($(".modal")).length == 0){
+			$scope.modalProducto();
+		}else if(e.keyCode == 82 && angular.element($(".modal")).length == 0){
+			$scope.prepareToSell();
+		}else if(e.keyCode == 70 && angular.element($(".modalVentas")).css("display") == "block"){
+
+		}
+  };
 
 	$scope.selectConfiguraciones = function(){
     angular.element($("#spinerContainer")).css("display", "block");
@@ -58,7 +69,6 @@ angular.module('ventas',['angularModalService'])
 	 			// Una vez que el modal sea cerrado, la libreria invoca esta función
         		// y en result tienes el resultado.
         		$scope.cliente = result;
-        		//location.reload();
 	 		})
 	 	})
 	 };
@@ -73,7 +83,7 @@ angular.module('ventas',['angularModalService'])
 				// Una vez que el modal sea cerrado, la libreria invoca esta funcion
 				// y en result tienes el resultado
 				$scope.prod = result;
-				
+				angular.element($("#cantidadProducto")).focus();
 			})
 		})
 	};
@@ -145,6 +155,7 @@ angular.module('ventas',['angularModalService'])
  			flash.pop({title: $scope.msgTitle, body: $scope.msgBody, type: $scope.msgType});
 		}else{
 			angular.element($(".modalImpulse")).css("display", "block");
+			angular.element($("#pago")).focus();
 		}
 		
 	}
