@@ -169,7 +169,7 @@ angular.module('productos',['angularModalService','720kb.datepicker'])
 			templateUrl: "modificarProducto.html",
 			controller: "modificarCtrl",
 			 inputs: {
-			 		idP: producto.idProductos,
+			 	idP: producto.idProductos,
     			nombre: producto.Nombre,
     			descripcion: producto.Descripcion,
     			PrecioUnitario: producto.PrecioUnitario,
@@ -497,12 +497,11 @@ angular.module('productos',['angularModalService','720kb.datepicker'])
 			fechaVencimiento: $scope.fechaVencimiento,
 			costoProducto: $scope.costoProducto
 		};
-		console.log(model)
 		if(model.nombre == undefined || model.descripcion == undefined || model.precioUnitario == undefined
 			|| model.precioMayorista == undefined){
 			$scope.msgTitle = 'Atención';
-		  $scope.msgBody  = 'Debe completar los campos requeridos!';
-		  $scope.msgType  = 'warning';
+		  	$scope.msgBody  = 'Debe completar los campos requeridos!';
+		  	$scope.msgType  = 'warning';
 		 	flash.pop({title: $scope.msgTitle, body: $scope.msgBody, type: $scope.msgType});
 		}else{
 			let configuracion = {
@@ -511,12 +510,14 @@ angular.module('productos',['angularModalService','720kb.datepicker'])
           		},
           		transformRequest: angular.identity,
       		};
-      
+      		console.log(model)
       
 			angular.element($("#spinerContainer")).css("display", "block");
 			var response;
 			$http.post("../models/insertProductos.php", model)
 			.success(function(res){
+				console.log(res)
+				console.log(fd)
 				if(res != "error" && $scope.requieredPhoto == 0 || $scope.requieredPhoto == "0"){
 		  			$http.post("../models/insertPhoto.php", fd, configuracion).success(function (res) {
 		  				response = res;

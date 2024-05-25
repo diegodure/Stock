@@ -282,3 +282,23 @@ body{
     padding: 10px;
 }
 
+#contenedor video{
+    max-width: 100%;
+    width: 100%;
+}
+#contenedor{
+    max-width: 100%;
+    position:relative;
+}
+canvas{
+    max-width: 100%;
+}
+canvas.drawingBuffer{
+    position:absolute;
+    top:0;
+    left:0;
+}
+p{
+    color: black;
+}
+

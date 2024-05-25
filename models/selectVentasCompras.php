@@ -6,7 +6,7 @@
 
     include("../conect.php");
 
-    $sql ="select ventas.idVentas, SUM(ventas.Total) as totalVentas, ventas.Fecha from ventas where Ventas.Fecha >= '$fecha1' and Ventas.Fecha <= '$fecha2' group by ventas.Fecha order by ventas.idVentas DESC";
+    $sql ="select ventas.idVentas, SUM(ventas.Total) as totalVentas, ventas.Fecha from ventas where ventas.Fecha >= '$fecha1' and ventas.Fecha <= '$fecha2' group by ventas.idVentas, ventas.Fecha order by ventas.idVentas DESC";
 
     $results = $con->query($sql);
 
@@ -20,7 +20,7 @@
 
     }
 
-    $sql2 = "select compras.idCompras, SUM(compras.Total) as totalCompras, compras.Fecha from compras where compras.Fecha >= '$fecha1' and compras.Fecha <= '$fecha2' group by compras.Fecha order by compras.idCompras DESC";
+    $sql2 = "select compras.idCompras, SUM(compras.Total) as totalCompras, compras.Fecha from compras where compras.Fecha >= '$fecha1' and compras.Fecha <= '$fecha2' group by compras.idCompras, compras.Fecha order by compras.idCompras DESC";
 
     $results2 = $con->query($sql2);
 
