@@ -1,14 +1,18 @@
 <?php
 	include("../conect.php");
-	$data = json_decode($_POST['id']);
-	$id = $data->{"id"};
+	$data = $_POST['id'];
+
+    // Recibir la información del archivo
+    $archivo = $_FILES['file'];
+    $rutaTemporal = $archivo["tmp_name"];
 	
-	foreach ($_FILES as $archivo) {
-	 	$nombre = $_FILES['file']["name"];
-	    $datos = base64_encode(file_get_contents($_FILES['file']['tmp_name']));
-	    $sql = "update productos set Imagen='$datos' where idProductos='$data'";
-	    $results = $con->query($sql);
-	}
+	// Procesar la imagen
+    $datos = compressAndEncodeImage($rutaTemporal, 1024); // Tamaño máximo de 1MB
+    
+    // Actualizar la base de datos con la imagen comprimida
+    $sql = "UPDATE productos SET Imagen='$datos' WHERE idProductos='$data'";
+    $results = $con->query($sql);
+    
  	if(!$results){ 
 		echo "error";
 	}
@@ -16,4 +20,33 @@
 		echo "Producto modificado correctamente!";
 	}
 	$con->close();
+
+
+	// Función para comprimir y codificar la imagen
+	function compressAndEncodeImage($source, $max_size_kb) {
+	    $info = getimagesize($source);
+	    if ($info['mime'] == 'image/jpeg') 
+	        $image = imagecreatefromjpeg($source);
+	    elseif ($info['mime'] == 'image/png') 
+	        $image = imagecreatefrompng($source);
+	    elseif ($info['mime'] == 'image/gif') 
+	        $image = imagecreatefromgif($source);
+	    else 
+	        return false;
+
+	    $quality = 75; // Calidad inicial de compresión
+	    $target_size_bytes = $max_size_kb * 1024; // Tamaño máximo en bytes
+
+	    do {
+	        ob_start();
+	        imagejpeg($image, null, $quality);
+	        $compressed_image = ob_get_clean();
+	        $size = strlen($compressed_image);
+	        $quality -= 5;
+	    } while ($size > $target_size_bytes && $quality > 0);
+
+	    imagedestroy($image);
+	    
+	    return base64_encode($compressed_image);
+	}
 ?>

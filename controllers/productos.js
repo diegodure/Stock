@@ -311,32 +311,50 @@ angular.module('productos',['angularModalService','720kb.datepicker'])
 	var detImg;
 	var fd;
 	$scope.SelectFile = function (e) {
-		
-			var imagen = e.target.files[0];
-			var reader = new FileReader();
-            
-            const objectURL = URL.createObjectURL(imagen);
-  					angular.element($("#imgToUpload")).removeAttr('src')
-            angular.element($("#imgToUpload")).attr('src', objectURL)
-            $scope.$apply();
-                        
-          fd = new FormData();
-          fd.append('file', imagen);
-          fd.append('name', e.target.files.name);
-          fd.append('id', idP);
-          
-          detImg = {
-          		name : e.target.files[0].name,
-		 		type: e.target.files[0].type,
-		 		file: fd,
-		 		id: idP
-		 	};
-		 	 let configuracion = {
-                headers: {
-                    "Content-Type": undefined,
-                },
-                transformRequest: angular.identity,
-            };
+    var imagen = e.target.files[0];
+    var reader = new FileReader();
+
+    reader.onload = function(event) {
+        var img = new Image();
+        img.onload = function() {
+            var canvas = document.createElement('canvas');
+            var ctx = canvas.getContext('2d');
+
+            // Calcula el nuevo tamaño de la imagen
+            var MAX_WIDTH = 800;
+            var MAX_HEIGHT = 600;
+            var width = img.width;
+            var height = img.height;
+            if (width > height) {
+                if (width > MAX_WIDTH) {
+                    height *= MAX_WIDTH / width;
+                    width = MAX_WIDTH;
+                }
+            } else {
+                if (height > MAX_HEIGHT) {
+                    width *= MAX_HEIGHT / height;
+                    height = MAX_HEIGHT;
+                }
+            }
+
+            // Establece el nuevo tamaño en el canvas
+            canvas.width = width;
+            canvas.height = height;
+            ctx.drawImage(img, 0, 0, width, height);
+
+            // Convierte el canvas a Blob con formato JPEG con cierta calidad
+            canvas.toBlob(function(blob) {
+                // Crea un nuevo FormData y agrega la imagen
+                fd = new FormData();
+                fd.append('file', blob, imagen.name);
+                fd.append('name', imagen.name);
+                fd.append('id', idP);
+
+            }, 'image/jpeg', 0.8); // Calidad del JPEG (0.8 es 80%)
+        };
+        img.src = event.target.result;
+    };
+    reader.readAsDataURL(imagen);
 	};
 	
 	$scope.cerrarModal = function(){
@@ -371,21 +389,20 @@ angular.module('productos',['angularModalService','720kb.datepicker'])
 		  $scope.msgType  = 'warning';
 		 	flash.pop({title: $scope.msgTitle, body: $scope.msgBody, type: $scope.msgType});
 		}else{
-			let configuracion = {
-          		headers: {
-              "Content-Type": undefined,
-          		},
-          		transformRequest: angular.identity,
-      		};
-      
+    
 			angular.element($("#spinerContainer")).css("display", "block");
 			var response;
 			$http.post("../models/modificarProductos.php", model)
 			.success(function(res){
 				if(res != "error" && ($scope.requieredPhoto == 0 || $scope.requieredPhoto == "0") && fd != undefined){
-		  			$http.post("../models/modifyPhoto.php", fd, configuracion).success(function (res) {
-		  				response = res;
-		  			});
+		  			// Envía los datos al backend
+            $http.post("../models/modifyPhoto.php", fd, {
+                transformRequest: angular.identity,
+                headers: { 'Content-Type': undefined }
+            }).success(function (res) {
+                console.log(res);
+                response = res;
+            });
 				}
 				response = res;
 				close();
