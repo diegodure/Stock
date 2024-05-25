@@ -497,7 +497,6 @@ angular.module('productos',['angularModalService','720kb.datepicker'])
 			fechaVencimiento: $scope.fechaVencimiento,
 			costoProducto: $scope.costoProducto
 		};
-		console.log(model)
 		if(model.nombre == undefined || model.descripcion == undefined || model.precioUnitario == undefined
 			|| model.precioMayorista == undefined){
 			$scope.msgTitle = 'Atención';
@@ -511,12 +510,14 @@ angular.module('productos',['angularModalService','720kb.datepicker'])
           		},
           		transformRequest: angular.identity,
       		};
-      
+      		console.log(model)
       
 			angular.element($("#spinerContainer")).css("display", "block");
 			var response;
 			$http.post("../models/insertProductos.php", model)
 			.success(function(res){
+				console.log(res)
+				console.log(fd)
 				if(res != "error" && $scope.requieredPhoto == 0 || $scope.requieredPhoto == "0"){
 		  			$http.post("../models/insertPhoto.php", fd, configuracion).success(function (res) {
 		  				response = res;

@@ -26,7 +26,7 @@
 		$fechaVencimiento = $data->{"fechaVencimiento"};
 		$sql = "insert into productos (idProductos, Nombre, Descripcion, CantidadActual, CantidadMinima, PrecioUnitario, PrecioMayorista, PrecioPromocional, active, Vencimiento, Imagen, CodigoBarra, Costo) values (null, '$nombre', '$descripcion','$cantidad', '$cantidadMin', '$precioUnitario', '$precioMayorista', $precioPromocional, 0, '$fechaVencimiento', null, '0',$costo)";
 	}else{
-		$sql = "insert into productos (idProductos, Nombre, Descripcion, CantidadActual, CantidadMinima, PrecioUnitario, PrecioMayorista, PrecioPromocional, active, Vencimiento, Imagen, CodigoBarra, Costo) values (null, '$nombre', '$descripcion','$cantidad', '$cantidadMin', '$precioUnitario', '$precioMayorista', $precioPromocional, 0, null, null, '0',$costo)";
+		$sql = "insert into productos (idProductos, Nombre, Descripcion, CantidadActual, CantidadMinima, PrecioUnitario, PrecioMayorista, PrecioPromocional, active, Vencimiento, Imagen, CodigoBarra, Costo) values (null, '$nombre', '$descripcion','$cantidad', '$cantidadMin', '$precioUnitario', '$precioMayorista', $precioPromocional, 0, '', null, '0',$costo)";
 	}
 	
 	$results = $con->query($sql);
