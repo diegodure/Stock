@@ -7,22 +7,22 @@
   		$idP = trim($row[0]);
 	}
 
-	foreach ($_FILES as $archivo) {
-	 	$nombre = $_FILES['file']["name"];
-	    $datos = compressAndEncodeImage($_FILES['file']['tmp_name'], 1024); // Tamaño máximo de 1MB
-	    $sql = "update productos set Imagen=? where idProductos=?";
-	    $stmt_insert = $con->prepare($sql);
-	    $stmt_insert->bind_param("s", $datos,$idP);
-	    $stmt_insert->execute();
-	    $results = $stmt_insert;
-    	$stmt_insert->close();
-	    
-	}
+	// Recibir la información del archivo
+    $archivo = $_FILES['file'];
+    $rutaTemporal = $archivo["tmp_name"];
+	
+	// Procesar la imagen
+    $datos = compressAndEncodeImage($rutaTemporal, 1024); // Tamaño máximo de 1MB
+    
+    // Actualizar la base de datos con la imagen comprimida
+    $sql = "UPDATE productos SET Imagen='$datos' WHERE idProductos='$idP'";
+    $results = $con->query($sql);
+    
  	if(!$results){ 
 		echo "error";
 	}
 	else{
-		echo "Producto creado correctamente!";
+		echo "Producto modificado correctamente!";
 	}
 	$con->close();
 
